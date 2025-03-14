@@ -1,0 +1,21 @@
+_id: env_2755565703bc84f5b992153d9c44324507cd9c1b
+type: Environment
+parentId: wrk_0e80e66b0cca4806ad711514538610e8
+modified: 1741953352102
+created: 1741952167408
+name: Base Environment
+data:
+  base_url: http://127.0.0.1:8080/api/
+  DEFAULT_HEADERS:
+    Accept: application/json
+    Authorization: Bearer 7|gprwP5tqsEg4hhUu2N9Xddh9HYhFFaN4Q2HYtjH843d9b163
+dataPropertyOrder:
+  "&":
+    - base_url
+    - DEFAULT_HEADERS
+  "&~|DEFAULT_HEADERS":
+    - Accept
+    - Authorization
+color: null
+isPrivate: false
+metaSortKey: 1741952167408

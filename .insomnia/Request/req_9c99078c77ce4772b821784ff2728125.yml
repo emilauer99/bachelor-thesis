@@ -1,0 +1,23 @@
+_id: req_9c99078c77ce4772b821784ff2728125
+type: Request
+parentId: wrk_0e80e66b0cca4806ad711514538610e8
+modified: 1741953231271
+created: 1741953221775
+url: "{{ _.base_url }}logout"
+name: Logout
+description: ""
+method: POST
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1741953221775
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
