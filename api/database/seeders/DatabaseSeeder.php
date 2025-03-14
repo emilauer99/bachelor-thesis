@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ERole;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'admin@pmt.at',
+            'password' => Hash::make('12345678'),
+            'role' => ERole::ADMIN
+        ]);
+        User::factory()->create([
+            'email' => 'employee@pmt.at',
+            'password' => Hash::make('12345678'),
+            'role' => ERole::EMPLOYEE
         ]);
     }
 }
