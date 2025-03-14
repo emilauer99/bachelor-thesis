@@ -1,0 +1,22 @@
+version: "3.0"
+services:
+    api:
+        build: docker/api
+        volumes:
+            - ./api:/api
+        ports:
+            - "127.0.0.1:8080:80"
+        depends_on:
+            - database
+
+    database:
+        image: docker.io/mysql:9.0.1
+        volumes:
+            - ./docker/_vol/database:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_DATABASE=pmt
+            - MYSQL_USER=pmt
+            - MYSQL_PASSWORD=pmt
+        ports:
+            - "127.0.0.1:3306:3306"
