@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Customer\CustomerRepository;
+use App\Repositories\Customer\ICustomerRepository;
 use App\Repositories\User\IUserRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -15,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(IUserRepository::class, UserRepository::class);
-
+        $this->app->bind(ICustomerRepository::class, CustomerRepository::class);
     }
 
     /**
