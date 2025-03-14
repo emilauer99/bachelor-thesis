@@ -1,0 +1,31 @@
+_id: req_622781382deb4281807c193961b089af
+type: Request
+parentId: wrk_0e80e66b0cca4806ad711514538610e8
+modified: 1741953340345
+created: 1741952178882
+url: "{{ _.base_url }}login"
+name: Login
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"email": "admin@pmt.at",
+    	"password": "12345678"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1741952178883
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
