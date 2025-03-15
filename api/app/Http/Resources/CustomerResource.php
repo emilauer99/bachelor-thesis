@@ -17,7 +17,7 @@ class CustomerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'imagePath' => $this->image_path // imagae is available under localhost:8080/storage/*imagePath*
+            'imagePath' => $this->image_path // image is available under localhost:8080/storage/*imagePath*
         ];
     }
 }

@@ -22,7 +22,7 @@ class CustomerFactory extends Factory
         $image = UploadedFile::fake()->image(fake()->company() . '.jpg');
         $path = Storage::putFile('customers', $image);
         return [
-            'name' => fake()->company(),
+            'name' => $this->faker->company(),
             'image_path' => $path,
         ];
     }
