@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Utils\RequestUtils;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
 abstract class Controller
@@ -23,5 +24,17 @@ abstract class Controller
         }
 
         return $transformed;
+    }
+
+    protected function prepareFiltersFromRequest(FormRequest $request, array $queryParams): ?array
+    {
+        $filters = [];
+        foreach ($queryParams as $value) {
+            if ($request->has($value)) {
+                $filters[$value] = $request->query($value);
+            }
+        }
+
+        return !empty($filters) ? $filters : null;
     }
 }

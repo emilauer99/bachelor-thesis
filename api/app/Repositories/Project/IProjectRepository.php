@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 interface IProjectRepository
 {
-    public function getAll(): Collection;
+    public function getAll(?array $filters = null): Collection;
     public function getOne(int $id): ?Project;
     public function create(array $attributes): ?Project;
     public function update(int $id, array $attributes): ?Project;

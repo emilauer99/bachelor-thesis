@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Repositories\Project\IProjectRepository;
+use Illuminate\Foundation\Http\FormRequest;
 
 class ProjectController extends Controller
 {
@@ -13,9 +14,14 @@ class ProjectController extends Controller
     {
     }
 
-    public function index()
+    public function index(FormRequest $request)
     {
-        return ProjectResource::collection($this->projectRepository->getAll());
+        return ProjectResource::collection($this->projectRepository->getAll(
+            $this->prepareFiltersFromRequest(
+                $request,
+                ['name', 'state', 'customerName', 'customer', 'startDate', 'endDate']
+            )
+        ));
     }
 
     public function show(int $id)
