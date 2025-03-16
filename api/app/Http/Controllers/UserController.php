@@ -21,10 +21,8 @@ class UserController extends Controller
         if (!$user || !Hash::check($request->password, $user->password))
             return response()->json(['errors' => ['credentials' => 'incorrect']], 401);
 
-        $userResource = new UserResource($user);
-
         // already authorized
-        if ($request->bearerToken() && auth('sanctum')->check())
+        if ($request->bearerToken() && auth('sanctum')->check() && auth('sanctum')->user()->email === $request->email)
             return new UserResource($user, $request->bearerToken());
 
         // create authorization token and add to response
