@@ -1,0 +1,38 @@
+_id: req_083d1abe0a37450d94c7c2d19c0db3bf
+type: Request
+parentId: fld_4a7a46db9d9641118ca41c0d9bbf3fee
+modified: 1742043943292
+created: 1742043907654
+url: "{{ _.base_url }}projects/1"
+name: Update
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"name": "1",
+    	"description": "1 description",
+    	"state": "in_progress",
+    	"isPublic": true,
+    	"startDate": "2025-01-10",
+    	"endDate": "2025-05-23",
+    	"budget": "1000000",
+    	"estimatedHours": 350,
+    	"customerId": 23
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1742043907654
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

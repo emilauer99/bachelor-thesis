@@ -1,18 +1,17 @@
-_id: req_622781382deb4281807c193961b089af
+_id: req_bc72f8e7057e4d20bd69ec294831fa84
 type: Request
-parentId: wrk_0e80e66b0cca4806ad711514538610e8
-modified: 1742041745497
-created: 1741952178882
-url: "{{ _.base_url }}login"
-name: Login
+parentId: fld_4a7a46db9d9641118ca41c0d9bbf3fee
+modified: 1742043993791
+created: 1742043960757
+url: "{{ _.base_url }}projects/1"
+name: Update State
 description: ""
-method: POST
+method: PATCH
 body:
   mimeType: application/json
   text: |-
     {
-    	"email": "admin@pmt.at",
-    	"password": "12345678"
+    	"state": "finished"
     }
 parameters: []
 headers:
@@ -21,7 +20,7 @@ headers:
   - name: User-Agent
     value: insomnia/2023.5.8
 authentication: {}
-metaSortKey: -1741952178883
+metaSortKey: -1742043960757
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

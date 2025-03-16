@@ -1,0 +1,38 @@
+_id: req_6af350260e6c4e9bbf0c5187de065ae6
+type: Request
+parentId: fld_4a7a46db9d9641118ca41c0d9bbf3fee
+modified: 1742042721326
+created: 1742039299031
+url: "{{ _.base_url }}projects"
+name: Create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"name": "1 Project",
+    	"description": "1 Project description",
+    	"state": "planned",
+    	"isPublic": true,
+    	"startDate": "2025-01-10",
+    	"endDate": "2025-05-23",
+    	"budget": "1000000",
+    	"estimatedHours": 350,
+    	"customerId": 23
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1742039299031
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

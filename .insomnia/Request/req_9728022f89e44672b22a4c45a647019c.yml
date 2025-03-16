@@ -1,0 +1,36 @@
+_id: req_9728022f89e44672b22a4c45a647019c
+type: Request
+parentId: fld_664bbb0965a245e99dc8d0ec522a7ece
+modified: 1741963923585
+created: 1741963198606
+url: "{{ _.base_url }}customers"
+name: Create
+description: ""
+method: POST
+body:
+  mimeType: multipart/form-data
+  params:
+    - name: name
+      value: CMD
+      id: pair_6790289076bf422a85868693835c3dd6
+    - id: pair_55dc17a9e61b4250af8b0f1e41af8e60
+      name: image
+      value: ""
+      description: ""
+      type: file
+      fileName: C:\Users\Emil\Pictures\burger.jpg
+parameters: []
+headers:
+  - name: Content-Type
+    value: multipart/form-data
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1741963198606
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
