@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum EProjectState: string {
     case PLANNED = 'planned';
-    case IN_PROGRESS = 'in_progress';
+    case IN_PROGRESS = 'inProgress';
     case FINISHED = 'finished';
 
     public static function values(): array
