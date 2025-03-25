@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/board_screen.dart';
 import 'package:flutter_app/screens/home_screen.dart';
 import 'package:flutter_app/screens/login_screen.dart';
+import 'package:flutter_app/screens/others_screen.dart';
+import 'package:flutter_app/screens/projects_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/home',
     routes: [
       GoRoute(
         path: '/login',
@@ -14,7 +17,24 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/home',
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => HomeScreen(
+          freshLogin: (state.extra as Map<String, dynamic>?)?['freshLogin'] ?? false,
+        ),
+        routes: [
+          // Nested routes for tabs
+          GoRoute(
+            path: 'projects',
+            builder: (context, state) => const ProjectsScreen(),
+          ),
+          GoRoute(
+            path: 'board',
+            builder: (context, state) => const BoardScreen(),
+          ),
+          GoRoute(
+            path: 'others',
+            builder: (context, state) => const OthersScreen(),
+          ),
+        ]
       ),
     ],
   );

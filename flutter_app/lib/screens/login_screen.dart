@@ -40,7 +40,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         await ref.read(authStateProvider.notifier).authenticate(user);
 
         if (mounted) {
-          context.go('/home');
+          context.go('/home', extra: {'freshLogin': true});
         }
       } on DioException catch (dioError) {
         final data = dioError.response?.data;

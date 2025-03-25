@@ -65,7 +65,7 @@ mixin DioDelegate {
     final apiResponse = await _dio.get(apiUrl,
         options: Options(headers: headers),
         queryParameters: queryParameters);
-    return apiResponse;
+    return apiResponse.data;
   }
 
   //POST request
