@@ -35,4 +35,9 @@ class UserController extends Controller
         $request->user()->tokens()->delete();
         return response()->json(['message' => 'Logged out']);
     }
+
+    public function show(Request $request)
+    {
+        return new UserResource(auth()->user(), $request->bearerToken());
+    }
 }

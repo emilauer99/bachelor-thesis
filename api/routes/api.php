@@ -11,6 +11,7 @@ Route::post('login', [UserController::class, 'login']);
 // authenticated routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [UserController::class, 'logout']);
+    Route::get('/user', [UserController::class, 'show']);
 
     Route::get('projects', [ProjectController::class, 'index']);
     Route::get('projects/{id}', [ProjectController::class, 'show']);
