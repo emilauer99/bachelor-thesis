@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProjectModel {
 
- String get name; String? get description; EProjectState get state; bool get isPublic; String? get startDate; String? get endDate; int? get budget; int? get estimatedHours; CustomerModel get customer;
+ String get name; String? get description; EProjectState get state; bool get isPublic; String? get startDate; String? get endDate; double? get budget; int? get estimatedHours; CustomerModel get customer;
 /// Create a copy of ProjectModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $ProjectModelCopyWith<$Res>  {
   factory $ProjectModelCopyWith(ProjectModel value, $Res Function(ProjectModel) _then) = _$ProjectModelCopyWithImpl;
 @useResult
 $Res call({
- String name, String? description, EProjectState state, bool isPublic, String? startDate, String? endDate, int? budget, int? estimatedHours, CustomerModel customer
+ String name, String? description, EProjectState state, bool isPublic, String? startDate, String? endDate, double? budget, int? estimatedHours, CustomerModel customer
 });
 
 
@@ -75,7 +75,7 @@ as EProjectState,isPublic: null == isPublic ? _self.isPublic : isPublic // ignor
 as bool,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as String?,budget: freezed == budget ? _self.budget : budget // ignore: cast_nullable_to_non_nullable
-as int?,estimatedHours: freezed == estimatedHours ? _self.estimatedHours : estimatedHours // ignore: cast_nullable_to_non_nullable
+as double?,estimatedHours: freezed == estimatedHours ? _self.estimatedHours : estimatedHours // ignore: cast_nullable_to_non_nullable
 as int?,customer: null == customer ? _self.customer : customer // ignore: cast_nullable_to_non_nullable
 as CustomerModel,
   ));
@@ -106,7 +106,7 @@ class _ProjectModel implements ProjectModel {
 @override final  bool isPublic;
 @override final  String? startDate;
 @override final  String? endDate;
-@override final  int? budget;
+@override final  double? budget;
 @override final  int? estimatedHours;
 @override final  CustomerModel customer;
 
@@ -143,7 +143,7 @@ abstract mixin class _$ProjectModelCopyWith<$Res> implements $ProjectModelCopyWi
   factory _$ProjectModelCopyWith(_ProjectModel value, $Res Function(_ProjectModel) _then) = __$ProjectModelCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String? description, EProjectState state, bool isPublic, String? startDate, String? endDate, int? budget, int? estimatedHours, CustomerModel customer
+ String name, String? description, EProjectState state, bool isPublic, String? startDate, String? endDate, double? budget, int? estimatedHours, CustomerModel customer
 });
 
 
@@ -169,7 +169,7 @@ as EProjectState,isPublic: null == isPublic ? _self.isPublic : isPublic // ignor
 as bool,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as String?,budget: freezed == budget ? _self.budget : budget // ignore: cast_nullable_to_non_nullable
-as int?,estimatedHours: freezed == estimatedHours ? _self.estimatedHours : estimatedHours // ignore: cast_nullable_to_non_nullable
+as double?,estimatedHours: freezed == estimatedHours ? _self.estimatedHours : estimatedHours // ignore: cast_nullable_to_non_nullable
 as int?,customer: null == customer ? _self.customer : customer // ignore: cast_nullable_to_non_nullable
 as CustomerModel,
   ));

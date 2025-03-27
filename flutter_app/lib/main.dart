@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/board_screen.dart';
-import 'package:flutter_app/screens/home_screen.dart';
-import 'package:flutter_app/screens/login_screen.dart';
-import 'package:flutter_app/screens/others_screen.dart';
-import 'package:flutter_app/screens/projects_screen.dart';
+import 'package:flutter_app/ui/screens/board_screen.dart';
+import 'package:flutter_app/ui/screens/home_screen.dart';
+import 'package:flutter_app/ui/screens/login_screen.dart';
+import 'package:flutter_app/ui/screens/others_screen.dart';
+import 'package:flutter_app/ui/screens/projects_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -69,6 +69,13 @@ class _MyAppState extends ConsumerState<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        chipTheme: ChipThemeData(
+          backgroundColor: Colors.transparent,
+          side: BorderSide.none,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
       ),
     );
   }

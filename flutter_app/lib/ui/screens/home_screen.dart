@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/api/auth_api.dart';
 import 'package:flutter_app/models/user_model.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
-import 'package:flutter_app/screens/board_screen.dart';
-import 'package:flutter_app/screens/others_screen.dart';
-import 'package:flutter_app/screens/projects_screen.dart';
+import 'package:flutter_app/ui/screens/projects_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import 'board_screen.dart';
+import 'others_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key, this.freshLogin = false});
@@ -80,16 +81,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Project Management Tool'),
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.logout),
-        //     onPressed: () {
-        //       ref.read(authStateProvider.notifier).resetAuthentication();
-        //       context.go('/login');
-        //     },
-        //   ),
-        // ],
+        title: const Text('PMT'),
+        centerTitle: true,
       ),
       body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/env_config.dart';
 import 'package:flutter_app/models/customer_model.dart';
 import 'package:flutter_app/providers/customer_list_provider.dart';
+import 'package:flutter_app/ui/widgets/customer_list_tile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -170,44 +171,7 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
     return ListView.builder(
       physics: const AlwaysScrollableScrollPhysics(),
       itemCount: customers.length,
-      itemBuilder: (context, index) => ListTile(
-        leading: _buildCustomerAvatar(customers[index].imagePath),
-        title: Text(customers[index].name),
-      ),
-    );
-  }
-
-  Widget _buildCustomerAvatar(String imagePath) {
-    final imageUrl = '${EnvironmentConfig.apiFileURL}$imagePath';
-    return SizedBox(
-      width: 48,
-      height: 48,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.network(
-          imageUrl,
-          fit: BoxFit.contain,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                    loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            );
-          },
-          errorBuilder: (context, error, stackTrace) => Container(
-            color: Colors.grey[200],
-            child: const Icon(
-              Icons.person,
-              size: 24,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-      ),
+      itemBuilder: (context, index) => CustomerListTile(customer: customers[index])
     );
   }
 }

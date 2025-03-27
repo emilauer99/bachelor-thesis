@@ -20,7 +20,7 @@ abstract class ProjectModel with _$ProjectModel {
     required bool isPublic,
     String? startDate,
     String? endDate,
-    int? budget,
+    double? budget,
     int? estimatedHours,
     required CustomerModel customer
   }) = _ProjectModel;

@@ -14,7 +14,7 @@ _ProjectModel _$ProjectModelFromJson(Map<String, dynamic> json) =>
       isPublic: json['isPublic'] as bool,
       startDate: json['startDate'] as String?,
       endDate: json['endDate'] as String?,
-      budget: (json['budget'] as num?)?.toInt(),
+      budget: (json['budget'] as num?)?.toDouble(),
       estimatedHours: (json['estimatedHours'] as num?)?.toInt(),
       customer: CustomerModel.fromJson(
         json['customer'] as Map<String, dynamic>,
