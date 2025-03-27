@@ -8,6 +8,7 @@ abstract class CustomerModel with _$CustomerModel {
   const factory CustomerModel({
     required int id,
     required String name,
+    required String imagePath,
   }) = _CustomerModel;
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) => _$CustomerModelFromJson(json);
