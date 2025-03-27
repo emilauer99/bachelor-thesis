@@ -22,7 +22,7 @@ class ProjectResource extends JsonResource
             'isPublic' => $this->is_public,
             'startDate' => $this->start_date?->format('Y-m-d'),
             'endDate' => $this->end_date?->format('Y-m-d'),
-            'budget' => ($this->budget ?? 0) / 100,
+            'budget' => $this->budget ? $this->budget / 100 : null,
             'estimatedHours' => $this->estimated_hours,
             'customer' => new CustomerResource($this->customer),
             'createdAt' => $this->created_at?->format('Y-m-d H:i:s')
