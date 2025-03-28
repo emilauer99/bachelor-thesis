@@ -1,6 +1,4 @@
-import 'package:flutter_app/api/customer_api.dart';
 import 'package:flutter_app/api/project_api.dart';
-import 'package:flutter_app/models/customer_model.dart';
 import 'package:flutter_app/models/project_model.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -31,11 +29,34 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
     await _loadProjects();
   }
 
-  Future<void> createProject(Map<String, dynamic> projectData) async {
+  Future<ProjectModel> createProject(ProjectModel project) async {
     try {
-      await ProjectApi(_ref).create(projectData);
-      await refresh();
-    } catch (e) {
+      final response = await ProjectApi(_ref).create(project);
+      final newProject = ProjectModel.fromJson(response);
+
+      state.whenData((projects) {
+        state = AsyncValue.data([...projects, newProject]);
+      });
+
+      return newProject;
+    } catch (e, stackTrace) {
+      rethrow;
+    }
+  }
+
+  Future<ProjectModel> updateProject(int id, ProjectModel project) async {
+    try {
+      final response = await ProjectApi(_ref).update(id, project);
+      final updatedProject = ProjectModel.fromJson(response);
+
+      state.whenData((projects) {
+        state = AsyncValue.data(
+            projects.map((p) => p.id == id ? updatedProject : p).toList()
+        );
+      });
+
+      return updatedProject;
+    } catch (e, stackTrace) {
       rethrow;
     }
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/models/project_model.dart';
 import 'package:flutter_app/providers/project_list_provider.dart';
 import 'package:flutter_app/ui/screens/project_details_screen.dart';
+import 'package:flutter_app/ui/widgets/project_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProjectsScreen extends ConsumerStatefulWidget {
@@ -20,7 +21,10 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddProjectModal(context),
+        onPressed: () => showProjectModal(
+          context: context,
+          ref: ref,
+        ),
         child: const Icon(Icons.add),
       ),
       body: RefreshIndicator(
@@ -46,11 +50,6 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
         ),
       ),
     );
-  }
-
-  void _showAddProjectModal(BuildContext context) {
-    // TODO: Implement project creation form
-    // Similar to customer modal but with project fields
   }
 
   Widget _buildProjectList(List<ProjectModel> projects) {

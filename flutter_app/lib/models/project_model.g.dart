@@ -8,6 +8,7 @@ part of 'project_model.dart';
 
 _ProjectModel _$ProjectModelFromJson(Map<String, dynamic> json) =>
     _ProjectModel(
+      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String,
       description: json['description'] as String?,
       state: $enumDecode(_$EProjectStateEnumMap, json['state']),
@@ -19,10 +20,12 @@ _ProjectModel _$ProjectModelFromJson(Map<String, dynamic> json) =>
       customer: CustomerModel.fromJson(
         json['customer'] as Map<String, dynamic>,
       ),
+      customerId: (json['customerId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ProjectModelToJson(_ProjectModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'description': instance.description,
       'state': _$EProjectStateEnumMap[instance.state]!,
@@ -32,6 +35,7 @@ Map<String, dynamic> _$ProjectModelToJson(_ProjectModel instance) =>
       'budget': instance.budget,
       'estimatedHours': instance.estimatedHours,
       'customer': instance.customer,
+      'customerId': instance.customerId,
     };
 
 const _$EProjectStateEnumMap = {

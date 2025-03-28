@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProjectModel {
 
- String get name; String? get description; EProjectState get state; bool get isPublic; String? get startDate; String? get endDate; double? get budget; int? get estimatedHours; CustomerModel get customer;
+ int? get id; String get name; String? get description; EProjectState get state; bool get isPublic; String? get startDate; String? get endDate; double? get budget; int? get estimatedHours; CustomerModel get customer; int? get customerId;
 /// Create a copy of ProjectModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $ProjectModelCopyWith<ProjectModel> get copyWith => _$ProjectModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectModel&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.state, state) || other.state == state)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.budget, budget) || other.budget == budget)&&(identical(other.estimatedHours, estimatedHours) || other.estimatedHours == estimatedHours)&&(identical(other.customer, customer) || other.customer == customer));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.state, state) || other.state == state)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.budget, budget) || other.budget == budget)&&(identical(other.estimatedHours, estimatedHours) || other.estimatedHours == estimatedHours)&&(identical(other.customer, customer) || other.customer == customer)&&(identical(other.customerId, customerId) || other.customerId == customerId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,description,state,isPublic,startDate,endDate,budget,estimatedHours,customer);
+int get hashCode => Object.hash(runtimeType,id,name,description,state,isPublic,startDate,endDate,budget,estimatedHours,customer,customerId);
 
 @override
 String toString() {
-  return 'ProjectModel(name: $name, description: $description, state: $state, isPublic: $isPublic, startDate: $startDate, endDate: $endDate, budget: $budget, estimatedHours: $estimatedHours, customer: $customer)';
+  return 'ProjectModel(id: $id, name: $name, description: $description, state: $state, isPublic: $isPublic, startDate: $startDate, endDate: $endDate, budget: $budget, estimatedHours: $estimatedHours, customer: $customer, customerId: $customerId)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $ProjectModelCopyWith<$Res>  {
   factory $ProjectModelCopyWith(ProjectModel value, $Res Function(ProjectModel) _then) = _$ProjectModelCopyWithImpl;
 @useResult
 $Res call({
- String name, String? description, EProjectState state, bool isPublic, String? startDate, String? endDate, double? budget, int? estimatedHours, CustomerModel customer
+ int? id, String name, String? description, EProjectState state, bool isPublic, String? startDate, String? endDate, double? budget, int? estimatedHours, CustomerModel customer, int? customerId
 });
 
 
@@ -66,9 +66,10 @@ class _$ProjectModelCopyWithImpl<$Res>
 
 /// Create a copy of ProjectModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? description = freezed,Object? state = null,Object? isPublic = null,Object? startDate = freezed,Object? endDate = freezed,Object? budget = freezed,Object? estimatedHours = freezed,Object? customer = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? description = freezed,Object? state = null,Object? isPublic = null,Object? startDate = freezed,Object? endDate = freezed,Object? budget = freezed,Object? estimatedHours = freezed,Object? customer = null,Object? customerId = freezed,}) {
   return _then(_self.copyWith(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as EProjectState,isPublic: null == isPublic ? _self.isPublic : isPublic // ignore: cast_nullable_to_non_nullable
@@ -77,7 +78,8 @@ as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast
 as String?,budget: freezed == budget ? _self.budget : budget // ignore: cast_nullable_to_non_nullable
 as double?,estimatedHours: freezed == estimatedHours ? _self.estimatedHours : estimatedHours // ignore: cast_nullable_to_non_nullable
 as int?,customer: null == customer ? _self.customer : customer // ignore: cast_nullable_to_non_nullable
-as CustomerModel,
+as CustomerModel,customerId: freezed == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 /// Create a copy of ProjectModel
@@ -97,9 +99,10 @@ $CustomerModelCopyWith<$Res> get customer {
 @JsonSerializable()
 
 class _ProjectModel implements ProjectModel {
-  const _ProjectModel({required this.name, this.description, required this.state, required this.isPublic, this.startDate, this.endDate, this.budget, this.estimatedHours, required this.customer});
+  const _ProjectModel({this.id, required this.name, this.description, required this.state, required this.isPublic, this.startDate, this.endDate, this.budget, this.estimatedHours, required this.customer, this.customerId});
   factory _ProjectModel.fromJson(Map<String, dynamic> json) => _$ProjectModelFromJson(json);
 
+@override final  int? id;
 @override final  String name;
 @override final  String? description;
 @override final  EProjectState state;
@@ -109,6 +112,7 @@ class _ProjectModel implements ProjectModel {
 @override final  double? budget;
 @override final  int? estimatedHours;
 @override final  CustomerModel customer;
+@override final  int? customerId;
 
 /// Create a copy of ProjectModel
 /// with the given fields replaced by the non-null parameter values.
@@ -123,16 +127,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProjectModel&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.state, state) || other.state == state)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.budget, budget) || other.budget == budget)&&(identical(other.estimatedHours, estimatedHours) || other.estimatedHours == estimatedHours)&&(identical(other.customer, customer) || other.customer == customer));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProjectModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.state, state) || other.state == state)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.budget, budget) || other.budget == budget)&&(identical(other.estimatedHours, estimatedHours) || other.estimatedHours == estimatedHours)&&(identical(other.customer, customer) || other.customer == customer)&&(identical(other.customerId, customerId) || other.customerId == customerId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,description,state,isPublic,startDate,endDate,budget,estimatedHours,customer);
+int get hashCode => Object.hash(runtimeType,id,name,description,state,isPublic,startDate,endDate,budget,estimatedHours,customer,customerId);
 
 @override
 String toString() {
-  return 'ProjectModel(name: $name, description: $description, state: $state, isPublic: $isPublic, startDate: $startDate, endDate: $endDate, budget: $budget, estimatedHours: $estimatedHours, customer: $customer)';
+  return 'ProjectModel(id: $id, name: $name, description: $description, state: $state, isPublic: $isPublic, startDate: $startDate, endDate: $endDate, budget: $budget, estimatedHours: $estimatedHours, customer: $customer, customerId: $customerId)';
 }
 
 
@@ -143,7 +147,7 @@ abstract mixin class _$ProjectModelCopyWith<$Res> implements $ProjectModelCopyWi
   factory _$ProjectModelCopyWith(_ProjectModel value, $Res Function(_ProjectModel) _then) = __$ProjectModelCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String? description, EProjectState state, bool isPublic, String? startDate, String? endDate, double? budget, int? estimatedHours, CustomerModel customer
+ int? id, String name, String? description, EProjectState state, bool isPublic, String? startDate, String? endDate, double? budget, int? estimatedHours, CustomerModel customer, int? customerId
 });
 
 
@@ -160,9 +164,10 @@ class __$ProjectModelCopyWithImpl<$Res>
 
 /// Create a copy of ProjectModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? description = freezed,Object? state = null,Object? isPublic = null,Object? startDate = freezed,Object? endDate = freezed,Object? budget = freezed,Object? estimatedHours = freezed,Object? customer = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? description = freezed,Object? state = null,Object? isPublic = null,Object? startDate = freezed,Object? endDate = freezed,Object? budget = freezed,Object? estimatedHours = freezed,Object? customer = null,Object? customerId = freezed,}) {
   return _then(_ProjectModel(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as EProjectState,isPublic: null == isPublic ? _self.isPublic : isPublic // ignore: cast_nullable_to_non_nullable
@@ -171,7 +176,8 @@ as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast
 as String?,budget: freezed == budget ? _self.budget : budget // ignore: cast_nullable_to_non_nullable
 as double?,estimatedHours: freezed == estimatedHours ? _self.estimatedHours : estimatedHours // ignore: cast_nullable_to_non_nullable
 as int?,customer: null == customer ? _self.customer : customer // ignore: cast_nullable_to_non_nullable
-as CustomerModel,
+as CustomerModel,customerId: freezed == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

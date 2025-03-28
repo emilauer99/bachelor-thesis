@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Repositories\Project\IProjectRepository;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
@@ -41,7 +42,7 @@ class ProjectController extends Controller
         return new ProjectResource(
             $this->projectRepository->update(
                 $id,
-                $request->validated()
+                $this->transformKeysToSnakeCase($request->validated())
             )
         );
     }

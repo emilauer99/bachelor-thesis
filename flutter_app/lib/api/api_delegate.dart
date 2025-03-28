@@ -11,7 +11,7 @@ mixin DioDelegate {
   void initializeDio(var ref) {
     _dio = Dio(BaseOptions(
         baseUrl: EnvironmentConfig.apiBaseURL,
-        connectTimeout: const Duration(seconds: 50),
+        connectTimeout: const Duration(seconds: 20),
         headers: {'Accept': "application/json"}));
 
     _dio.interceptors.add(InterceptorsWrapper(
@@ -89,9 +89,8 @@ mixin DioDelegate {
 
     final apiResponse = await _dio.put(apiUrl,
         data: requestBody,
-        options: Options(contentType: Headers.formUrlEncodedContentType),
+        options: Options(headers: headers),
         queryParameters: queryParameters);
-
     return apiResponse.data;
   }
 

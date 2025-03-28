@@ -14,6 +14,7 @@ enum EProjectState {
 @freezed
 abstract class ProjectModel with _$ProjectModel {
   const factory ProjectModel({
+    int? id,
     required String name,
     String? description,
     required EProjectState state,
@@ -22,7 +23,8 @@ abstract class ProjectModel with _$ProjectModel {
     String? endDate,
     double? budget,
     int? estimatedHours,
-    required CustomerModel customer
+    required CustomerModel customer,
+    int? customerId
   }) = _ProjectModel;
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) => _$ProjectModelFromJson(json);

@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/project_model.dart';
 import 'package:flutter_app/ui/widgets/customer_list_tile.dart';
+import 'package:flutter_app/ui/widgets/project_modal.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class ProjectDetailsScreen extends StatelessWidget {
+class ProjectDetailsScreen extends ConsumerStatefulWidget {
   final ProjectModel project;
 
   const ProjectDetailsScreen({super.key, required this.project});
 
   @override
+  ConsumerState<ProjectDetailsScreen> createState() => _ProjectDetailsScreenState();
+}
+
+class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
+  late ProjectModel currentProject;
+
+  @override
+  void initState() {
+    super.initState();
+    currentProject = widget.project;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+
 
     return Scaffold(
       appBar: AppBar(
@@ -19,8 +35,18 @@ class ProjectDetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () {
-              // TODO: Implement edit functionality
+            onPressed: () async {
+              final updatedProject = await showProjectModal(
+                context: context,
+                ref: ref,
+                project: currentProject,
+              );
+
+              if (updatedProject != null && mounted) {
+                setState(() {
+                  currentProject = updatedProject;
+                });
+              }
             },
           ),
         ],
@@ -51,7 +77,7 @@ class ProjectDetailsScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                project.name,
+                currentProject.name,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
@@ -59,10 +85,10 @@ class ProjectDetailsScreen extends StatelessWidget {
             _buildStateChip(context),
           ],
         ),
-        if (project.description != null) ...[
+        if (currentProject.description != null) ...[
           const SizedBox(height: 8),
           Text(
-            project.description!,
+            currentProject.description!,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
@@ -75,7 +101,7 @@ class ProjectDetailsScreen extends StatelessWidget {
     Color textColor;
     String stateText;
 
-    switch (project.state) {
+    switch (currentProject.state) {
       case EProjectState.planned:
         backgroundColor = Colors.blue.shade100;
         textColor = Colors.blue.shade800;
@@ -115,9 +141,9 @@ class ProjectDetailsScreen extends StatelessWidget {
             Text('Project Details', style: textTheme.titleLarge),
             const Divider(),
             const SizedBox(height: 8),
-            _buildDetailRow('Visibility', project.isPublic ? 'Public' : 'Private'),
-            _buildDetailRow('Budget', project.budget != null ? '\$${project.budget?.toStringAsFixed(2)}' : '-'),
-            _buildDetailRow('Estimated Hours', project.estimatedHours != null ? '${project.estimatedHours} hrs' : '-'),
+            _buildDetailRow('Visibility', currentProject.isPublic ? 'Public' : 'Private'),
+            _buildDetailRow('Budget', currentProject.budget != null ? '\$${currentProject.budget?.toStringAsFixed(2)}' : '-'),
+            _buildDetailRow('Estimated Hours', currentProject.estimatedHours != null ? '${currentProject.estimatedHours} hrs' : '-'),
           ],
         ),
       ),
@@ -134,7 +160,7 @@ class ProjectDetailsScreen extends StatelessWidget {
             Text('Customer', style: theme.textTheme.titleLarge),
             const Divider(),
             const SizedBox(height: 8),
-            CustomerListTile(customer: project.customer)
+            CustomerListTile(customer: currentProject.customer)
           ],
         ),
       ),
@@ -153,10 +179,10 @@ class ProjectDetailsScreen extends StatelessWidget {
             Text('Timeline', style: textTheme.titleLarge),
             const Divider(),
             const SizedBox(height: 8),
-            if (project.startDate != null)
-              _buildDetailRow('Start Date', dateFormat.format(DateTime.parse(project.startDate!))),
-            if (project.endDate != null)
-              _buildDetailRow('End Date', dateFormat.format(DateTime.parse(project.endDate!))),
+            if (currentProject.startDate != null)
+              _buildDetailRow('Start Date', dateFormat.format(DateTime.parse(currentProject.startDate!))),
+            if (currentProject.endDate != null)
+              _buildDetailRow('End Date', dateFormat.format(DateTime.parse(currentProject.endDate!))),
           ],
         ),
       ),
