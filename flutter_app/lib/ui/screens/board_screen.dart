@@ -29,10 +29,6 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
     required ProjectModel project,
     required ProjectStateList projectStateList,
   }) async {
-    print("DROPPED:");
-    print(project);
-    print( projectStateList.state);
-
     if (project.state == projectStateList.state) return;
 
     try {
