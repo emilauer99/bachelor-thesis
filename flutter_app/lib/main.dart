@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/theme.dart';
+import 'package:flutter_app/ui/screens/board_screen.dart';
 import 'package:flutter_app/ui/screens/board_screen.dart';
 import 'package:flutter_app/ui/screens/home_screen.dart';
 import 'package:flutter_app/ui/screens/login_screen.dart';
@@ -67,16 +69,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        chipTheme: ChipThemeData(
-          backgroundColor: Colors.transparent,
-          side: BorderSide.none,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
-        ),
-      ),
+      theme: theme
     );
   }
 }

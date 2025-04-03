@@ -5,6 +5,7 @@ import 'package:riverpod/riverpod.dart';
 class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> {
   final Ref _ref;
   bool initialLoad = true;
+  ProjectModel? currentlyUpdatingProject;
 
   ProjectListNotifier(this._ref) : super(const AsyncValue.loading()) {
     _loadProjects();
@@ -44,19 +45,66 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
     }
   }
 
-  Future<ProjectModel> updateProject(int id, ProjectModel project) async {
+  Future<ProjectModel> updateProject(
+      int id,
+      ProjectModel project, {
+        int? newIndex, // Add optional index parameter
+      }) async {
     try {
+      // Optimistically update in list
+      state.whenData((projects) {
+        currentlyUpdatingProject = projects.firstWhere((p) => p.id == id);
+        final newProjects = List<ProjectModel>.from(projects);
+
+        // Remove from old position
+        newProjects.removeWhere((p) => p.id == id);
+
+        // Insert at new position if specified
+        if (newIndex != null && newIndex <= newProjects.length) {
+          newProjects.insert(newIndex, project);
+        } else {
+          newProjects.add(project);
+        }
+
+        state = AsyncValue.data(newProjects);
+      });
+
       final response = await ProjectApi(_ref).update(id, project);
       final updatedProject = ProjectModel.fromJson(response);
 
+      // Ensure server response matches our update
       state.whenData((projects) {
-        state = AsyncValue.data(
-            projects.map((p) => p.id == id ? updatedProject : p).toList()
-        );
+        final newProjects = List<ProjectModel>.from(projects);
+        newProjects.removeWhere((p) => p.id == id);
+
+        if (newIndex != null && newIndex <= newProjects.length) {
+          newProjects.insert(newIndex, updatedProject);
+        } else {
+          newProjects.add(updatedProject);
+        }
+
+        state = AsyncValue.data(newProjects);
       });
 
       return updatedProject;
     } catch (e, stackTrace) {
+      // Revert on error
+      state.whenData((projects) {
+        if (currentlyUpdatingProject != null) {
+          final newProjects = List<ProjectModel>.from(projects);
+          newProjects.removeWhere((p) => p.id == id);
+
+          // Find original index if available
+          final originalIndex = projects.indexWhere((p) => p.id == id);
+          if (originalIndex != -1) {
+            newProjects.insert(originalIndex, currentlyUpdatingProject!);
+          } else {
+            newProjects.add(currentlyUpdatingProject!);
+          }
+
+          state = AsyncValue.data(newProjects);
+        }
+      });
       rethrow;
     }
   }

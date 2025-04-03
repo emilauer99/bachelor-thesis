@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/models/customer_model.dart';
 import 'package:flutter_app/models/project_model.dart';
 import 'package:flutter_app/providers/customer_list_provider.dart';
+import 'package:flutter_app/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProjectForm extends ConsumerStatefulWidget {
@@ -114,7 +115,7 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
                   EProjectState.values.map((state) {
                     return DropdownMenuItem<EProjectState>(
                       value: state,
-                      child: Text(state.name.toUpperCase()),
+                      child: Text(state.name.toUpperCase(), style: theme.textTheme.bodyMedium,),
                     );
                   }).toList(),
               onChanged: (value) {
@@ -151,7 +152,7 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
                       customers.map((customer) {
                         return DropdownMenuItem<CustomerModel>(
                           value: customer,
-                          child: Text(customer.name),
+                          child: Text(customer.name, style: theme.textTheme.bodyMedium,),
                         );
                       }).toList(),
                   onChanged:

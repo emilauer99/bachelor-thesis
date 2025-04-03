@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/colors.dart';
 import 'package:flutter_app/models/project_model.dart';
 import 'package:flutter_app/providers/project_list_provider.dart';
+import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/ui/screens/project_details_screen.dart';
 import 'package:flutter_app/ui/widgets/project_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,8 +59,8 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
       physics: const AlwaysScrollableScrollPhysics(),
       itemCount: projects.length,
       itemBuilder: (context, index) => ListTile(
-        title: Text(projects[index].name),
-        subtitle: Text(projects[index].customer.name),
+        title: Text(projects[index].name, style: theme.textTheme.titleMedium,),
+        subtitle: Text(projects[index].customer.name, style: theme.textTheme.bodyMedium,),
         trailing: _buildStateIndicator(projects[index].state),
         onTap: () {
           Navigator.push(
@@ -78,15 +80,15 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
 
     switch (state) {
       case EProjectState.planned:
-        color = Colors.blue;
+        color = AppColors.planned;
         tooltip = 'Project is in planning phase';
         break;
       case EProjectState.inProgress:
-        color = Colors.orange;
+        color = AppColors.inProgress;
         tooltip = 'Project is currently in progress';
         break;
       case EProjectState.finished:
-        color = Colors.green;
+        color = AppColors.finished;
         tooltip = 'Project has been completed';
         break;
     }
@@ -108,31 +110,28 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
   void _showStateTooltip(BuildContext context, EProjectState state) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final colors = AppColors.getColorsByState(state);
 
     String message;
-    Color backgroundColor;
 
     switch (state) {
       case EProjectState.planned:
         message = 'Planned Project\n\nThis project is in the planning phase and hasn\'t started yet.';
-        backgroundColor = Colors.blue.shade100;
         break;
       case EProjectState.inProgress:
         message = 'Project in Progress\n\nThis project is currently being worked on by the team.';
-        backgroundColor = Colors.orange.shade100;
         break;
       case EProjectState.finished:
         message = 'Completed Project\n\nThis project has been successfully finished.';
-        backgroundColor = Colors.green.shade100;
         break;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: backgroundColor,
+        backgroundColor: colors.light,
         content: Text(
           message,
-          style: textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface),
+          style: textTheme.bodyMedium?.copyWith(color: colors.main),
         ),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/env_config.dart';
 import 'package:flutter_app/models/customer_model.dart';
+import 'package:flutter_app/theme.dart';
 
 class CustomerListTile extends StatelessWidget {
   final CustomerModel customer;
@@ -14,7 +15,7 @@ class CustomerListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: _buildCustomerAvatar(customer.imagePath),
-      title: Text(customer.name),
+      title: Text(customer.name, style: theme.textTheme.bodyMedium),
     );
   }
 

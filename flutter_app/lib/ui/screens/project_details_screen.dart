@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/colors.dart';
 import 'package:flutter_app/models/project_model.dart';
+import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/ui/widgets/customer_list_tile.dart';
 import 'package:flutter_app/ui/widgets/project_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,7 +80,7 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
             Expanded(
               child: Text(
                 currentProject.name,
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: theme.textTheme.titleLarge,
               ),
             ),
             const SizedBox(width: 16),
@@ -89,7 +91,7 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
           const SizedBox(height: 8),
           Text(
             currentProject.description!,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
         ],
       ],
@@ -103,18 +105,18 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
 
     switch (currentProject.state) {
       case EProjectState.planned:
-        backgroundColor = Colors.blue.shade100;
-        textColor = Colors.blue.shade800;
+        backgroundColor = AppColors.plannedLight;
+        textColor = AppColors.planned;
         stateText = 'Planned';
         break;
       case EProjectState.inProgress:
-        backgroundColor = Colors.orange.shade100;
-        textColor = Colors.orange.shade800;
+        backgroundColor = AppColors.inProgressLight;
+        textColor = AppColors.inProgress;
         stateText = 'In Progress';
         break;
       case EProjectState.finished:
-        backgroundColor = Colors.green.shade100;
-        textColor = Colors.green.shade800;
+        backgroundColor = AppColors.finishedLight;
+        textColor = AppColors.finished;
         stateText = 'Finished';
         break;
     }
@@ -138,7 +140,7 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Project Details', style: textTheme.titleLarge),
+            Text('Project Details', style: textTheme.titleMedium),
             const Divider(),
             const SizedBox(height: 8),
             _buildDetailRow('Visibility', currentProject.isPublic ? 'Public' : 'Private'),
@@ -157,7 +159,7 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Customer', style: theme.textTheme.titleLarge),
+            Text('Customer', style: theme.textTheme.titleMedium),
             const Divider(),
             const SizedBox(height: 8),
             CustomerListTile(customer: currentProject.customer)
@@ -176,7 +178,7 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Timeline', style: textTheme.titleLarge),
+            Text('Timeline', style: textTheme.titleMedium),
             const Divider(),
             const SizedBox(height: 8),
             if (currentProject.startDate != null)
@@ -198,11 +200,11 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
             width: 120,
             child: Text(
               label,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleSmall,
             ),
           ),
           const SizedBox(width: 16),
-          Expanded(child: Text(value)),
+          Expanded(child: Text(value, style: theme.textTheme.bodyMedium,)),
         ],
       ),
     );
