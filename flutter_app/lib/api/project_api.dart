@@ -25,4 +25,9 @@ final class ProjectApi with DioDelegate {
       requestBody: newProject.toJson(),
     );
   }
+
+  Future<dynamic> delete(int id) async {
+    final apiUrl = '/projects/$id';
+    return await deleteRequest(apiUrl);
+  }
 }

@@ -108,6 +108,22 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
       rethrow;
     }
   }
+
+  Future<void> deleteProject(int id) async {
+    try {
+      state.whenData((projects) {
+        state = AsyncValue.data(projects.where((p) => p.id != id).toList());
+      });
+
+      await ProjectApi(_ref).delete(id);
+    } catch (e, stackTrace) {
+      state.whenData((projects) {
+        final projectToRestore = projects.firstWhere((p) => p.id == id);
+        state = AsyncValue.data([...projects, projectToRestore]..sort((a, b) => a.id!.compareTo(b.id!)));
+      });
+      rethrow;
+    }
+  }
 }
 
 final projectListProvider = StateNotifierProvider<ProjectListNotifier, AsyncValue<List<ProjectModel>>>((ref) {

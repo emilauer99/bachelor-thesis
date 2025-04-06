@@ -5,17 +5,61 @@ import 'package:flutter_app/theme.dart';
 
 class CustomerListTile extends StatelessWidget {
   final CustomerModel customer;
+  final bool isDismissible;
+  final Function(int)? onDelete;
 
   const CustomerListTile({
     super.key,
     required this.customer,
+    this.isDismissible = false,
+    this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    final content = ListTile(
       leading: _buildCustomerAvatar(customer.imagePath),
       title: Text(customer.name, style: theme.textTheme.bodyMedium),
+    );
+
+    if (!isDismissible) {
+      return content;
+    }
+
+    return Dismissible(
+      key: Key(customer.id.toString()),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Colors.red,
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20),
+        child: const Icon(Icons.delete, color: Colors.white),
+      ),
+      confirmDismiss: (direction) async {
+        return await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Delete Customer'),
+            content: Text('Are you sure you want to delete ${customer.name}? All projects of this customer will be deleted too.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Delete', style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          ),
+        );
+      },
+      onDismissed: (direction) {
+        if (onDelete != null) {
+          onDelete!(customer.id);
+        }
+      },
+      child: content,
     );
   }
 

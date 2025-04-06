@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/colors.dart';
 import 'package:flutter_app/models/project_model.dart';
+import 'package:flutter_app/providers/project_list_provider.dart';
 import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/ui/widgets/customer_list_tile.dart';
+import 'package:flutter_app/ui/widgets/notifications.dart';
 import 'package:flutter_app/ui/widgets/project_modal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -35,6 +37,47 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
       appBar: AppBar(
         // title: Text(project.name),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () async {
+              final shouldDelete = await showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Delete Project'),
+                  content: Text('Are you sure you want to delete ${currentProject.name}?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                    ),
+                  ],
+                ),
+              );
+
+              if (shouldDelete == true) {
+                try {
+                  await ref.read(projectListProvider.notifier).deleteProject(currentProject.id!);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Project ${currentProject.name} deleted'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    showErrorNotification(context, 'Failed to delete project: $e');
+                  }
+                }
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () async {
@@ -162,7 +205,10 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
             Text('Customer', style: theme.textTheme.titleMedium),
             const Divider(),
             const SizedBox(height: 8),
-            CustomerListTile(customer: currentProject.customer)
+            CustomerListTile(
+              customer: currentProject.customer,
+              isDismissible: false,  // Disable dismissible here
+            ),
           ],
         ),
       ),

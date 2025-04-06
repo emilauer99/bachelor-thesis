@@ -36,6 +36,22 @@ class CustomerListNotifier extends StateNotifier<AsyncValue<List<CustomerModel>>
       rethrow;
     }
   }
+
+  Future<void> delete(int id) async {
+    try {
+      state.whenData((customers) {
+        state = AsyncValue.data(customers.where((p) => p.id != id).toList());
+      });
+
+      await CustomerApi(_ref).delete(id);
+    } catch (e, stackTrace) {
+      state.whenData((customers) {
+        final customerToRestore = customers.firstWhere((p) => p.id == id);
+        state = AsyncValue.data([...customers, customerToRestore]..sort((a, b) => a.id!.compareTo(b.id!)));
+      });
+      rethrow;
+    }
+  }
 }
 
 final customerListProvider = StateNotifierProvider<CustomerListNotifier, AsyncValue<List<CustomerModel>>>((ref) {

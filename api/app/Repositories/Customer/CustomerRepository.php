@@ -24,4 +24,15 @@ class CustomerRepository implements ICustomerRepository
 
         return $customer->save() ? $customer : null;
     }
+
+    public function getOne(int $id): ?Customer
+    {
+        return Customer::findOrFail($id);
+    }
+
+    public function delete(int $id): void
+    {
+        $customer = $this->getOne($id);
+        $customer->delete();
+    }
 }

@@ -6,6 +6,7 @@ import 'package:flutter_app/providers/project_list_provider.dart';
 import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/ui/screens/project_details_screen.dart';
 import 'package:flutter_app/ui/widgets/filters/projects_filters.dart';
+import 'package:flutter_app/ui/widgets/notifications.dart';
 import 'package:flutter_app/ui/widgets/project_modal.dart';
 import 'package:flutter_app/variables.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,18 +85,54 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
     return ListView.builder(
       physics: const AlwaysScrollableScrollPhysics(),
       itemCount: projects.length,
-      itemBuilder: (context, index) => ListTile(
-        title: Text(projects[index].name, style: theme.textTheme.titleMedium,),
-        subtitle: Text(projects[index].customer.name, style: theme.textTheme.bodyMedium,),
-        trailing: _buildStateIndicator(projects[index].state),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProjectDetailsScreen(project: projects[index]),
+      itemBuilder: (context, index) => Dismissible(
+        key: Key(projects[index].id.toString()),
+        background: Container(
+          color: Colors.red,
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 20),
+          child: const Icon(Icons.delete, color: Colors.white),
+        ),
+        confirmDismiss: (direction) async {
+          return await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Delete Project'),
+              content: Text('Are you sure you want to delete ${projects[index].name}?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                ),
+              ],
             ),
           );
         },
+        onDismissed: (direction) async {
+          try {
+            await ref.read(projectListProvider.notifier).deleteProject(projects[index].id!);
+            showSuccessNotification(context, 'Project ${projects[index].name} deleted');
+          } catch (e) {
+            showErrorNotification(context, 'Failed to delete project: $e');
+          }
+        },
+        child: ListTile(
+          title: Text(projects[index].name, style: theme.textTheme.titleMedium),
+          subtitle: Text(projects[index].customer.name, style: theme.textTheme.bodyMedium),
+          trailing: _buildStateIndicator(projects[index].state),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProjectDetailsScreen(project: projects[index]),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

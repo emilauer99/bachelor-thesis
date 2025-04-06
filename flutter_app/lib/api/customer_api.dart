@@ -27,4 +27,9 @@ final class CustomerApi with DioDelegate {
       },
     );
   }
+
+  Future<dynamic> delete(int id) async {
+    final apiUrl = '/customers/$id';
+    return await deleteRequest(apiUrl);
+  }
 }

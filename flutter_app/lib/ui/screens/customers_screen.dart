@@ -171,7 +171,34 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
     return ListView.builder(
       physics: const AlwaysScrollableScrollPhysics(),
       itemCount: customers.length,
-      itemBuilder: (context, index) => CustomerListTile(customer: customers[index])
+      itemBuilder: (context, index) => CustomerListTile(
+        customer: customers[index],
+        isDismissible: true,  // Enable dismissible here
+        onDelete: (id) => _deleteCustomer(id, context),
+      ),
     );
+  }
+
+  Future<void> _deleteCustomer(int id, BuildContext context) async {
+    try {
+      await ref.read(customerListProvider.notifier).delete(id);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Customer deleted successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete customer: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }

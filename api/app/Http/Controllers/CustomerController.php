@@ -23,4 +23,10 @@ class CustomerController extends Controller
             $request->image
         ));
     }
+
+    public function destroy(int $id)
+    {
+        $this->customerRepository->delete($id);
+        return response()->noContent();
+    }
 }
