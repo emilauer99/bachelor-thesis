@@ -3,6 +3,7 @@ import 'package:flutter_app/models/customer_model.dart';
 import 'package:flutter_app/models/project_model.dart';
 import 'package:flutter_app/providers/customer_list_provider.dart';
 import 'package:flutter_app/theme.dart';
+import 'package:flutter_app/variables.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProjectForm extends ConsumerStatefulWidget {
@@ -28,6 +29,7 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
   DateTime? _endDate;
 
   bool _isLoading = false;
+  bool _submitClicked = false;
 
   @override
   void initState() {
@@ -46,13 +48,10 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
     _state = project?.state ?? EProjectState.planned;
     _isPublic = project?.isPublic ?? false;
     _selectedCustomer = project?.customer;
-
-    if (project?.startDate != null) {
-      _startDate = DateTime.parse(project!.startDate!);
-    }
-    if (project?.endDate != null) {
-      _endDate = DateTime.parse(project!.endDate!);
-    }
+    _startDate =
+        project?.startDate != null ? DateTime.parse(project!.startDate) : null;
+    _endDate =
+        project?.endDate != null ? DateTime.parse(project!.endDate) : null;
 
     // Load customers if not already loaded
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -72,6 +71,23 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
     super.dispose();
   }
 
+  String? _validateStartDate(DateTime? date) {
+    if (_submitClicked && date == null) {
+      return 'Please select a start date';
+    }
+    return null;
+  }
+
+  String? _validateEndDate(DateTime? date) {
+    if (_submitClicked && date == null) {
+      return 'Please select an end date';
+    }
+    if (_submitClicked && _startDate != null && date != null && date.isBefore(_startDate!)) {
+      return 'End date must be after start date';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final customersAsync = ref.watch(customerListProvider);
@@ -79,7 +95,7 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppVariables.screenPadding),
         child: Column(
           children: [
             TextFormField(
@@ -115,7 +131,10 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
                   EProjectState.values.map((state) {
                     return DropdownMenuItem<EProjectState>(
                       value: state,
-                      child: Text(state.name.toUpperCase(), style: theme.textTheme.bodyMedium,),
+                      child: Text(
+                        state.name.toUpperCase(),
+                        style: theme.textTheme.bodyMedium,
+                      ),
                     );
                   }).toList(),
               onChanged: (value) {
@@ -152,7 +171,10 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
                       customers.map((customer) {
                         return DropdownMenuItem<CustomerModel>(
                           value: customer,
-                          child: Text(customer.name, style: theme.textTheme.bodyMedium,),
+                          child: Text(
+                            customer.name,
+                            style: theme.textTheme.bodyMedium,
+                          ),
                         );
                       }).toList(),
                   onChanged:
@@ -192,26 +214,52 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
             Row(
               children: [
                 Expanded(
-                  child: TextButton.icon(
-                    icon: const Icon(Icons.calendar_today),
-                    label: Text(
-                      _startDate == null
-                          ? 'Set Start Date'
-                          : 'Start: ${_formatDate(_startDate!)}',
-                    ),
-                    onPressed: () => _pickDate(context, isStartDate: true),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextButton.icon(
+                        icon: const Icon(Icons.calendar_today),
+                        label: Text(
+                          _startDate == null
+                              ? 'Set Start Date *'
+                              : 'Start: ${_formatDate(_startDate!)}',
+                        ),
+                        onPressed: () => _pickDate(context, isStartDate: true),
+                      ),
+                      if (_validateStartDate(_startDate) != null)
+                        Text(
+                          _validateStartDate(_startDate)!,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                            fontSize: 12,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: TextButton.icon(
-                    icon: const Icon(Icons.calendar_today),
-                    label: Text(
-                      _endDate == null
-                          ? 'Set End Date'
-                          : 'End: ${_formatDate(_endDate!)}',
-                    ),
-                    onPressed: () => _pickDate(context, isStartDate: false),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextButton.icon(
+                        icon: const Icon(Icons.calendar_today),
+                        label: Text(
+                          _endDate == null
+                              ? 'Set End Date *'
+                              : 'End: ${_formatDate(_endDate!)}',
+                        ),
+                        onPressed: () => _pickDate(context, isStartDate: false),
+                      ),
+                      if (_validateEndDate(_endDate) != null)
+                        Text(
+                          _validateEndDate(_endDate)!,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                            fontSize: 12,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],
@@ -246,7 +294,7 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
 
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: initialDate ?? DateTime.now(),
+      initialDate: initialDate ?? (isStartDate ? DateTime.now() : firstDate),
       firstDate: firstDate,
       lastDate: lastDate,
     );
@@ -277,7 +325,15 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
   }
 
   void _submitForm() async {
-    if (_formKey.currentState!.validate() && _selectedCustomer != null) {
+    setState(() => _submitClicked = true);
+
+    final isStartDateValid = _validateStartDate(_startDate) == null;
+    final isEndDateValid = _validateEndDate(_endDate) == null;
+
+    if (_formKey.currentState!.validate() &&
+        _selectedCustomer != null &&
+        isStartDateValid &&
+        isEndDateValid) {
       setState(() => _isLoading = true);
       try {
         final budget = double.tryParse(_budgetController.text);
@@ -291,8 +347,8 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
           state: _state,
           isPublic: _isPublic,
           customer: _selectedCustomer!,
-          startDate: _formatDateForApi(_startDate),
-          endDate: _formatDateForApi(_endDate),
+          startDate: _formatDateForApi(_startDate!)!,
+          endDate: _formatDateForApi(_endDate!)!,
           budget: budget != null ? budget * 100 : null,
           estimatedHours:
               _estimatedHoursController.text.isNotEmpty
@@ -305,6 +361,12 @@ class _ProjectFormState extends ConsumerState<ProjectForm> {
           setState(() => _isLoading = false); // Stop loading
         }
       }
+    } else {
+      // Force UI to show validation errors
+      setState(() {
+        _validateStartDate(_startDate);
+        _validateEndDate(_endDate);
+      });
     }
   }
 }

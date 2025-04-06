@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/colors.dart';
 import 'package:flutter_app/models/project_model.dart';
+import 'package:flutter_app/providers/project_filter_provider.dart';
 import 'package:flutter_app/providers/project_list_provider.dart';
 import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/ui/screens/project_details_screen.dart';
+import 'package:flutter_app/ui/widgets/filters/projects_filters.dart';
 import 'package:flutter_app/ui/widgets/project_modal.dart';
+import 'package:flutter_app/variables.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProjectsScreen extends ConsumerStatefulWidget {
@@ -20,6 +23,8 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
   @override
   Widget build(BuildContext context) {
     final projectsAsync = ref.watch(projectListProvider);
+    final selectedCustomer = ref.watch(customerFilterProvider);
+    final selectedState = ref.watch(stateFilterProvider);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -29,27 +34,48 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
         ),
         child: const Icon(Icons.add),
       ),
-      body: RefreshIndicator(
-        onRefresh: () => ref.read(projectListProvider.notifier).refresh(),
-        child: projectsAsync.when(
-          loading: () {
-            if (ref.read(projectListProvider.notifier).initialLoad) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            return _buildProjectList(currentProjects ?? []);
-          },
-          error: (error, stack) => SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Center(child: Text('Error: $error')),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(AppVariables.screenPadding, AppVariables.screenPadding, AppVariables.screenPadding, 0),
+            child: ProjectFilters(projectsAsync: projectsAsync),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () => ref.read(projectListProvider.notifier).refresh(),
+              child: projectsAsync.when(
+                loading: () {
+                  if (ref.read(projectListProvider.notifier).initialLoad) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return _buildProjectList(currentProjects ?? []);
+                },
+                error: (error, stack) => SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(child: Text('Error: $error')),
+                  ),
+                ),
+                data: (projects) {
+                  final filteredProjects = projects.where((project) {
+                    final customerMatch = selectedCustomer == null ||
+                        project.customer.id == selectedCustomer.id;
+                    final stateMatch = selectedState == null ||
+                        project.state == selectedState;
+                    return customerMatch && stateMatch;
+                  }).toList();
+
+                  if (filteredProjects.isEmpty) {
+                    return const Center(child: Text('No projects found'));
+                  }
+                  currentProjects = filteredProjects;
+                  return _buildProjectList(filteredProjects);
+                },
+              ),
             ),
           ),
-          data: (projects) {
-            currentProjects = projects;
-            return _buildProjectList(projects);
-          },
-        ),
+        ],
       ),
     );
   }
@@ -116,22 +142,22 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
 
     switch (state) {
       case EProjectState.planned:
-        message = 'Planned Project\n\nThis project is in the planning phase and hasn\'t started yet.';
+        message = 'Planned Project\nThis project is in the planning phase and hasn\'t started yet.';
         break;
       case EProjectState.inProgress:
-        message = 'Project in Progress\n\nThis project is currently being worked on by the team.';
+        message = 'Project in Progress\nThis project is currently being worked on by the team.';
         break;
       case EProjectState.finished:
-        message = 'Completed Project\n\nThis project has been successfully finished.';
+        message = 'Completed Project\nThis project has been successfully finished.';
         break;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: colors.light,
+        backgroundColor: colors.main,
         content: Text(
           message,
-          style: textTheme.bodyMedium?.copyWith(color: colors.main),
+          style: textTheme.bodyMedium?.copyWith(color: Colors.white),
         ),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,

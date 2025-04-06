@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/api/auth_api.dart';
 import 'package:flutter_app/models/user_model.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
+import 'package:flutter_app/ui/widgets/notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,19 +46,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       } on DioException catch (dioError) {
         final data = dioError.response?.data;
         if (dioError.response?.statusCode == 401) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Credentials incorrect.")),
-          );
+          showErrorNotification(context, "Credentials incorrect.");
         } else if (data is Map<String, dynamic> &&
             data.containsKey('message') &&
             data['message'] != null) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("${data['message']}")));
+
+          showErrorNotification(context, "${data['message']}");
         } else {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text("Unknown error.")));
+          showErrorNotification(context, "Unknown error.");
         }
       } finally {
         setState(() => _loading = false);

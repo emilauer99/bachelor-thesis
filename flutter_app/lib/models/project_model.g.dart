@@ -13,8 +13,8 @@ _ProjectModel _$ProjectModelFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       state: $enumDecode(_$EProjectStateEnumMap, json['state']),
       isPublic: json['isPublic'] as bool,
-      startDate: json['startDate'] as String?,
-      endDate: json['endDate'] as String?,
+      startDate: json['startDate'] as String,
+      endDate: json['endDate'] as String,
       budget: (json['budget'] as num?)?.toDouble(),
       estimatedHours: (json['estimatedHours'] as num?)?.toInt(),
       customer: CustomerModel.fromJson(

@@ -26,7 +26,7 @@ class ProjectFactory extends Factory
             'state' => $this->faker->randomElement(EProjectState::values()),
             'is_public' => $this->faker->boolean(50),
             'start_date' => $startDate,
-            'end_date' => $this->faker->optional(0.8)->dateTimeBetween($startDate, '+6 months'),
+            'end_date' => $this->faker->dateTimeBetween($startDate, '+6 months'),
             'budget' => $this->faker->optional()->numberBetween(100000, 10000000),
             'estimated_hours' => $this->faker->optional()->numberBetween(10, 1000),
             'customer_id' => Customer::inRandomOrder()->first()->id ?? Customer::factory(),

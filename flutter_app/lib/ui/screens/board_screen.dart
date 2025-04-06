@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/colors.dart';
 import 'package:flutter_app/models/project_model.dart';
+import 'package:flutter_app/providers/project_filter_provider.dart';
 import 'package:flutter_app/providers/project_list_provider.dart';
 import 'package:flutter_app/theme.dart';
+import 'package:flutter_app/ui/widgets/filters/projects_filters.dart';
 import 'package:flutter_app/ui/widgets/notifications.dart';
+import 'package:flutter_app/variables.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProjectStateList{
@@ -50,38 +53,54 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
   Widget build(BuildContext context) {
     super.build(context);
     final projectsAsync = ref.watch(projectListProvider);
+    final selectedCustomer = ref.watch(customerFilterProvider);
+    final selectedState = ref.watch(stateFilterProvider);
 
     return Scaffold(
       body: projectsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Error: $error')),
         data: (projects) {
+          final filteredProjects = selectedCustomer != null
+              ? projects.where((p) => p.customer.id == selectedCustomer.id).toList()
+              : projects;
+
           final projectLists = [
             ProjectStateList(
               state: EProjectState.planned,
-              projects: projects.where((p) => p.state == EProjectState.planned).toList(),
+              projects: filteredProjects.where((p) => p.state == EProjectState.planned).toList(),
             ),
             ProjectStateList(
               state: EProjectState.inProgress,
-              projects: projects.where((p) => p.state == EProjectState.inProgress).toList(),
+              projects: filteredProjects.where((p) => p.state == EProjectState.inProgress).toList(),
             ),
             ProjectStateList(
               state: EProjectState.finished,
-              projects: projects.where((p) => p.state == EProjectState.finished).toList(),
+              projects: filteredProjects.where((p) => p.state == EProjectState.finished).toList(),
             ),
           ];
 
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: _scrollController,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Row(
-                children: projectLists.map((list) =>
-                    _buildStateColumWithDropZone(list, _draggableKey)
-                ).toList(),
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(AppVariables.screenPadding, AppVariables.screenPadding, AppVariables.screenPadding, 0),
+                child: ProjectFilters(projectsAsync: projectsAsync, showStateFilter: false,),
               ),
-            ),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  controller: _scrollController,
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppVariables.screenPadding),
+                    child: Row(
+                      children: projectLists.map((list) =>
+                          _buildStateColumWithDropZone(list, _draggableKey)
+                      ).toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
@@ -90,7 +109,10 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
 
   Widget _buildStateColumWithDropZone(ProjectStateList projectList, GlobalKey draggableKey) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.only(
+        right: (projectList.state == EProjectState.planned ||  projectList.state == EProjectState.inProgress) ? AppVariables.screenPadding : 0,
+        left: (projectList.state == EProjectState.finished ||  projectList.state == EProjectState.inProgress) ? AppVariables.screenPadding : 0
+      ),
       child: SizedBox(
         width: 300,
         child: DragTarget<ProjectModel>(
@@ -151,37 +173,45 @@ class ProjectStateColumn extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.getColorByState(projectStateList.state),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  projectStateList.state.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: hasProjects,
-                maintainState: true,
-                maintainAnimation: true,
-                maintainSize: true,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 4),
-                    Text(
-                      '${projectStateList.projects.length} project${projectStateList.projects.length != 1 ? 's' : ''}',
-                      style: theme.textTheme.bodySmall
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.getColorByState(projectStateList.state),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  ],
-                ),
+                    child: Text(
+                      projectStateList.state.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: hasProjects,
+                    maintainState: true,
+                    maintainAnimation: true,
+                    maintainSize: true,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 4),
+                        Text(
+                            '${projectStateList.projects.length} project${projectStateList.projects.length != 1 ? 's' : ''}',
+                            style: theme.textTheme.bodySmall
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 4),
-              _buildProjectList(projectStateList, context)
+              projectStateList.projects.isNotEmpty
+                  ? _buildProjectList(projectStateList, context) 
+                  : Expanded(child: Center(child: Text("No projects")))
             ],
           ),
         ),
@@ -221,7 +251,7 @@ class ProjectStateColumn extends StatelessWidget {
         // Define a threshold in pixels near the left/right edge.
         const edgeThreshold = 65.0;
         // Define how much to scroll per update.
-        const scrollSpeed = 15.0;
+        const scrollSpeed = 5.0;
 
         // Scroll left if pointer is near the left edge.
         if (details.globalPosition.dx < edgeThreshold &&

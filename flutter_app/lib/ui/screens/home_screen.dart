@@ -4,6 +4,7 @@ import 'package:flutter_app/api/auth_api.dart';
 import 'package:flutter_app/models/user_model.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
 import 'package:flutter_app/ui/screens/board_screen.dart';
+import 'package:flutter_app/ui/screens/dashboard_screen.dart';
 import 'package:flutter_app/ui/screens/projects_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +25,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _isValidatingToken = true;
 
   final List<Widget> _tabs = [
+    const DashboardScreen(),
     const ProjectsScreen(),
     const BoardScreen(),
     const OthersScreen(),
@@ -87,11 +89,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() => _currentIndex = index);
         },
         items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Dashboard',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'Projects',

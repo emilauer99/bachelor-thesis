@@ -20,8 +20,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->enum('state', EProjectState::values())->default(EProjectState::PLANNED->value);
             $table->boolean('is_public')->default(false);
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->date('start_date');
+            $table->date('end_date');
             $table->unsignedInteger('budget')->nullable();
             $table->unsignedInteger('estimated_hours')->nullable();
 
