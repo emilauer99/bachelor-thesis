@@ -1,1 +1,120 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'sass:meta'
+
+/* Spacing */
+$spacings: (0: 0rem, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 2rem, 6: 3rem, 7: 4rem, 8: 5rem)
+
+$directions-map: (t: top,e: right,b: bottom,s: left,x: (left, right),y: (top, bottom))
+
+=spacing-utils($prefix, $property)
+  @each $key, $value in $spacings
+    .#{$prefix}-#{$key}
+      #{$property}: #{$value} !important
+
+    @each $dir, $css-dir in $directions-map
+      .#{$prefix}#{$dir}-#{$key}
+        @if meta.type-of($css-dir) == 'list'
+          @each $d in $css-dir
+            #{$property}-#{$d}: #{$value} !important
+        @else
+          #{$property}-#{$css-dir}: #{$value} !important
+
+  .#{$prefix}-auto
+    #{$property}: auto !important
+
+  @each $dir, $css-dir in $directions-map
+    .#{$prefix}#{$dir}-auto
+      @if meta.type-of($css-dir) == 'list'
+        @each $d in $css-dir
+          #{$property}-#{$d}: auto !important
+      @else
+        #{$property}-#{$css-dir}: auto !important
+
+// Margin and padding utilities
++spacing-utils('m', margin)
++spacing-utils('p', padding)
+
+// Flex utilities
+.d-flex
+  display: flex !important
+
+.flex-wrap
+  flex-wrap: wrap !important
+
+.flex-column
+  flex-direction: column !important
+
+.flex-row
+  flex-direction: row !important
+
+.align-items-start
+  align-items: flex-start !important
+
+.align-items-center
+  align-items: center !important
+
+.align-items-end
+  align-items: flex-end !important
+
+.justify-content-start
+  justify-content: flex-start !important
+
+.justify-content-end
+  justify-content: flex-end !important
+
+.justify-content-center
+  justify-content: center !important
+
+.justify-content-between
+  justify-content: space-between !important
+
+.justify-content-around
+  justify-content: space-around !important
+
+.justify-content-evenly
+  justify-content: space-evenly !important
+
+// Text alignment
+.text-center
+  text-align: center !important
+
+.text-justify
+  text-align: justify !important
+
+.text-start
+  text-align: left !important
+
+.text-end
+  text-align: right !important
+
+// Gap utilities
+@each $key, $value in $spacings
+  .gap-#{$key}
+    gap: $value !important
+
+// Sizing
+.h-100
+  height: 100%
+.w-100
+  width: 100%
+.vh-100
+  height: 100vh
+.vw-100
+  width: 100vw
+
+.text-primary
+  color: var(--mat-sys-primary)
+
+$success-color: green
+$danger-color: rgba(208, 0, 0)
+
+.mat-mdc-snack-bar-container
+  &.success
+    --mdc-snackbar-container-color: #{$success-color}
+    --mat-mdc-snack-bar-button-color: #fff
+    --mdc-snackbar-supporting-text-color: #fff
+    --mat-snack-bar-button-color: #fff
+  &.error
+    --mdc-snackbar-container-color: #{$danger-color}
+    --mat-mdc-snack-bar-button-color: #fff
+    --mdc-snackbar-supporting-text-color: #fff
+    --mat-snack-bar-button-color: #fff
