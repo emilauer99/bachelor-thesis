@@ -9,8 +9,8 @@ export class CustomNotificationService {
 
   constructor() { }
 
-  success(message: string) {
-    this._snackBar.open(message, 'Close', {panelClass: ['success'], duration: 3000});
+  success(message: string, panelClass?: string) {
+    this._snackBar.open(message, 'Close', {panelClass: [panelClass ?? 'success'], duration: 3000});
   }
 
   error(message: string) {

@@ -4,6 +4,8 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {AuthInterceptorService} from './services/auth-interceptor.service';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {DatePipe} from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,16 +19,7 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptorService,
       multi: true
     },
-    importProvidersFrom(
-      // CommonModule,
-      // BrowserAnimationsModule,
-      // TranslateModule.forRoot({
-      //   loader: {
-      //     provide: TranslateLoader,
-      //     useFactory: HttpLoaderFactory,
-      //     deps: [HttpClient],
-      //   },
-      // })
-    ),
+    provideNativeDateAdapter(),
+    DatePipe
   ]
 };

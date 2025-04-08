@@ -1,1 +1,58 @@
-<p>projects works!</p>
+<div class="projects-page">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Projects</h2>
+    <button mat-raised-button color="primary" (click)="createProject()">
+      <mat-icon>add</mat-icon>
+      Create Project
+    </button>
+  </div>
+  <!--  <button mat-button-->
+  <!--          class="py-3 d-flex align-items-center"-->
+  <!--          (click)="projectService.getAll()">-->
+  <!--    <mat-icon>refresh</mat-icon>-->
+  <!--    Refresh Projects-->
+  <!--  </button>-->
+
+  @if (!projectService.loading()) {
+    @if (projectService.projects()?.length) {
+      <mat-list>
+        @for (project of projectService.projects(); track project.id) {
+          <mat-list-item class="list-item">
+            <div class="w-100 d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center gap-3">
+                <button mat-icon-button
+                        style="width: 5px; height: 5px"
+                        (click)="showStateTooltip(project.state); $event.stopPropagation()"
+                        [style.background-color]="getStateColor(project.state)">
+                </button>
+                <a [routerLink]="[project.id!]">
+                  <div class="title">{{ project.name }}</div>
+                  <div class="subtitle">{{ project.customer.name }}</div>
+                </a>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <button mat-icon-button color="warn" (click)="confirmDelete(project); $event.stopPropagation()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-list-item>
+        }
+      </mat-list>
+    } @else {
+      <div class="d-flex flex-column align-items-center gap-2 p-3">
+        <span>No projects found</span>
+        <button mat-raised-button color="primary">
+          <mat-icon>add</mat-icon>
+          Create Project
+        </button>
+      </div>
+    }
+  } @else {
+    <app-spinner></app-spinner>
+  }
+
+  <!--  <button mat-fab color="primary" class="fab">-->
+  <!--    <mat-icon>add</mat-icon>-->
+  <!--  </button>-->
+</div>

@@ -1,3 +1,5 @@
 export interface CustomerModel {
-  id: number
+  id?: number
+  name: string;
+  imagePath: string;
 }

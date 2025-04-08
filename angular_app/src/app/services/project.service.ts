@@ -11,7 +11,10 @@ export class ProjectService {
   projects = signal<ProjectModel[]|undefined>(undefined)
   loading = signal<boolean>(false)
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    if(!this.projects())
+      this.getAll()
+  }
 
   getAll(): void {
     this.loading.set(true)

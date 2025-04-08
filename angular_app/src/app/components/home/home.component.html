@@ -1,2 +1,79 @@
-sidenav
-<router-outlet></router-outlet>
+@if (!isMobile()) {
+
+  <mat-sidenav-container class="h-100 w-100">
+    <mat-sidenav mode="side" opened class="border-end sidenav">
+      <div class="d-flex flex-column h-100 justify-content-between">
+        <div class="d-flex flex-column">
+          <a routerLink="/dashboard" routerLinkActive="active" class="d-flex align-items-center gap-2 p-3 border-bottom">
+            <mat-icon>home</mat-icon>
+            <span>Dashboard</span>
+          </a>
+          <a routerLink="/projects" routerLinkActive="active" class="d-flex align-items-center gap-2 p-3 border-bottom">
+            <mat-icon>list</mat-icon>
+            <span>Projects</span>
+          </a>
+          <a routerLink="/board" routerLinkActive="active" class="d-flex align-items-center gap-2 p-3 border-bottom">
+            <mat-icon>view_column</mat-icon>
+            <span>Board</span>
+          </a>
+          <a routerLink="/customers" routerLinkActive="active" class="d-flex align-items-center gap-2 p-3 border-bottom">
+            <mat-icon>people</mat-icon>
+            <span>Customers</span>
+          </a>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 p-3 cursor-pointer"
+             (click)="logout()">
+          @if (!isLoggingOut) {
+            <mat-icon>logout</mat-icon>
+          } @else {
+            <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
+          }
+          <span>Logout</span>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="bg-white overflow-initial d-flex flex-column" style="max-height: 100vh">
+      <mat-toolbar color="primary" class="toolbar d-flex justify-content-center p-1 border-bottom">
+        <span>PMT</span>
+      </mat-toolbar>
+
+      <div class="p-3 overflow-auto flex-grow-1">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+} @else {
+
+  <div class="h-100 d-flex flex-column" style="max-height: 100vh">
+    <mat-toolbar color="primary" class="toolbar d-flex justify-content-center p-0 border-bottom">
+      <span>PMT</span>
+    </mat-toolbar>
+
+    <div class="flex-grow-1 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+
+    <div class="bottom-nav d-flex justify-content-around align-items-center p-2">
+      <a routerLink="/dashboard" class="d-flex flex-column align-items-center">
+        <mat-icon>home</mat-icon>
+        <span class="text-center">Dashboard</span>
+      </a>
+      <a routerLink="/projects" class="d-flex flex-column align-items-center">
+        <mat-icon>list</mat-icon>
+        <span class="text-center">Projects</span>
+      </a>
+      <a routerLink="/teams" class="d-flex flex-column align-items-center">
+        <mat-icon>view_column</mat-icon>
+        <span class="text-center">Board</span>
+      </a>
+      <a routerLink="/more" class="d-flex flex-column align-items-center">
+        <mat-icon>more_horiz</mat-icon>
+        <span class="text-center">More</span>
+      </a>
+    </div>
+  </div>
+
+}

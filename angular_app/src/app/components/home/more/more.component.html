@@ -1,0 +1,28 @@
+<mat-list class="p-3">
+  <!-- Listeneintrag: Customers -->
+  <a mat-list-item routerLink="/customers">
+    <mat-icon matListIcon>people</mat-icon>
+    <div matLine>Customers</div>
+    <mat-icon>chevron_right</mat-icon>
+  </a>
+
+  <!-- Listeneintrag: Settings -->
+  <a mat-list-item routerLink="/settings">
+    <mat-icon matListIcon>settings</mat-icon>
+    <div matLine>Settings</div>
+    <mat-icon>chevron_right</mat-icon>
+  </a>
+
+  <!-- Trenner -->
+  <mat-divider></mat-divider>
+
+  <!-- Listeneintrag: Logout -->
+  <mat-list-item (click)="logout()" [disabled]="isLoggingOut">
+    @if (!isLoggingOut) {
+      <mat-icon matListIcon [ngStyle]="{'color': 'red'}">logout</mat-icon>
+    } @else {
+      <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
+    }
+    <div matLine [ngStyle]="{'color': 'red'}">Logout</div>
+  </mat-list-item>
+</mat-list>

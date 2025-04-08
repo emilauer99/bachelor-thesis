@@ -46,6 +46,9 @@ $directions-map: (t: top,e: right,b: bottom,s: left,x: (left, right),y: (top, bo
 .flex-row
   flex-direction: row !important
 
+.flex-grow-1
+  flex-grow: 1 !important
+
 .align-items-start
   align-items: flex-start !important
 
@@ -93,13 +96,13 @@ $directions-map: (t: top,e: right,b: bottom,s: left,x: (left, right),y: (top, bo
 
 // Sizing
 .h-100
-  height: 100%
+  height: 100% !important
 .w-100
-  width: 100%
+  width: 100% !important
 .vh-100
-  height: 100vh
+  height: 100vh !important
 .vw-100
-  width: 100vw
+  width: 100vw !important
 
 .text-primary
   color: var(--mat-sys-primary)
@@ -118,3 +121,50 @@ $danger-color: rgba(208, 0, 0)
     --mat-mdc-snack-bar-button-color: #fff
     --mdc-snackbar-supporting-text-color: #fff
     --mat-snack-bar-button-color: #fff
+  &.planned
+    --mdc-snackbar-container-color: #2196F3
+    --mat-mdc-snack-bar-button-color: #fff
+    --mdc-snackbar-supporting-text-color: #fff
+    --mat-snack-bar-button-color: #fff
+  &.inProgress
+    --mdc-snackbar-container-color: #FF9800
+    --mat-mdc-snack-bar-button-color: #fff
+    --mdc-snackbar-supporting-text-color: #fff
+    --mat-snack-bar-button-color: #fff
+  &.finished
+    --mdc-snackbar-container-color: #4CAF50
+    --mat-mdc-snack-bar-button-color: #fff
+    --mdc-snackbar-supporting-text-color: #fff
+    --mat-snack-bar-button-color: #fff
+
+.border-end
+  border-right: 1px solid #e0e0e0 !important
+.border-start
+  border-left: 1px solid #e0e0e0 !important
+.border-top
+  border-top: 1px solid #e0e0e0 !important
+.border-bottom
+  border-bottom: 1px solid #e0e0e0 !important
+.border
+  border: 1px solid #e0e0e0 !important
+.border-0
+  border: none !important
+
+
+.cursor-pointer
+  cursor: pointer !important
+
+
+.bg-white
+  background: #fff !important
+
+
+.overflow-auto
+   overflow: auto !important
+.overflow-hidden
+  overflow: hidden !important
+.overflow-initial
+  overflow: initial !important
+
+.state-chip
+  --mdc-chip-outline-color: transparent !important

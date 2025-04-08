@@ -7,6 +7,8 @@ import {CustomersComponent} from './components/home/customers/customers.componen
 import {BoardComponent} from './components/home/board/board.component';
 import {homeGuard} from './guards/home.guard';
 import {authGuard} from './guards/auth.guard';
+import {MoreComponent} from './components/home/more/more.component';
+import {ProjectComponent} from './components/home/projects/project/project.component';
 
 export const routes: Routes = [
   {
@@ -25,7 +27,11 @@ export const routes: Routes = [
       },
       {
         path: "projects",
-        component: ProjectsComponent
+        component: ProjectsComponent,
+      },
+      {
+        path: "projects/:id",
+        component: ProjectComponent
       },
       {
         path: "customers",
@@ -34,6 +40,10 @@ export const routes: Routes = [
       {
         path: "board",
         component: BoardComponent
+      },
+      {
+        path: "more",
+        component: MoreComponent
       },
       {
         path: "**",
