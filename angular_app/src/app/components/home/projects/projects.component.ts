@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {ProjectService} from '../../../services/project.service';
 import {ProjectModel} from '../../../models/project.model';
 import {MatList, MatListItem} from '@angular/material/list';
@@ -12,6 +12,7 @@ import {ConfirmDialogComponent} from '../../utils/confirm-dialog/confirm-dialog.
 import {SpinnerComponent} from '../../utils/spinner/spinner.component';
 import {RouterLink} from '@angular/router';
 import {ProjectDialogComponent} from './project-dialog/project-dialog.component';
+import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
 
 @Component({
   selector: 'app-projects',
@@ -24,13 +25,29 @@ import {ProjectDialogComponent} from './project-dialog/project-dialog.component'
     MatIcon,
     MatIconButton,
     SpinnerComponent,
-    RouterLink
+    RouterLink,
+    ProjectFiltersComponent
   ],
   templateUrl: './projects.component.html',
   standalone: true,
   styleUrl: './projects.component.sass'
 })
 export class ProjectsComponent {
+  customerFilterId = signal<number|undefined|null>(undefined)
+  stateFilter = signal<EProjectState|undefined|null>(undefined)
+  projects = computed(() => {
+    return  this.projectService.projects()?.filter(project => {
+      let customerOk = true
+      if(this.customerFilterId())
+        customerOk = project.customer.id == this.customerFilterId()
+      let stateOk = true
+      if(this.stateFilter())
+        stateOk = project.state == this.stateFilter()
+
+      return customerOk && stateOk
+    })
+  })
+
   constructor(public projectService: ProjectService,
               private notificationService: CustomNotificationService,
               private dialog: MatDialog) {

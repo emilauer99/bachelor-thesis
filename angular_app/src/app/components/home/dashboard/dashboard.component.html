@@ -1,0 +1,24 @@
+<div class="d-flex flex-column h-100">
+  <app-project-filters [projects]="projectService.projects()"
+                       (stateFilterChange)="stateFilter.set($event)"
+                       (customerFilterChange)="customerFilterId.set($event)"></app-project-filters>
+
+  @if(projectService.loading()) {
+    <div class="d-flex justify-content-center my-3">
+      <app-spinner></app-spinner>
+    </div>
+  } @else {
+    <div class="flex-grow-1 overflow-auto">
+      <h3 class="mb-2">Projects by Customer</h3>
+      <app-customer-projects-chart [projects]="projects()"></app-customer-projects-chart>
+      <div class="my-3"></div>
+
+      <h3 class="mb-2">Projects by State</h3>
+      <app-status-projects-chart [projects]="projects()"></app-status-projects-chart>
+      <div class="my-3"></div>
+
+      <h3 class="mb-2">Projects per Month</h3>
+      <app-upcoming-projects-chart [projects]="projects()"></app-upcoming-projects-chart>
+    </div>
+  }
+</div>

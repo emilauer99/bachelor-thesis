@@ -10,6 +10,7 @@ import {MatList, MatListItem} from '@angular/material/list';
 import {SpinnerComponent} from '../../utils/spinner/spinner.component';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-customers',
@@ -70,4 +71,6 @@ export class CustomersComponent {
       }
     });
   }
+
+  protected readonly environment = environment;
 }

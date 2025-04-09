@@ -1,22 +1,45 @@
-import { Component } from '@angular/core';
-import {MatSidenavContainer, MatSidenavModule} from '@angular/material/sidenav';
-import {RouterLink, RouterOutlet} from '@angular/router';
-import {MatToolbar} from '@angular/material/toolbar';
-import {MatIcon} from '@angular/material/icon';
-import {MatIconButton} from '@angular/material/button';
+import {Component, computed, signal} from '@angular/core';
+import {ProjectService} from '../../../services/project.service';
+import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
+import {UpcomingProjectsChartComponent} from './upcoming-projects-chart/upcoming-projects-chart.component';
+import {StatusProjectsChartComponent} from './status-projects-chart/status-projects-chart.component';
+import {CustomerProjectsChartComponent} from './customer-projects-chart/customer-projects-chart.component';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {SpinnerComponent} from '../../utils/spinner/spinner.component';
+import {EProjectState} from '../../../enums/e-project-state';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
+    MatProgressSpinner,
+    ProjectFiltersComponent,
+    UpcomingProjectsChartComponent,
+    StatusProjectsChartComponent,
+    CustomerProjectsChartComponent,
+    SpinnerComponent
   ],
   templateUrl: './dashboard.component.html',
   standalone: true,
   styleUrl: './dashboard.component.sass'
 })
 export class DashboardComponent {
+  customerFilterId = signal<number|undefined|null>(undefined)
+  stateFilter = signal<EProjectState|undefined|null>(undefined)
+  projects = computed(() => {
+    return  this.projectService.projects()?.filter(project => {
+      let customerOk = true
+      if(this.customerFilterId())
+        customerOk = project.customer.id == this.customerFilterId()
+      let stateOk = true
+      if(this.stateFilter())
+        stateOk = project.state == this.stateFilter()
 
-  logout() {
-    // Logout-Logik hier implementieren
-    console.log('Logging out…');
+      return customerOk && stateOk
+    })
+  })
+
+  constructor(public projectService: ProjectService) {
+    if(!this.projectService.projects())
+      this.projectService.getAll()
   }
 }

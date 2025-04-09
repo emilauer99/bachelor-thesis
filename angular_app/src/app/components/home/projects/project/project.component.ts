@@ -17,6 +17,7 @@ import {SpinnerComponent} from '../../../utils/spinner/spinner.component';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {finalize} from 'rxjs';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-project',
@@ -118,4 +119,5 @@ export class ProjectComponent {
 
   protected readonly getStateLabel = getStateLabel;
   protected readonly getStateColor = getStateColor;
+  protected readonly environment = environment;
 }
