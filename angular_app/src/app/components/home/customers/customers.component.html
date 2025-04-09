@@ -1,1 +1,46 @@
-<p>customers works!</p>
+<div class="projects-page">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Customers</h2>
+    <button mat-raised-button color="primary" (click)="createCustomer()">
+      <mat-icon>add</mat-icon>
+      Create Customer
+    </button>
+  </div>
+  <!--  <button mat-button-->
+  <!--          class="py-3 d-flex align-items-center"-->
+  <!--          (click)="projectService.getAll()">-->
+  <!--    <mat-icon>refresh</mat-icon>-->
+  <!--    Refresh Projects-->
+  <!--  </button>-->
+
+  @if (!customerService.loading()) {
+    @if (customerService.customers()?.length) {
+      <mat-list>
+        @for (customer of customerService.customers(); track customer.id) {
+          <mat-list-item class="list-item">
+            <div class="w-100 d-flex justify-content-between align-items-center">
+              <div class="title">{{ customer.name }}</div>
+              <button mat-icon-button color="warn" (click)="confirmDelete(customer)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+        }
+      </mat-list>
+    } @else {
+      <div class="d-flex flex-column align-items-center gap-2 p-3">
+        <span>No customers found</span>
+        <button mat-raised-button color="primary" (click)="createCustomer()">
+          <mat-icon>add</mat-icon>
+          Create Project
+        </button>
+      </div>
+    }
+  } @else {
+    <app-spinner></app-spinner>
+  }
+
+  <!--  <button mat-fab color="primary" class="fab">-->
+  <!--    <mat-icon>add</mat-icon>-->
+  <!--  </button>-->
+</div>

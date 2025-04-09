@@ -34,6 +34,8 @@ export class ProjectsComponent {
   constructor(public projectService: ProjectService,
               private notificationService: CustomNotificationService,
               private dialog: MatDialog) {
+    if(!this.projectService.projects())
+      this.projectService.getAll()
   }
 
   showStateTooltip(state: EProjectState): void {

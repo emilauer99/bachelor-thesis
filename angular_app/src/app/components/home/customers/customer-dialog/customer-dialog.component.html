@@ -1,0 +1,6 @@
+<app-dialog [title]="data.title"
+            [loading]="loading"
+            [confirmText]="data.confirmText"
+            (confirmClicked)="onConfirmClicked()">
+  <app-customer-form (formGroupOutput)="formGroup = $event"></app-customer-form>
+</app-dialog>

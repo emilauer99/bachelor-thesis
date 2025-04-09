@@ -33,7 +33,6 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 })
 export class ProjectFormComponent implements OnInit {
   project = input<ProjectModel|undefined>(undefined)
-  submit = output<ProjectModel>()
   loading = model<boolean>(false)
 
   formGroupOutput = output<FormGroup>()

@@ -1,0 +1,27 @@
+@if(formGroup()) {
+  <form [formGroup]="formGroup()!" class="d-flex flex-column gap-3">
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Project Name</mat-label>
+      <input matInput formControlName="name" />
+      @if(formGroup()!.get('name')?.hasError('required')) {
+        <mat-error>Please enter a name</mat-error>
+      }
+    </mat-form-field>
+
+    <input #imageInput
+           hidden="true"
+           type="file"
+           (change)="selectImage($event)"
+           accept=".jpg,.jpeg,.png,.svg"/>
+    <button mat-raised-button color="primary" (click)="imageInput.click()">Select Image</button>
+
+    @if (previewUrl()) {
+      <div class="d-flex justify-content-center">
+        <img [src]="previewUrl()"
+             alt="Preview"
+             style="max-width: 100px" />
+      </div>
+    }
+  </form>
+}

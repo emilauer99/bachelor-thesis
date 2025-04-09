@@ -1,8 +1,10 @@
 import {Injectable, signal} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {finalize, Observable, tap} from 'rxjs';
 import {CustomerModel} from '../models/customer.model';
+import {ProjectService} from './project.service';
+import {ProjectModel} from '../models/project.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ export class CustomerService {
   customers = signal<CustomerModel[]|undefined>(undefined)
   loading = signal<boolean>(false)
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private projectService: ProjectService) { }
 
   getAll(): void {
     this.loading.set(true)
@@ -24,6 +27,22 @@ export class CustomerService {
       })
   }
 
+  create(data: any, headers?: HttpHeaders): Observable<CustomerModel> {
+    return this.http
+      .post<CustomerModel>(environment.apiUrl + '/customers', data, {headers: headers})
+      .pipe(
+        tap({
+          next: (customer) => {
+            if(!this.customers())
+              return
+            this.customers.update((currentCustomers) => {
+              return [...currentCustomers!, customer]
+            })
+          },
+        }),
+      );
+  }
+
   delete(id: number): Observable<any> {
     return this.http
       .delete<any>(environment.apiUrl + `/customers/${id}`)
@@ -32,6 +51,9 @@ export class CustomerService {
           next: () => {
             this.customers.update((currentCustomers) => {
               return currentCustomers?.filter(c => c.id != id)
+            })
+            this.projectService.projects.update((currentProjects) => {
+              return currentProjects?.filter(p => p.customer.id != id)
             })
           },
         }),

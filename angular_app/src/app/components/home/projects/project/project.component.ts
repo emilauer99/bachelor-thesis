@@ -53,6 +53,9 @@ export class ProjectComponent {
     const urlSegments = currentUrl.split('/');
     this.projectId = +urlSegments[urlSegments.length - 1];
 
+    if(!this.projectService.projects())
+      this.projectService.getAll()
+
     effect(() => {
       if(this.project())
         return

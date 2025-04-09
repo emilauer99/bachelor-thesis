@@ -17,7 +17,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('projects/{id}', [ProjectController::class, 'show']);
 
     Route::middleware(['role:admin'])->group(function () {
-        Route::apiResource('customers', CustomerController::class)->only(['index', 'store', 'delete']);
+        Route::apiResource('customers', CustomerController::class)->only(['index', 'store', 'destroy']);
         Route::apiResource('projects', ProjectController::class)->except(['index', 'show']);
     });
 });
