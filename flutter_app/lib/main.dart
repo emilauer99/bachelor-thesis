@@ -68,7 +68,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
-      title: 'Flutter Demo',
+      title: 'PMT',
       theme: theme
     );
   }

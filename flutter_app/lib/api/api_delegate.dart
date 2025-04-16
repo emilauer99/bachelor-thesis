@@ -11,7 +11,7 @@ mixin DioDelegate {
   void initializeDio(var ref) {
     _dio = Dio(BaseOptions(
         baseUrl: EnvironmentConfig.apiBaseURL,
-        connectTimeout: const Duration(seconds: 20),
+        connectTimeout: const Duration(seconds: 30),
         headers: {'Accept': "application/json"}));
 
     _dio.interceptors.add(InterceptorsWrapper(
