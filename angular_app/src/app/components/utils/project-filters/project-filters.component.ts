@@ -17,7 +17,7 @@ import { EProjectState } from '../../../enums/e-project-state';
   ],
   template: `
     <div class="d-flex flex-column gap-3">
-      @if(projects() && projects()!.length) {
+      @if (projects() && projects()!.length) {
         <div class="d-flex gap-3">
           <mat-form-field appearance="outline" class="flex-fill">
             <mat-label>Customer Filter</mat-label>
@@ -29,15 +29,17 @@ import { EProjectState } from '../../../enums/e-project-state';
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="flex-fill">
-            <mat-label>Status Filter</mat-label>
-            <mat-select [formControl]="stateControl">
-              <mat-option [value]="null">All States</mat-option>
-              <mat-option *ngFor="let state of states" [value]="state">
-                {{ state }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          @if (!hideStatusFilter()) {
+            <mat-form-field appearance="outline" class="flex-fill">
+              <mat-label>Status Filter</mat-label>
+              <mat-select [formControl]="stateControl">
+                <mat-option [value]="null">All States</mat-option>
+                <mat-option *ngFor="let state of states" [value]="state">
+                  {{ state }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          }
         </div>
       }
     </div>
@@ -45,6 +47,7 @@ import { EProjectState } from '../../../enums/e-project-state';
 })
 export class ProjectFiltersComponent {
   projects = input<ProjectModel[] | undefined>();
+  hideStatusFilter = input<boolean>(false)
   customerFilterChange = output<number | null>();
   stateFilterChange = output<EProjectState | null>();
 

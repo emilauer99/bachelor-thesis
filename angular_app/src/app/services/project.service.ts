@@ -40,12 +40,14 @@ export class ProjectService {
       );
   }
 
-  update(id: number, data: any): Observable<ProjectModel> {
+  update(id: number, data: any, preventListUpdate: boolean = false): Observable<ProjectModel> {
     return this.http
       .put<ProjectModel>(environment.apiUrl + `/projects/${id}`, data)
       .pipe(
         tap({
           next: (project: ProjectModel) => {
+            if(preventListUpdate)
+              return
             this.projects.update((currentProjects) => {
               return currentProjects?.map(p => p.id == id ? project : p)
             })

@@ -13,4 +13,10 @@ export interface ProjectModel {
   estimatedHours?: number
   customer: CustomerModel
   customerId?: number
+  index: number
+}
+
+export interface ProjectStateList {
+  state: EProjectState
+  projects: ProjectModel[]
 }
