@@ -8,6 +8,7 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {finalize} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
+import {MobileService} from '../../services/mobile.service';
 
 @Component({
   selector: 'app-home',
@@ -26,25 +27,11 @@ import {AuthService} from '../../services/auth.service';
   styleUrl: './home.component.sass'
 })
 export class HomeComponent {
-  protected readonly isMobile = signal(true);
-
-  private readonly _mobileQuery: MediaQueryList;
-  private readonly _mobileQueryListener: () => void;
-
   isLoggingOut: boolean = false
 
   constructor(private authService: AuthService,
+              public mobileService: MobileService,
               private router: Router) {
-    const media = inject(MediaMatcher);
-
-    this._mobileQuery = media.matchMedia('(max-width: 600px)');
-    this.isMobile.set(this._mobileQuery.matches);
-    this._mobileQueryListener = () => this.isMobile.set(this._mobileQuery.matches);
-    this._mobileQuery.addEventListener('change', this._mobileQueryListener);
-  }
-
-  ngOnDestroy(): void {
-    this._mobileQuery.removeEventListener('change', this._mobileQueryListener);
   }
 
   logout() {

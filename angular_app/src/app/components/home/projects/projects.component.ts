@@ -13,6 +13,7 @@ import {SpinnerComponent} from '../../utils/spinner/spinner.component';
 import {RouterLink} from '@angular/router';
 import {ProjectDialogComponent} from './project-dialog/project-dialog.component';
 import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
+import {MobileService} from '../../../services/mobile.service';
 
 @Component({
   selector: 'app-projects',
@@ -50,6 +51,7 @@ export class ProjectsComponent {
 
   constructor(public projectService: ProjectService,
               private notificationService: CustomNotificationService,
+              public mobileService: MobileService,
               private dialog: MatDialog) {
     if(!this.projectService.projects())
       this.projectService.getAll()

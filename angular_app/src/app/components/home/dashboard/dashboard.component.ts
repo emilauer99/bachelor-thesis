@@ -1,4 +1,4 @@
-import {Component, computed, signal} from '@angular/core';
+import {Component, computed, signal, ViewChild} from '@angular/core';
 import {ProjectService} from '../../../services/project.service';
 import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
 import {UpcomingProjectsChartComponent} from './upcoming-projects-chart/upcoming-projects-chart.component';

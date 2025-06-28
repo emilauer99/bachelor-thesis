@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app/env_config.dart';
 import 'package:flutter_app/states/auth_state.dart';
+import 'package:go_router/go_router.dart';
 
 import '../providers/auth_provider.dart';
 
@@ -51,6 +53,9 @@ mixin DioDelegate {
         // reset authentication
         if (e.response?.statusCode == 401) {
           ref.read(authStateProvider.notifier).resetAuthentication();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            GoRouter.of(ref.context).go('/login');
+          });
         }
 
         return handler.next(e); // continue

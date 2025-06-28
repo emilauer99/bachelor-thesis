@@ -10,11 +10,13 @@ import { BaseChartDirective } from 'ng2-charts';
   imports: [BaseChartDirective],
   template: `
     @if(chartData().labels.length) {
-      <canvas baseChart
-              [data]="chartData()"
-              [options]="lineChartOptions"
-              [type]="lineChartType">
-      </canvas>
+      <div>
+        <canvas baseChart
+                [data]="chartData()"
+                [options]="lineChartOptions"
+                [type]="lineChartType">
+        </canvas>
+      </div>
     } @else {
       <p>No projects found</p>
     }

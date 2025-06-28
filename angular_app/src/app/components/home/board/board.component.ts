@@ -1,8 +1,8 @@
-import {Component, signal} from '@angular/core';
+import {Component, ElementRef, signal, ViewChild} from '@angular/core';
 import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
 import {
   CdkDrag,
-  CdkDragDrop,
+  CdkDragDrop, CdkDragMove,
   CdkDropList,
   CdkDropListGroup, DragDrop,
   moveItemInArray,
@@ -39,6 +39,28 @@ export class BoardComponent {
   ) {
     if (!this.projectService.projects()) {
       this.projectService.getAll();
+    }
+  }
+
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLElement>;
+
+  // Add this to your component
+  onDragMoved(event: CdkDragMove<ProjectModel>) {
+    console.log(event)
+    const scrollContainer = this.scrollContainer.nativeElement;
+    const { left, right } = scrollContainer.getBoundingClientRect();
+    const pointerPosition = event.pointerPosition.x;
+    const scrollThreshold = 50; // Pixels from edge to start scrolling
+    const scrollSpeed = 10; // Pixels per frame
+
+    // Scroll right if dragging near right edge
+    console.log(pointerPosition, right - scrollThreshold)
+    if (pointerPosition > right - scrollThreshold) {
+      scrollContainer.scrollLeft += scrollSpeed;
+    }
+    // Scroll left if dragging near left edge
+    else if (pointerPosition < left + scrollThreshold) {
+      scrollContainer.scrollLeft -= scrollSpeed;
     }
   }
 

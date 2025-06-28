@@ -1,4 +1,4 @@
-@if (!isMobile()) {
+@if (!mobileService.isMobile()) {
 
   <mat-sidenav-container class="h-100 w-100">
     <mat-sidenav mode="side" opened class="border-end sidenav">
@@ -52,7 +52,7 @@
       <span>PMT</span>
     </mat-toolbar>
 
-    <div class="flex-grow-1 overflow-auto">
+    <div class="flex-grow-1 overflow-auto p-3">
       <router-outlet></router-outlet>
     </div>
 
@@ -65,7 +65,7 @@
         <mat-icon>list</mat-icon>
         <span class="text-center">Projects</span>
       </a>
-      <a routerLink="/teams" class="d-flex flex-column align-items-center">
+      <a routerLink="/board" class="d-flex flex-column align-items-center">
         <mat-icon>view_column</mat-icon>
         <span class="text-center">Board</span>
       </a>

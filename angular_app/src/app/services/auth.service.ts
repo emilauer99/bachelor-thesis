@@ -35,5 +35,10 @@ export class AuthService {
 
   public logout(): Observable<any> {
     return this.http.post<any>(environment.apiUrl + '/logout', {})
+      .pipe(
+        tap(() => {
+          this.user.set(null)
+        })
+      )
   }
 }

@@ -1,20 +1,24 @@
-<div class="d-flex flex-column h-100">
+<div class="d-flex flex-column h-100 position-relative">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="m-0">Projects</h2>
-    <button mat-raised-button color="primary" (click)="createProject()">
-      <mat-icon>add</mat-icon>
-      Create Project
-    </button>
+    @if (!mobileService.isMobile()) {
+      <button mat-raised-button color="primary" (click)="createProject()">
+        <mat-icon>add</mat-icon>
+        Create Project
+      </button>
+    }
   </div>
   <app-project-filters [projects]="projectService.projects()"
                        (stateFilterChange)="stateFilter.set($event)"
                        (customerFilterChange)="customerFilterId.set($event)"></app-project-filters>
-  <!--  <button mat-button-->
-  <!--          class="py-3 d-flex align-items-center"-->
-  <!--          (click)="projectService.getAll()">-->
-  <!--    <mat-icon>refresh</mat-icon>-->
-  <!--    Refresh Projects-->
-  <!--  </button>-->
+
+
+  <!--    <button mat-button-->
+  <!--            class="py-3 d-flex align-items-center"-->
+  <!--            (click)="projectService.getAll()">-->
+  <!--      <mat-icon>refresh</mat-icon>-->
+  <!--      Refresh Projects-->
+  <!--    </button>-->
 
   <div class="flex-grow-1 overflow-auto">
     @if (!projectService.loading()) {
@@ -23,14 +27,14 @@
           @for (project of projects(); track project.id) {
             <mat-list-item class="list-item">
               <div class="w-100 d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center gap-3">
+                <div class="d-flex flex-grow-1 align-items-center gap-3 overflow-hidden">
                   <button mat-icon-button
                           style="width: 5px; height: 5px"
                           (click)="showStateTooltip(project.state)"
                           [style.background-color]="getStateColor(project.state)">
                   </button>
                   <a [routerLink]="[project.id!]">
-                    <div class="title">{{ project.name }}</div>
+                    <div class="title overflow-hidden">{{ project.name }}</div>
                     <div class="subtitle">{{ project.customer.name }}</div>
                   </a>
                 </div>
@@ -57,7 +61,9 @@
     }
   </div>
 
-  <!--  <button mat-fab color="primary" class="fab">-->
-  <!--    <mat-icon>add</mat-icon>-->
-  <!--  </button>-->
+  @if (mobileService.isMobile()) {
+    <button mat-fab color="primary" class="fab" (click)="createProject()">
+      <mat-icon>add</mat-icon>
+    </button>
+  }
 </div>

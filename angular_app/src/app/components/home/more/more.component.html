@@ -1,28 +1,25 @@
-<mat-list class="p-3">
-  <!-- Listeneintrag: Customers -->
-  <a mat-list-item routerLink="/customers">
+<mat-nav-list>
+  <mat-list-item (click)="onCustomers()">
     <mat-icon matListIcon>people</mat-icon>
-    <div matLine>Customers</div>
-    <mat-icon>chevron_right</mat-icon>
-  </a>
+    <span matLine>Customers</span>
+    <mat-icon matListIcon>chevron_right</mat-icon>
+  </mat-list-item>
 
-  <!-- Listeneintrag: Settings -->
-  <a mat-list-item routerLink="/settings">
+  <mat-list-item (click)="onSettings()">
     <mat-icon matListIcon>settings</mat-icon>
-    <div matLine>Settings</div>
-    <mat-icon>chevron_right</mat-icon>
-  </a>
+    <span matLine>Settings</span>
+    <mat-icon matListIcon>chevron_right</mat-icon>
+  </mat-list-item>
 
-  <!-- Trenner -->
   <mat-divider></mat-divider>
 
-  <!-- Listeneintrag: Logout -->
   <mat-list-item (click)="logout()" [disabled]="isLoggingOut">
-    @if (!isLoggingOut) {
-      <mat-icon matListIcon [ngStyle]="{'color': 'red'}">logout</mat-icon>
-    } @else {
-      <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
-    }
-    <div matLine [ngStyle]="{'color': 'red'}">Logout</div>
+    <mat-icon matListIcon *ngIf="!isLoggingOut" color="warn">logout</mat-icon>
+    <mat-progress-spinner
+      *ngIf="isLoggingOut"
+      diameter="24"
+      mode="indeterminate"
+    ></mat-progress-spinner>
+    <span matLine class="text-warn">Logout</span>
   </mat-list-item>
-</mat-list>
+</mat-nav-list>

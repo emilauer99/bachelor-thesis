@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ProjectModel } from '../../../models/project.model';
 import { EProjectState } from '../../../enums/e-project-state';
+import {MobileService} from '../../../services/mobile.service';
 
 @Component({
   selector: 'app-project-filters',
@@ -18,7 +19,8 @@ import { EProjectState } from '../../../enums/e-project-state';
   template: `
     <div class="d-flex flex-column gap-3">
       @if (projects() && projects()!.length) {
-        <div class="d-flex gap-3">
+        <div class="d-flex gap-3"
+             >
           <mat-form-field appearance="outline" class="flex-fill">
             <mat-label>Customer Filter</mat-label>
             <mat-select [formControl]="customerControl">
@@ -65,7 +67,7 @@ export class ProjectFiltersComponent {
     return Object.values(map);
   }
 
-  constructor() {
+  constructor(public mobileService: MobileService) {
     this.customerControl.valueChanges.subscribe(value => {
       this.customerFilterChange.emit(value);
     });

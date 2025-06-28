@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MatDivider, MatList, MatListItem} from '@angular/material/list';
+import {MatDivider, MatList, MatListItem, MatNavList} from '@angular/material/list';
 import {Router, RouterLink} from '@angular/router';
 import {NgStyle} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
@@ -20,7 +20,7 @@ import {finalize} from 'rxjs';
     MatDivider,
     MatProgressSpinner,
     MatLine,
-    NgStyle
+    MatNavList
   ],
   templateUrl: './more.component.html',
   standalone: true,
@@ -31,8 +31,16 @@ export class MoreComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    public router: Router
   ) {}
+
+  onCustomers() {
+    this.router.navigate(['/customers']);
+  }
+
+  onSettings() {
+    this.router.navigate(['/settings']);
+  }
 
   logout(): void {
     this.isLoggingOut = true;
