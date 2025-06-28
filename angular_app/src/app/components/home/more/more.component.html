@@ -14,12 +14,15 @@
   <mat-divider></mat-divider>
 
   <mat-list-item (click)="logout()" [disabled]="isLoggingOut">
-    <mat-icon matListIcon *ngIf="!isLoggingOut" color="warn">logout</mat-icon>
-    <mat-progress-spinner
-      *ngIf="isLoggingOut"
-      diameter="24"
-      mode="indeterminate"
-    ></mat-progress-spinner>
+    @if (!isLoggingOut) {
+      <mat-icon matListIcon color="warn">logout</mat-icon>
+    }
+    @if (isLoggingOut) {
+      <mat-progress-spinner
+        diameter="24"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+    }
     <span matLine class="text-warn">Logout</span>
   </mat-list-item>
 </mat-nav-list>
