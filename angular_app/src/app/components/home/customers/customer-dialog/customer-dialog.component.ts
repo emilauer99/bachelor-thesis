@@ -3,10 +3,10 @@ import {FormGroup} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DialogComponent} from '../../../utils/dialog/dialog.component';
 import {finalize} from 'rxjs';
-import {CustomerService} from '../../../../services/customer.service';
 import {CustomerModel} from '../../../../models/customer.model';
 import {CustomerFormComponent} from '../customer-form/customer-form.component';
 import {HttpHeaders} from '@angular/common/http';
+import {CUSTOMER_DATA, ICustomerDataProvider} from '../../../../services/providers/customers.provider';
 
 @Component({
   selector: 'app-customer-dialog',
@@ -23,7 +23,7 @@ export class CustomerDialogComponent {
   formGroup: FormGroup | undefined
 
   constructor(
-    private customerService: CustomerService,
+    @Inject(CUSTOMER_DATA) public customerService: ICustomerDataProvider,
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       title: string;

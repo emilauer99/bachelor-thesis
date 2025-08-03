@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {CustomerService} from '../../../services/customer.service';
 import {ProjectModel} from '../../../models/project.model';
 import {ConfirmDialogComponent} from '../../utils/confirm-dialog/confirm-dialog.component';
@@ -11,6 +11,8 @@ import {SpinnerComponent} from '../../utils/spinner/spinner.component';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {environment} from '../../../../environments/environment';
+import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/projects.provider';
+import {CUSTOMER_DATA, ICustomerDataProvider} from '../../../services/providers/customers.provider';
 
 @Component({
   selector: 'app-customers',
@@ -27,7 +29,7 @@ import {environment} from '../../../../environments/environment';
   styleUrl: './customers.component.sass'
 })
 export class CustomersComponent {
-  constructor(public customerService: CustomerService,
+  constructor(@Inject(CUSTOMER_DATA) public customerService: ICustomerDataProvider,
               private notificationService: CustomNotificationService,
               private dialog: MatDialog) {
     if(!this.customerService.customers())

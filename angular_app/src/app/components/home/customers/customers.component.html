@@ -21,9 +21,15 @@
             <mat-list-item class="list-item">
               <div class="w-100 d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center gap-2">
-                  <img [src]="environment.apiFileUrl + customer.imagePath"
-                       alt="customer"
-                       style="width: 40px; height: auto; object-fit: contain; border-radius: 8px;"/>
+                  <div class="d-flex justify-content-center" style="width: 50px">
+                    @if(customer.imagePath) {
+                    <img [src]="environment.apiFileUrl + customer.imagePath"
+                         alt="customer"
+                         style="width: 40px; height: auto; object-fit: contain; border-radius: 8px;"/>
+                    } @else {
+                      <mat-icon>person</mat-icon>
+                    }
+                  </div>
                   <div class="title">{{ customer.name }}</div>
                 </div>
                 <button mat-icon-button color="warn" (click)="confirmDelete(customer)">

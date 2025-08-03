@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, Inject, inject, signal} from '@angular/core';
 import {MatSidenavContainer, MatSidenavModule} from '@angular/material/sidenav';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MatToolbar} from '@angular/material/toolbar';
@@ -9,6 +9,7 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {finalize} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
 import {MobileService} from '../../services/mobile.service';
+import {AUTH_DATA, IAuthDataProvider} from '../../services/providers/auth.provider';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,7 @@ import {MobileService} from '../../services/mobile.service';
 export class HomeComponent {
   isLoggingOut: boolean = false
 
-  constructor(private authService: AuthService,
+  constructor(@Inject(AUTH_DATA) public authService: IAuthDataProvider,
               public mobileService: MobileService,
               private router: Router) {
   }
@@ -40,6 +41,7 @@ export class HomeComponent {
       .pipe(finalize(() => this.isLoggingOut = false)
       ).subscribe({
       next: () => {
+        console.log('logout')
         this.router.navigate(['/login']);
       },
       error: (error) => {

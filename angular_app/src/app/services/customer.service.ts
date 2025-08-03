@@ -1,10 +1,9 @@
-import {Injectable, signal} from '@angular/core';
+import {Inject, Injectable, signal} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {finalize, Observable, tap} from 'rxjs';
 import {CustomerModel} from '../models/customer.model';
-import {ProjectService} from './project.service';
-import {ProjectModel} from '../models/project.model';
+import {IProjectDataProvider, PROJECT_DATA} from './providers/projects.provider';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,7 @@ export class CustomerService {
   loading = signal<boolean>(false)
 
   constructor(private http: HttpClient,
-              private projectService: ProjectService) { }
+              @Inject(PROJECT_DATA) public projectService: IProjectDataProvider) { }
 
   getAll(): void {
     this.loading.set(true)

@@ -1,20 +1,20 @@
-import {Component, ElementRef, signal, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, signal, ViewChild} from '@angular/core';
 import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
 import {
   CdkDrag,
   CdkDragDrop, CdkDragMove,
   CdkDropList,
-  CdkDropListGroup, DragDrop,
+  CdkDropListGroup,
   moveItemInArray,
   transferArrayItem
 } from '@angular/cdk/drag-drop';
 import {SpinnerComponent} from '../../utils/spinner/spinner.component';
 import {EProjectState} from '../../../enums/e-project-state';
-import {ProjectService} from '../../../services/project.service';
 import {CustomNotificationService} from '../../../services/custom-notification.service';
 import {ProjectModel, ProjectStateList} from '../../../models/project.model';
 import {TitleCasePipe} from '@angular/common';
 import {finalize} from 'rxjs';
+import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/projects.provider';
 
 @Component({
   selector: 'app-board',
@@ -34,7 +34,7 @@ export class BoardComponent {
   currentlyLoadingIds = signal<number[]>([])
 
   constructor(
-    public projectService: ProjectService,
+    @Inject(PROJECT_DATA) public projectService: IProjectDataProvider,
     private notificationService: CustomNotificationService,
   ) {
     if (!this.projectService.projects()) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
@@ -9,6 +9,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardContent, MatCardHeader, MatCardModule} from '@angular/material/card';
 import {CustomNotificationService} from '../../services/custom-notification.service';
 import {finalize} from 'rxjs';
+import {AUTH_DATA, IAuthDataProvider} from '../../services/providers/auth.provider';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,7 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    @Inject(AUTH_DATA) public authService: IAuthDataProvider,
     private router: Router,
     private customNotificationService: CustomNotificationService
   ) {
@@ -62,6 +63,7 @@ export class LoginComponent {
       )
       .subscribe({
       next: (user) => {
+        console.log('lol')
         this.router.navigate(['/dashboard'], { state: { freshLogin: true } });
       },
       error: (error) => {

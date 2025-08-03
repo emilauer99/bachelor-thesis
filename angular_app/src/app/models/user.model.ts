@@ -5,4 +5,5 @@ export interface UserModel {
   email: string
   token?: string
   role: EUserRole
+  password?: string
 }

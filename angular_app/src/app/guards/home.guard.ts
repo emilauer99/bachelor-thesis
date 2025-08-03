@@ -1,9 +1,9 @@
 import {CanActivateFn, Router} from '@angular/router';
 import {inject} from '@angular/core';
-import {AuthService} from '../services/auth.service';
+import {AUTH_DATA, IAuthDataProvider} from '../services/providers/auth.provider';
 
 export const homeGuard: CanActivateFn = (route, state) => {
-  let authService = inject(AuthService)
+  const authService = inject(AUTH_DATA) as IAuthDataProvider;
   let router = inject(Router)
 
   if (authService.user()?.token) {

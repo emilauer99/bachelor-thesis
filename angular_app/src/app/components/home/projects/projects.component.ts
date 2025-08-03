@@ -1,4 +1,4 @@
-import {Component, computed, signal} from '@angular/core';
+import {Component, computed, Inject, signal} from '@angular/core';
 import {ProjectService} from '../../../services/project.service';
 import {ProjectModel} from '../../../models/project.model';
 import {MatList, MatListItem} from '@angular/material/list';
@@ -14,6 +14,7 @@ import {RouterLink} from '@angular/router';
 import {ProjectDialogComponent} from './project-dialog/project-dialog.component';
 import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
 import {MobileService} from '../../../services/mobile.service';
+import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/projects.provider';
 
 @Component({
   selector: 'app-projects',
@@ -49,7 +50,7 @@ export class ProjectsComponent {
     })
   })
 
-  constructor(public projectService: ProjectService,
+  constructor(@Inject(PROJECT_DATA) public projectService: IProjectDataProvider,
               private notificationService: CustomNotificationService,
               public mobileService: MobileService,
               private dialog: MatDialog) {

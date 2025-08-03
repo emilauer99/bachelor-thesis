@@ -1,4 +1,4 @@
-import {Component, computed, signal, ViewChild} from '@angular/core';
+import {Component, computed, Inject, signal, ViewChild} from '@angular/core';
 import {ProjectService} from '../../../services/project.service';
 import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
 import {UpcomingProjectsChartComponent} from './upcoming-projects-chart/upcoming-projects-chart.component';
@@ -7,6 +7,7 @@ import {CustomerProjectsChartComponent} from './customer-projects-chart/customer
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {SpinnerComponent} from '../../utils/spinner/spinner.component';
 import {EProjectState} from '../../../enums/e-project-state';
+import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/projects.provider';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,7 +39,7 @@ export class DashboardComponent {
     })
   })
 
-  constructor(public projectService: ProjectService) {
+  constructor(@Inject(PROJECT_DATA) public projectService: IProjectDataProvider) {
     if(!this.projectService.projects())
       this.projectService.getAll()
   }

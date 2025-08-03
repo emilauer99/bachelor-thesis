@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -7,15 +7,15 @@ import {
   HttpInterceptor,
   HttpRequest
 } from '@angular/common/http';
-import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 import {catchError, Observable, of, throwError} from 'rxjs';
+import {AUTH_DATA, IAuthDataProvider} from './providers/auth.provider';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(private authService: AuthService,
+  constructor(@Inject(AUTH_DATA) public authService: IAuthDataProvider,
               private router: Router) {
   }
 

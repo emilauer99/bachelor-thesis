@@ -1,4 +1,4 @@
-import {Component, effect, input, model, OnInit, output, signal, Signal} from '@angular/core';
+import {Component, effect, Inject, input, model, OnInit, output, signal, Signal} from '@angular/core';
 import {ProjectModel} from '../../../../models/project.model';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {EProjectState, getStateLabel} from '../../../../enums/e-project-state';
@@ -11,6 +11,7 @@ import {KeyValuePipe} from '@angular/common';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatButton} from '@angular/material/button';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {CUSTOMER_DATA, ICustomerDataProvider} from '../../../../services/providers/customers.provider';
 
 @Component({
   selector: 'app-project-form',
@@ -42,7 +43,7 @@ export class ProjectFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    public customerService: CustomerService
+    @Inject(CUSTOMER_DATA) public customerService: ICustomerDataProvider
   ) {
     effect(() => {
       if(this.formGroup())
@@ -59,7 +60,7 @@ export class ProjectFormComponent implements OnInit {
       description: [this.project()?.description],
       state: [this.project()?.state ?? EProjectState.PLANNED, Validators.required],
       isPublic: [this.project()?.isPublic ?? false],
-      customerId: [this.project()?.customer.id, Validators.required],
+      customer: [this.project()?.customer, Validators.required],
       budget: [this.project()?.budget],
       estimatedHours: [this.project()?.estimatedHours],
       startDate: [this.project()?.startDate, Validators.required],

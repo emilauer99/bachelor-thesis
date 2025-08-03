@@ -29,14 +29,14 @@
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Customer</mat-label>
-      <mat-select formControlName="customerId">
+      <mat-select formControlName="customer">
         @for(customer of customerService.customers(); track customer.id) {
-          <mat-option [value]="customer.id">
+          <mat-option [value]="customer">
             {{ customer.name }}
           </mat-option>
         }
       </mat-select>
-      @if(formGroup()!.get('customerId')?.hasError('required')) {
+      @if(formGroup()!.get('customer')?.hasError('required')) {
         <mat-error>Please select a customer</mat-error>
       }
     </mat-form-field>

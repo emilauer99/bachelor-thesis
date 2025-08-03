@@ -4,9 +4,9 @@ import {DialogComponent} from '../../../utils/dialog/dialog.component';
 import {ProjectModel} from '../../../../models/project.model';
 import {ProjectFormComponent} from '../project-form/project-form.component';
 import {FormGroup} from '@angular/forms';
-import {ProjectService} from '../../../../services/project.service';
 import {finalize} from 'rxjs';
 import {DatePipe} from '@angular/common';
+import {IProjectDataProvider, PROJECT_DATA} from '../../../../services/providers/projects.provider';
 
 @Component({
   selector: 'app-project-dialog',
@@ -23,7 +23,7 @@ export class ProjectDialogComponent {
   formGroup: FormGroup | undefined
 
   constructor(
-    private projectService: ProjectService,
+    @Inject(PROJECT_DATA) public projectService: IProjectDataProvider,
     private datePipe: DatePipe,
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
@@ -44,6 +44,7 @@ export class ProjectDialogComponent {
       startDate: this.datePipe.transform(this.formGroup!.value.startDate, 'yyyy-MM-dd'),
       endDate: this.datePipe.transform(this.formGroup!.value.endDate, 'yyyy-MM-dd'),
     }
+    console.log(data)
     if(this.data.project) {
       // do update
       this.projectService.update(this.data.project.id!, data)

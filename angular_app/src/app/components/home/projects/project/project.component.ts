@@ -1,4 +1,4 @@
-import {Component, effect, signal} from '@angular/core';
+import {Component, effect, Inject, signal} from '@angular/core';
 import {ProjectModel} from '../../../../models/project.model';
 import {ProjectService} from '../../../../services/project.service';
 import {CustomNotificationService} from '../../../../services/custom-notification.service';
@@ -18,6 +18,7 @@ import {ProjectDialogComponent} from '../project-dialog/project-dialog.component
 import {finalize} from 'rxjs';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {environment} from '../../../../../environments/environment';
+import {IProjectDataProvider, PROJECT_DATA} from '../../../../services/providers/projects.provider';
 
 @Component({
   selector: 'app-project',
@@ -45,7 +46,7 @@ export class ProjectComponent {
   deleteLoading: boolean = false
 
   constructor(
-    private projectService: ProjectService,
+    @Inject(PROJECT_DATA) public projectService: IProjectDataProvider,
     private notificationService: CustomNotificationService,
     private router: Router,
     private dialog: MatDialog
@@ -112,6 +113,7 @@ export class ProjectComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.project.set(result)
         this.notificationService.success("Project was updated.");
       }
     });
