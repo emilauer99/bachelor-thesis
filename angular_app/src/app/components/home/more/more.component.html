@@ -1,28 +1,38 @@
 <mat-nav-list>
   <mat-list-item (click)="onCustomers()">
-    <mat-icon matListIcon>people</mat-icon>
-    <span matLine>Customers</span>
-    <mat-icon matListIcon>chevron_right</mat-icon>
+    <div class="d-flex justify-content-between">
+      <div class="d-flex gap-2">
+        <mat-icon matListIcon>people</mat-icon>
+        <span matLine>Customers</span>
+      </div>
+      <mat-icon matListIcon>chevron_right</mat-icon>
+    </div>
   </mat-list-item>
 
   <mat-list-item (click)="onSettings()">
-    <mat-icon matListIcon>settings</mat-icon>
-    <span matLine>Settings</span>
-    <mat-icon matListIcon>chevron_right</mat-icon>
+    <div class="d-flex justify-content-between">
+      <div class="d-flex gap-2">
+        <mat-icon matListIcon>settings</mat-icon>
+        <span matLine>Settings</span>
+      </div>
+      <mat-icon matListIcon>chevron_right</mat-icon>
+    </div>
   </mat-list-item>
 
   <mat-divider></mat-divider>
 
   <mat-list-item (click)="logout()" [disabled]="isLoggingOut">
-    @if (!isLoggingOut) {
-      <mat-icon matListIcon color="warn">logout</mat-icon>
-    }
-    @if (isLoggingOut) {
-      <mat-progress-spinner
-        diameter="24"
-        mode="indeterminate"
-      ></mat-progress-spinner>
-    }
-    <span matLine class="text-warn">Logout</span>
+    <div class="d-flex gap-2">
+      @if (!isLoggingOut) {
+        <mat-icon matListIcon color="warn">logout</mat-icon>
+      }
+      @if (isLoggingOut) {
+        <mat-progress-spinner
+          diameter="24"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+      }
+      <span matLine class="text-warn">Logout</span>
+    </div>
   </mat-list-item>
 </mat-nav-list>

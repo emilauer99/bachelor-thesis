@@ -1,17 +1,13 @@
-<div class="d-flex flex-column h-100">
+<div class="d-flex flex-column h-100 position-relative">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="m-0">Customers</h2>
-    <button mat-raised-button color="primary" (click)="createCustomer()">
-      <mat-icon>add</mat-icon>
-      Create Customer
-    </button>
+    @if (!mobileService.isMobile()) {
+      <button mat-raised-button color="primary" (click)="createCustomer()">
+        <mat-icon>add</mat-icon>
+        Create Customer
+      </button>
+    }
   </div>
-  <!--  <button mat-button-->
-  <!--          class="py-3 d-flex align-items-center"-->
-  <!--          (click)="projectService.getAll()">-->
-  <!--    <mat-icon>refresh</mat-icon>-->
-  <!--    Refresh Projects-->
-  <!--  </button>-->
 
   <div class="flex-grow-1 overflow-auto">
     @if (!customerService.loading()) {
@@ -22,10 +18,10 @@
               <div class="w-100 d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center gap-2">
                   <div class="d-flex justify-content-center" style="width: 50px">
-                    @if(customer.imagePath) {
-                    <img [src]="environment.apiFileUrl + customer.imagePath"
-                         alt="customer"
-                         style="width: 40px; height: auto; object-fit: contain; border-radius: 8px;"/>
+                    @if (customer.imagePath) {
+                      <img [src]="environment.apiFileUrl + customer.imagePath"
+                           alt="customer"
+                           style="width: 40px; height: auto; object-fit: contain; border-radius: 8px;"/>
                     } @else {
                       <mat-icon>person</mat-icon>
                     }
@@ -53,7 +49,9 @@
     }
   </div>
 
-  <!--  <button mat-fab color="primary" class="fab">-->
-  <!--    <mat-icon>add</mat-icon>-->
-  <!--  </button>-->
+  @if (mobileService.isMobile()) {
+    <button mat-fab color="primary" class="fab" (click)="createCustomer()">
+      <mat-icon>add</mat-icon>
+    </button>
+  }
 </div>
