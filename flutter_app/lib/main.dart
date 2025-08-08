@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/providers/mobile_provider.dart';
 import 'package:flutter_app/providers/repository_providers.dart';
 import 'package:flutter_app/theme.dart';
 import 'package:flutter_app/ui/screens/board_screen.dart';
+import 'package:flutter_app/ui/screens/customers_screen.dart';
 import 'package:flutter_app/ui/screens/home_screen.dart';
 import 'package:flutter_app/ui/screens/login_screen.dart';
 import 'package:flutter_app/ui/screens/others_screen.dart';
@@ -35,6 +37,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'board',
             builder: (context, state) => const BoardScreen(),
+          ),
+          GoRoute(
+            path: 'customers',
+            builder: (context, state) => const CustomersScreen(),
           ),
           GoRoute(
             path: 'others',
@@ -70,9 +76,6 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     if (EnvironmentConfig.mockData) {
       ref.read(authRepositoryProvider);
-
-      // unawaited(ref.read(customerRepositoryProvider).getAll());
-      // unawaited(ref.read(projectRepositoryProvider).getAll());
     }
   }
 
@@ -85,7 +88,17 @@ class _MyAppState extends ConsumerState<MyApp> {
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
       title: 'PMT',
-      theme: theme
+      theme: theme,
+      builder: (context, child) => LayoutBuilder(
+        builder: (context, constraints) {
+          return ProviderScope(
+            overrides: [
+              mobileLayoutProvider.overrideWithValue(constraints.maxWidth),
+            ],
+            child: child!,
+          );
+        },
+      ),
     );
   }
 }

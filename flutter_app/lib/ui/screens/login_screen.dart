@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/api/auth_api.dart';
 import 'package:flutter_app/env_config.dart';
 import 'package:flutter_app/models/user_model.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
+import 'package:flutter_app/providers/mobile_provider.dart';
 import 'package:flutter_app/providers/repository_providers.dart';
 import 'package:flutter_app/repositories/auth_repository.dart';
 import 'package:flutter_app/ui/widgets/notifications.dart';
@@ -68,101 +68,111 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
+    final mobileLayout = ref.watch(isMobileLayoutProvider);
+
+    final inner = SingleChildScrollView(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'PMT',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'A project management tool',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
+          ),
+          const SizedBox(height: 20),
+          Form(
+            key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'PMT',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an email address.';
+                    }
+                    final emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                    if (!emailRegExp.hasMatch(value)) {
+                      return 'Please enter a valid email address.';
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  'A project management tool',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
+                  ),
+                  obscureText: _obscurePassword,
+                  validator:
+                      (value) =>
+                  value?.isEmpty ?? true
+                      ? 'Please enter a password.'
+                      : null,
                 ),
-                const SizedBox(height: 20),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          prefixIcon: Icon(Icons.email),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter an email address.';
-                          }
-                          final emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-                          if (!emailRegExp.hasMatch(value)) {
-                            return 'Please enter a valid email address.';
-                          }
-                          return null;
-                        },
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child:
+                  _loading
+                      ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                      : ElevatedButton(
+                    onPressed: _submitForm,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
                       ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
-                          ),
-                        ),
-                        obscureText: _obscurePassword,
-                        validator:
-                            (value) =>
-                                value?.isEmpty ?? true
-                                    ? 'Please enter a password.'
-                                    : null,
-                      ),
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        width: double.infinity,
-                        child:
-                            _loading
-                                ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                                : ElevatedButton(
-                                  onPressed: _submitForm,
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 16,
-                                    ),
-                                  ),
-                                  child: const Text('Login'),
-                                ),
-                      ),
-                    ],
+                    ),
+                    child: const Text('Login'),
                   ),
                 ),
               ],
             ),
           ),
+        ],
+      ),
+    );
+
+
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: !mobileLayout ? ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 420),
+            child: Card(
+                child: inner
+            ),
+          ) : inner,
         ),
       ),
     );

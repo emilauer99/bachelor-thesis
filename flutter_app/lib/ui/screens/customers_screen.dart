@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/env_config.dart';
 import 'package:flutter_app/models/customer_model.dart';
 import 'package:flutter_app/providers/customer_list_provider.dart';
+import 'package:flutter_app/providers/mobile_provider.dart';
 import 'package:flutter_app/ui/widgets/customer_list_tile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../theme.dart';
+import '../../variables.dart';
 
 class CustomersScreen extends ConsumerStatefulWidget {
   const CustomersScreen({super.key});
@@ -30,36 +34,72 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
   @override
   Widget build(BuildContext context) {
     final customersAsync = ref.watch(customerListProvider);
+    final mobileLayout = ref.watch(isMobileLayoutProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Customers'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddCustomerModal(context),
-        child: const Icon(Icons.add),
-      ),
-      body: RefreshIndicator(
-        onRefresh: () => ref.read(customerListProvider.notifier).refresh(),
-        child: customersAsync.when(
-          loading: () {
-            if (ref.read(customerListProvider.notifier).initialLoad) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            return _buildCustomerList(currentCustomers ?? []);
-          },
-          error: (error, stack) => SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Center(child: Text('Error: $error')),
+      appBar: mobileLayout ? AppBar(title: const Text('Customers')) : null,
+      floatingActionButton:
+          mobileLayout
+              ? FloatingActionButton(
+                onPressed: () => _showAddCustomerModal(context),
+                child: const Icon(Icons.add),
+              )
+              : null,
+      body: Column(
+        children: [
+          if (!mobileLayout) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppVariables.screenPadding,
+                AppVariables.screenPadding,
+                AppVariables.screenPadding,
+                0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Customers", style: theme.textTheme.titleLarge),
+                  ElevatedButton(
+                    onPressed: () => _showAddCustomerModal(context),
+                    child: Row(
+                      children: [
+                        Icon(Icons.add),
+                        SizedBox(width: 5),
+                        const Text('Create Customer'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh:
+                  () => ref.read(customerListProvider.notifier).refresh(),
+              child: customersAsync.when(
+                loading: () {
+                  if (ref.read(customerListProvider.notifier).initialLoad) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return _buildCustomerList(currentCustomers ?? []);
+                },
+                error:
+                    (error, stack) => SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: Center(child: Text('Error: $error')),
+                      ),
+                    ),
+                data: (customers) {
+                  currentCustomers = customers;
+                  return _buildCustomerList(customers);
+                },
+              ),
             ),
           ),
-          data: (customers) {
-            currentCustomers = customers;
-            return _buildCustomerList(customers);
-          },
-        ),
+        ],
       ),
     );
   }
@@ -68,71 +108,77 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => StatefulBuilder(
-        builder: (BuildContext context, StateSetter setModalState) {
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Customer Name',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    OutlinedButton(
-                      onPressed: () async {
-                        final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-                        if (pickedFile != null) {
-                          setModalState(() {
-                            _selectedImage = File(pickedFile.path);
-                          });
-                        }
-                      },
-                      child: const Text('Select Image from Gallery'),
-                    ),
-                    const SizedBox(height: 8),
-                    if (_selectedImage != null)
-                      SizedBox(
-                        height: 100,
-                        child: Image.file(_selectedImage!, fit: BoxFit.cover),
-                      ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () => _createNewCustomer(context),
-                      child: const Text('Create Customer'),
-                    ),
-                  ],
+      builder:
+          (context) => StatefulBuilder(
+            builder: (BuildContext context, StateSetter setModalState) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-              ),
-            ),
-          );
-        },
-      ),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextFormField(
+                          controller: _nameController,
+                          decoration: const InputDecoration(
+                            labelText: 'Customer Name',
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a name';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        OutlinedButton(
+                          onPressed: () async {
+                            final pickedFile = await ImagePicker().pickImage(
+                              source: ImageSource.gallery,
+                            );
+                            if (pickedFile != null) {
+                              setModalState(() {
+                                _selectedImage = File(pickedFile.path);
+                              });
+                            }
+                          },
+                          child: const Text('Select Image from Gallery'),
+                        ),
+                        const SizedBox(height: 8),
+                        if (_selectedImage != null)
+                          SizedBox(
+                            height: 100,
+                            child: Image.file(
+                              _selectedImage!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () => _createNewCustomer(context),
+                          child: const Text('Create Customer'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
     );
   }
 
   Future<void> _createNewCustomer(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       if (_selectedImage == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please select an image')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Please select an image')));
         return;
       }
 
@@ -141,14 +187,14 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
         showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (context) => const Center(child: CircularProgressIndicator()),
+          builder:
+              (context) => const Center(child: CircularProgressIndicator()),
         );
 
         // Call API to create customer
-        await ref.read(customerListProvider.notifier).createCustomer(
-          _nameController.text,
-          _selectedImage!.path,
-        );
+        await ref
+            .read(customerListProvider.notifier)
+            .createCustomer(_nameController.text, _selectedImage!.path);
 
         // Clear form and close modal
         _nameController.clear();
@@ -160,9 +206,9 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
         ref.read(customerListProvider.notifier).refresh();
       } catch (e) {
         Navigator.pop(context); // Close loading dialog
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error creating customer: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error creating customer: $e')));
       }
     }
   }
@@ -171,11 +217,12 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
     return ListView.builder(
       physics: const AlwaysScrollableScrollPhysics(),
       itemCount: customers.length,
-      itemBuilder: (context, index) => CustomerListTile(
-        customer: customers[index],
-        isDismissible: true,  // Enable dismissible here
-        onDelete: (id) => _deleteCustomer(id, context),
-      ),
+      itemBuilder:
+          (context, index) => CustomerListTile(
+            customer: customers[index],
+            isDismissible: ref.read(isMobileLayoutProvider) ? true : false, // Enable dismissible here
+            onDelete: (id) => _deleteCustomer(id, context),
+          ),
     );
   }
 
