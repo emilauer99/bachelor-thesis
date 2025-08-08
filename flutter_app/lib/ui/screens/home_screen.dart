@@ -20,23 +20,24 @@ import 'board_screen.dart';
 import 'others_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key, this.freshLogin = false});
+  const HomeScreen({super.key, required this.child, required this.state});
 
-  final bool freshLogin;
+  final Widget child;
+  final GoRouterState state;
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int _currentIndex = 0;
   bool _isValidatingToken = true;
 
   @override
   void initState() {
     super.initState();
+    final freshLogin = widget.state.uri.queryParameters['fresh'] == '1';
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!widget.freshLogin) {
+      if (!freshLogin) {
         _validateAuthState();
       } else {
         setState(() => _isValidatingToken = false);
@@ -78,9 +79,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
+  // Map current URL → selected index
+  int _indexFromLocation(String location, bool mobile) {
+    if (location.startsWith('/home/projects')) return 1;
+    if (location.startsWith('/home/board')) return 2;
+    if (mobile) {
+      if (location.startsWith('/home/others')) return 3;
+    } else {
+      if (location.startsWith('/home/customers')) return 3;
+    }
+    return 0; // /home => Dashboard
+  }
+
+  // Map index → route to go to
+  String _locationFromIndex(int i, bool mobile) {
+    switch (i) {
+      case 1: return '/home/projects';
+      case 2: return '/home/board';
+      case 3: return mobile ? '/home/others' : '/home/customers';
+      default: return '/home';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_isValidatingToken) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     final mobileLayout = ref.watch(isMobileLayoutProvider);
+    final location = GoRouterState.of(context).uri.toString();
+    print(location);
+    final selectedIndex = _indexFromLocation(location, mobileLayout);
+    print(selectedIndex);
+
     final List<Widget> tabs = [
       const DashboardScreen(),
       const ProjectsScreen(),
@@ -88,23 +120,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       mobileLayout ? OthersScreen() : CustomersScreen(),
     ];
 
-    if (_isValidatingToken) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-
     return Scaffold(
       appBar: AppBar(title: const Text('PMT'), centerTitle: true),
       backgroundColor: Colors.white,
       body:
           mobileLayout
-              ? tabs[_currentIndex]
+              ? widget.child
               : Row(
                 children: [
                   NavigationRail(
                     extended: true,
-                    selectedIndex: _currentIndex,
+                    selectedIndex: selectedIndex,
                     onDestinationSelected:
-                        (i) => setState(() => _currentIndex = i),
+                        (i) => context.go(_locationFromIndex(i, mobileLayout)),
                     leading: const SizedBox(height: 8),
                     destinations: [
                       NavigationRailDestination(
@@ -159,15 +187,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                   const VerticalDivider(width: 1),
-                  Expanded(child: tabs[_currentIndex]),
+                  Expanded(child: widget.child),
                 ],
               ),
       bottomNavigationBar:
           mobileLayout
               ? BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
-                currentIndex: _currentIndex,
-                onTap: (i) => setState(() => _currentIndex = i),
+                currentIndex: selectedIndex,
+                onTap: (i) => context.go(_locationFromIndex(i, mobileLayout)),
                 items: const [
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
