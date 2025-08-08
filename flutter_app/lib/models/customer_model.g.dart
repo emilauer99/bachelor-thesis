@@ -10,7 +10,7 @@ _CustomerModel _$CustomerModelFromJson(Map<String, dynamic> json) =>
     _CustomerModel(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
-      imagePath: json['imagePath'] as String,
+      imagePath: json['imagePath'] as String?,
     );
 
 Map<String, dynamic> _$CustomerModelToJson(_CustomerModel instance) =>

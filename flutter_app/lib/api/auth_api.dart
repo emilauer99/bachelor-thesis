@@ -1,6 +1,9 @@
 import 'package:flutter_app/api/api_delegate.dart';
 
-final class AuthApi with DioDelegate {
+import '../models/user_model.dart';
+import '../repositories/auth_repository.dart';
+
+final class AuthApi with DioDelegate implements IAuthRepository {
   AuthApi(var ref) {
     initializeDio(ref);
   }

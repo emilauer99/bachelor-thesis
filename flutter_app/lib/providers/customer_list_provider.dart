@@ -1,37 +1,33 @@
-import 'package:flutter_app/api/customer_api.dart';
 import 'package:flutter_app/models/customer_model.dart';
+import 'package:flutter_app/providers/repository_providers.dart';
 import 'package:riverpod/riverpod.dart';
 
-class CustomerListNotifier extends StateNotifier<AsyncValue<List<CustomerModel>>> {
-  final Ref _ref;
-  bool initialLoad = true;
+import '../repositories/customer_repository.dart';
 
-  CustomerListNotifier(this._ref) : super(const AsyncValue.loading()) {
-    _loadCustomers();
+class CustomerListNotifier extends StateNotifier<AsyncValue<List<CustomerModel>>> {
+  bool initialLoad = true;
+  final ICustomerRepository _repo;
+
+  CustomerListNotifier(this._repo) : super(const AsyncValue.loading()) {
+    _load();
   }
 
-  Future<void> _loadCustomers() async {
-    state = const AsyncValue.loading();
+  Future<void> _load() async {
     try {
-      final response = await CustomerApi(_ref).getAll();
-      final customers = (response as List)
-          .map((json) => CustomerModel.fromJson(json))
-          .toList();
-      state = AsyncValue.data(customers);
-    } catch (e, stackTrace) {
-      state = AsyncValue.error(e, stackTrace);
-    } finally {
-      initialLoad = false;
+      final c = await _repo.getAll();
+      state = AsyncValue.data(c);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
     }
   }
 
   Future<void> refresh() async {
-    await _loadCustomers();
+    await _load();
   }
 
   Future<void> createCustomer(String name, String imagePath) async {
     try {
-      await CustomerApi(_ref).create(name, imagePath);
+      await _repo.create(name, imagePath);
     } catch (e) {
       rethrow;
     }
@@ -43,7 +39,7 @@ class CustomerListNotifier extends StateNotifier<AsyncValue<List<CustomerModel>>
         state = AsyncValue.data(customers.where((p) => p.id != id).toList());
       });
 
-      await CustomerApi(_ref).delete(id);
+      await _repo.delete(id);
     } catch (e, stackTrace) {
       state.whenData((customers) {
         final customerToRestore = customers.firstWhere((p) => p.id == id);
@@ -55,6 +51,6 @@ class CustomerListNotifier extends StateNotifier<AsyncValue<List<CustomerModel>>
 }
 
 final customerListProvider = StateNotifierProvider<CustomerListNotifier, AsyncValue<List<CustomerModel>>>((ref) {
-  return CustomerListNotifier(ref);
+  return CustomerListNotifier(ref.read(customerRepositoryProvider));
 });
 

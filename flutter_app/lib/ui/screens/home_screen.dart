@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api/auth_api.dart';
+import 'package:flutter_app/env_config.dart';
 import 'package:flutter_app/models/user_model.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
 import 'package:flutter_app/ui/screens/board_screen.dart';
@@ -52,19 +53,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       return;
     }
 
-    try {
-      final response = await AuthApi(ref).getUser();
-      final user = UserModel.fromJson(response);
-      // Update auth state with fresh user data
-      await ref.read(authStateProvider.notifier).authenticate(user);
-    } catch (e) {
-      if(kDebugMode) {
-        print(e);
+    if(!EnvironmentConfig.mockData) {
+      try {
+        final response = await AuthApi(ref).getUser();
+        final user = UserModel.fromJson(response);
+        // Update auth state with fresh user data
+        await ref.read(authStateProvider.notifier).authenticate(user);
+      } catch (e) {
+        if(kDebugMode) {
+          print(e);
+        }
+        // Token is invalid or request failed
+        await ref.read(authStateProvider.notifier).resetAuthentication();
+        if (mounted) context.go('/login');
+      } finally {
+        if (mounted) {
+          setState(() => _isValidatingToken = false);
+        }
       }
-      // Token is invalid or request failed
-      await ref.read(authStateProvider.notifier).resetAuthentication();
-      if (mounted) context.go('/login');
-    } finally {
+    } else {
       if (mounted) {
         setState(() => _isValidatingToken = false);
       }

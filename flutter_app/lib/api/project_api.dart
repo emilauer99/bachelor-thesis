@@ -1,7 +1,8 @@
 import 'package:flutter_app/api/api_delegate.dart';
 import 'package:flutter_app/models/project_model.dart';
+import 'package:flutter_app/repositories/project_repository.dart';
 
-final class ProjectApi with DioDelegate {
+final class ProjectApi with DioDelegate implements IProjectRepository {
   ProjectApi(var ref) {
     initializeDio(ref);
   }

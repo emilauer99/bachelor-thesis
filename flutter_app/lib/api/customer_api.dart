@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/api/api_delegate.dart';
+import 'package:flutter_app/models/customer_model.dart';
+import 'package:flutter_app/repositories/customer_repository.dart';
 
-final class CustomerApi with DioDelegate {
+final class CustomerApi with DioDelegate implements ICustomerRepository {
   CustomerApi(var ref) {
     initializeDio(ref);
   }

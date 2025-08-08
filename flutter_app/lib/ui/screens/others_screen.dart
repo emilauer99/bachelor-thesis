@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api/auth_api.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
+import 'package:flutter_app/providers/repository_providers.dart';
+import 'package:flutter_app/repositories/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,6 +19,8 @@ class _OthersScreenState extends ConsumerState<OthersScreen> {
   bool _isLoggingOut = false;
 
   Future<void> _logout(BuildContext context) async {
+    final IAuthRepository repo = ref.read(authRepositoryProvider);
+
     // Show confirmation dialog
     final shouldLogout = await showDialog<bool>(
       context: context,
@@ -44,7 +48,7 @@ class _OthersScreenState extends ConsumerState<OthersScreen> {
 
     try {
       await Future.wait([
-        AuthApi(ref).logout(),
+        repo.logout(),
         ref.read(authStateProvider.notifier).resetAuthentication(),
       ]);
 

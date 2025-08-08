@@ -63,7 +63,24 @@ class CustomerListTile extends StatelessWidget {
     );
   }
 
-  Widget _buildCustomerAvatar(String imagePath) {
+  Widget _buildCustomerAvatar(String? imagePath) {
+    Widget placeholder() => Container(
+      color: Colors.grey[200],
+      alignment: Alignment.center,
+      child: const Icon(Icons.person, size: 24, color: Colors.grey),
+    );
+
+    if (imagePath == null || imagePath.isEmpty) {
+      return SizedBox(
+        width: 48,
+        height: 48,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: placeholder(),
+        ),
+      );
+    }
+
     final imageUrl = '${EnvironmentConfig.apiFileURL}$imagePath';
     return SizedBox(
       width: 48,

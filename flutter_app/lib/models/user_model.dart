@@ -14,7 +14,8 @@ abstract class UserModel with _$UserModel {
     required int id,
     required String email,
     required EUserRole role,
-    String? token
+    String? token,
+    String? password
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

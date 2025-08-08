@@ -1,6 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app/providers/repository_providers.dart';
 import 'package:flutter_app/theme.dart';
-import 'package:flutter_app/ui/screens/board_screen.dart';
 import 'package:flutter_app/ui/screens/board_screen.dart';
 import 'package:flutter_app/ui/screens/home_screen.dart';
 import 'package:flutter_app/ui/screens/login_screen.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_app/ui/screens/others_screen.dart';
 import 'package:flutter_app/ui/screens/projects_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import 'env_config.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -59,6 +63,18 @@ class MyApp extends ConsumerStatefulWidget {
 
 
 class _MyAppState extends ConsumerState<MyApp> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (EnvironmentConfig.mockData) {
+      ref.read(authRepositoryProvider);
+
+      // unawaited(ref.read(customerRepositoryProvider).getAll());
+      // unawaited(ref.read(projectRepositoryProvider).getAll());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

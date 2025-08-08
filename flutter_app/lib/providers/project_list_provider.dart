@@ -1,21 +1,23 @@
-import 'package:flutter_app/api/project_api.dart';
+import 'package:flutter_app/env_config.dart';
 import 'package:flutter_app/models/project_model.dart';
+import 'package:flutter_app/providers/repository_providers.dart';
+import 'package:flutter_app/repositories/project_repository.dart';
 import 'package:riverpod/riverpod.dart';
 
 class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> {
-  final Ref _ref;
+  final IProjectRepository _repo;
   bool initialLoad = true;
   ProjectModel? currentlyUpdatingProject;
 
-  ProjectListNotifier(this._ref) : super(const AsyncValue.loading()) {
-    _loadProjects();
+  ProjectListNotifier(this._repo) : super(const AsyncValue.loading()) {
+    _load();
   }
 
-  Future<void> _loadProjects() async {
+  Future<void> _load() async {
     state = const AsyncValue.loading();
     try {
-      final response = await ProjectApi(_ref).getAll();
-      final projects = (response as List)
+      final response = await _repo.getAll();
+      final projects = EnvironmentConfig.mockData ? response : (response as List)
           .map((json) => ProjectModel.fromJson(json))
           .toList();
       state = AsyncValue.data(projects);
@@ -27,13 +29,13 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
   }
 
   Future<void> refresh() async {
-    await _loadProjects();
+    await _load();
   }
 
   Future<ProjectModel> createProject(ProjectModel project) async {
     try {
-      final response = await ProjectApi(_ref).create(project);
-      final newProject = ProjectModel.fromJson(response);
+      final response = await _repo.create(project);
+      final newProject = EnvironmentConfig.mockData ? response : ProjectModel.fromJson(response);
 
       state.whenData((projects) {
         state = AsyncValue.data([...projects, newProject]);
@@ -69,8 +71,8 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
         state = AsyncValue.data(newProjects);
       });
 
-      final response = await ProjectApi(_ref).update(id, project);
-      final updatedProject = ProjectModel.fromJson(response);
+      final response = await _repo.update(id, project);
+      final updatedProject = EnvironmentConfig.mockData ? response : ProjectModel.fromJson(response);
 
       // Ensure server response matches our update
       state.whenData((projects) {
@@ -115,7 +117,7 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
         state = AsyncValue.data(projects.where((p) => p.id != id).toList());
       });
 
-      await ProjectApi(_ref).delete(id);
+      await _repo.delete(id);
     } catch (e, stackTrace) {
       state.whenData((projects) {
         final projectToRestore = projects.firstWhere((p) => p.id == id);
@@ -127,5 +129,5 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
 }
 
 final projectListProvider = StateNotifierProvider<ProjectListNotifier, AsyncValue<List<ProjectModel>>>((ref) {
-  return ProjectListNotifier(ref);
+  return ProjectListNotifier(ref.read(projectRepositoryProvider));
 });

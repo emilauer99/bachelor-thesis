@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "email": "admin@pmt.at",
+    "password": "12345678",
+    "role": "admin",
+    "token": "mocked-admin-token-xyz"
+  }
+]

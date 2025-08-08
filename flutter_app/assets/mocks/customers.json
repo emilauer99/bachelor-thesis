@@ -1,0 +1,252 @@
+[
+  {
+    "id": 1,
+    "name": "Prime Technologies",
+    "imagePath": "customer9.png"
+  },
+  {
+    "id": 2,
+    "name": "Prime Enterprises",
+    "imagePath": "customer10.png"
+  },
+  {
+    "id": 3,
+    "name": "Green Systems",
+    "imagePath": "customer7.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Global Enterprises",
+    "imagePath": "customer2.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Green Industries",
+    "imagePath": null
+  },
+  {
+    "id": 6,
+    "name": "Global Technologies",
+    "imagePath": "customer8.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Rapid Technologies",
+    "imagePath": "customer9.png"
+  },
+  {
+    "id": 8,
+    "name": "Red Dynamics",
+    "imagePath": "customer6.png"
+  },
+  {
+    "id": 9,
+    "name": "Emerald Ventures",
+    "imagePath": "customer4.png"
+  },
+  {
+    "id": 10,
+    "name": "Red Innovations",
+    "imagePath": null
+  },
+  {
+    "id": 11,
+    "name": "Golden Concepts",
+    "imagePath": "customer5.png"
+  },
+  {
+    "id": 12,
+    "name": "Golden Enterprises",
+    "imagePath": null
+  },
+  {
+    "id": 13,
+    "name": "Blue Solutions",
+    "imagePath": "customer2.jpg"
+  },
+  {
+    "id": 14,
+    "name": "Crystal Ventures",
+    "imagePath": "customer7.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Rapid Industries",
+    "imagePath": null
+  },
+  {
+    "id": 16,
+    "name": "Red Innovations",
+    "imagePath": "customer10.png"
+  },
+  {
+    "id": 17,
+    "name": "Red Enterprises",
+    "imagePath": "customer6.png"
+  },
+  {
+    "id": 18,
+    "name": "Rapid Dynamics",
+    "imagePath": "customer5.png"
+  },
+  {
+    "id": 19,
+    "name": "Green Enterprises",
+    "imagePath": null
+  },
+  {
+    "id": 20,
+    "name": "Emerald Concepts",
+    "imagePath": "customer5.png"
+  },
+  {
+    "id": 21,
+    "name": "Prime Technologies",
+    "imagePath": "customer6.png"
+  },
+  {
+    "id": 22,
+    "name": "Silver Holdings",
+    "imagePath": "customer5.png"
+  },
+  {
+    "id": 23,
+    "name": "Green Solutions",
+    "imagePath": "customer10.png"
+  },
+  {
+    "id": 24,
+    "name": "Blue Ventures",
+    "imagePath": "customer2.jpg"
+  },
+  {
+    "id": 25,
+    "name": "Silver Solutions",
+    "imagePath": "customer2.jpg"
+  },
+  {
+    "id": 26,
+    "name": "Green Solutions",
+    "imagePath": "customer8.jpg"
+  },
+  {
+    "id": 27,
+    "name": "Emerald Holdings",
+    "imagePath": "customer7.jpg"
+  },
+  {
+    "id": 28,
+    "name": "Rapid Innovations",
+    "imagePath": "customer6.png"
+  },
+  {
+    "id": 29,
+    "name": "Blue Enterprises",
+    "imagePath": "customer3.jpg"
+  },
+  {
+    "id": 30,
+    "name": "Prime Enterprises",
+    "imagePath": "customer9.png"
+  },
+  {
+    "id": 31,
+    "name": "Silver Enterprises",
+    "imagePath": "customer8.jpg"
+  },
+  {
+    "id": 32,
+    "name": "Red Systems",
+    "imagePath": "customer5.png"
+  },
+  {
+    "id": 33,
+    "name": "Red Dynamics",
+    "imagePath": "customer5.png"
+  },
+  {
+    "id": 34,
+    "name": "Global Systems",
+    "imagePath": "customer7.jpg"
+  },
+  {
+    "id": 35,
+    "name": "Global Holdings",
+    "imagePath": "customer2.jpg"
+  },
+  {
+    "id": 36,
+    "name": "Prime Holdings",
+    "imagePath": "customer10.png"
+  },
+  {
+    "id": 37,
+    "name": "Blue Enterprises",
+    "imagePath": "customer8.jpg"
+  },
+  {
+    "id": 38,
+    "name": "Green Enterprises",
+    "imagePath": "customer6.png"
+  },
+  {
+    "id": 39,
+    "name": "Rapid Dynamics",
+    "imagePath": "customer6.png"
+  },
+  {
+    "id": 40,
+    "name": "Prime Technologies",
+    "imagePath": "customer9.png"
+  },
+  {
+    "id": 41,
+    "name": "Prime Technologies",
+    "imagePath": "customer4.png"
+  },
+  {
+    "id": 42,
+    "name": "Crystal Holdings",
+    "imagePath": null
+  },
+  {
+    "id": 43,
+    "name": "Crystal Innovations",
+    "imagePath": "customer1.png"
+  },
+  {
+    "id": 44,
+    "name": "Prime Technologies",
+    "imagePath": "customer2.jpg"
+  },
+  {
+    "id": 45,
+    "name": "Green Technologies",
+    "imagePath": "customer2.jpg"
+  },
+  {
+    "id": 46,
+    "name": "Silver Ventures",
+    "imagePath": "customer1.png"
+  },
+  {
+    "id": 47,
+    "name": "Silver Holdings",
+    "imagePath": "customer5.png"
+  },
+  {
+    "id": 48,
+    "name": "Rapid Ventures",
+    "imagePath": "customer4.png"
+  },
+  {
+    "id": 49,
+    "name": "Emerald Holdings",
+    "imagePath": "customer9.png"
+  },
+  {
+    "id": 50,
+    "name": "Emerald Holdings",
+    "imagePath": "customer2.jpg"
+  }
+]

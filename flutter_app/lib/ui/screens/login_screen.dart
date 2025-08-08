@@ -1,8 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/api/auth_api.dart';
+import 'package:flutter_app/env_config.dart';
 import 'package:flutter_app/models/user_model.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
+import 'package:flutter_app/providers/repository_providers.dart';
+import 'package:flutter_app/repositories/auth_repository.dart';
 import 'package:flutter_app/ui/widgets/notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -30,14 +33,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _submitForm() async {
+    final IAuthRepository repo = ref.read(authRepositoryProvider);
+
     if (_formKey.currentState?.validate() ?? false) {
       setState(() => _loading = true);
 
       try {
-        final response = await AuthApi(
-          ref,
-        ).login(_emailController.text, _passwordController.text);
-        final user = UserModel.fromJson(response);
+        final response = await repo.login(_emailController.text, _passwordController.text);
+        final user = EnvironmentConfig.mockData ? response : UserModel.fromJson(response);
         await ref.read(authStateProvider.notifier).authenticate(user);
 
         if (mounted) {
@@ -55,6 +58,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         } else {
           showErrorNotification(context, "Unknown error.");
         }
+      } on Exception catch (e) {
+        showErrorNotification(context, "Credentials incorrect.");
       } finally {
         setState(() => _loading = false);
       }
