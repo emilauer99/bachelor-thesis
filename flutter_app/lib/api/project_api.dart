@@ -7,17 +7,20 @@ final class ProjectApi with DioDelegate implements IProjectRepository {
     initializeDio(ref);
   }
 
+  @override
   Future<dynamic> getAll() async {
     const apiUrl = '/projects';
     return await getRequest(apiUrl);
   }
 
+  @override
   Future<dynamic> create(ProjectModel project) async {
     const apiUrl = '/projects';
     project = project.copyWith(customerId: project.customer.id);
     return await postRequest(apiUrl, requestBody: project.toJson());
   }
 
+  @override
   Future<dynamic> update(int id, ProjectModel newProject) async {
     var apiUrl = '/projects/$id';
     newProject = newProject.copyWith(customerId: newProject.customer.id);
@@ -27,8 +30,15 @@ final class ProjectApi with DioDelegate implements IProjectRepository {
     );
   }
 
+  @override
   Future<dynamic> delete(int id) async {
     final apiUrl = '/projects/$id';
     return await deleteRequest(apiUrl);
   }
+
+  @override
+  Future<dynamic> setStateOfAll(EProjectState state) {
+    throw UnimplementedError('setStateOfAll is mock-only');
+  }
+
 }

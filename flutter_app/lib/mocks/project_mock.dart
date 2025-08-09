@@ -44,4 +44,11 @@ class ProjectMock implements IProjectRepository {
   Future<void> delete(int id) async {
     _data.removeWhere((p) => p.id == id);
   }
+
+  @override
+  Future<dynamic> setStateOfAll(EProjectState state) async {
+    if (_data.isEmpty) await _init();
+    _data = _data.map((p) => p.copyWith(state: state)).toList();
+    return List.of(_data);
+  }
 }

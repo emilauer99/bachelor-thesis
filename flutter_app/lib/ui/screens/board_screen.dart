@@ -9,6 +9,8 @@ import 'package:flutter_app/ui/widgets/notifications.dart';
 import 'package:flutter_app/variables.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../env_config.dart';
+
 class ProjectStateList{
   EProjectState state;
   List<ProjectModel> projects;
@@ -86,6 +88,44 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
                 padding: const EdgeInsets.fromLTRB(AppVariables.screenPadding, AppVariables.screenPadding, AppVariables.screenPadding, 0),
                 child: ProjectFilters(projectsAsync: projectsAsync, showStateFilter: false,),
               ),
+
+              if (EnvironmentConfig.mockData)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppVariables.screenPadding,
+                    12,
+                    AppVariables.screenPadding,
+                    0,
+                  ),
+                  child: Wrap(
+                    spacing: 12,
+                    runSpacing: 8,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () =>
+                            _setAll(context, ref, EProjectState.planned,
+                                'All projects set to planned.'),
+                        icon: const Icon(Icons.schedule),
+                        label: const Text('Set all planned'),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () =>
+                            _setAll(context, ref, EProjectState.inProgress,
+                                'All projects set to in-progress.'),
+                        icon: const Icon(Icons.play_arrow),
+                        label: const Text('Set all in-Progress'),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () =>
+                            _setAll(context, ref, EProjectState.finished,
+                                'All projects set to finished.'),
+                        icon: const Icon(Icons.flag),
+                        label: const Text('Set all finished'),
+                      ),
+                    ],
+                  ),
+                ),
+
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -131,6 +171,20 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
         ),
       ),
     );
+  }
+
+  Future<void> _setAll(
+      BuildContext context,
+      WidgetRef ref,
+      EProjectState state,
+      String successMsg,
+      ) async {
+    try {
+      await ref.read(projectListProvider.notifier).setStateOfAll(state);
+      // showSuccessNotification(context, successMsg);
+    } catch (e) {
+      showErrorNotification(context, 'Failed to update all projects.');
+    }
   }
 }
 

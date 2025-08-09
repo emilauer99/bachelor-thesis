@@ -126,6 +126,23 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
       rethrow;
     }
   }
+
+  Future<void> setStateOfAll(EProjectState newState) async {
+    final prev = state;
+    state.whenData((projects) {
+      final updated = projects.map((p) => p.copyWith(state: newState)).toList();
+      state = AsyncValue.data(updated);
+    });
+
+    try {
+      final response = await _repo.setStateOfAll(newState);
+      final projects = response as List<ProjectModel>;
+      state = AsyncValue.data(projects);
+    } catch (e, st) {
+      state = prev; // revert on error
+      rethrow;
+    }
+  }
 }
 
 final projectListProvider = StateNotifierProvider<ProjectListNotifier, AsyncValue<List<ProjectModel>>>((ref) {
