@@ -60,6 +60,13 @@ export class ProjectMockService implements IProjectDataProvider {
     return of(updated);
   }
 
+  setStateOfAll(state: EProjectState): Observable<any> {
+    this.projects.update(current =>
+      (current ?? []).map(p => ({ ...p, state }))
+    );
+    return of(this.projects() ?? []);
+  }
+
   delete(id: number): Observable<any> {
     this.projects.update(current => current.filter(p => p.id !== id));
     return of(null);

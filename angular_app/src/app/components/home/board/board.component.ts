@@ -15,6 +15,8 @@ import {ProjectModel, ProjectStateList} from '../../../models/project.model';
 import {TitleCasePipe} from '@angular/common';
 import {finalize} from 'rxjs';
 import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/projects.provider';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-board',
@@ -24,7 +26,9 @@ import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/pr
     SpinnerComponent,
     CdkDrag,
     TitleCasePipe,
-    CdkDropListGroup
+    CdkDropListGroup,
+    MatButton,
+    MatIcon
   ],
   templateUrl: './board.component.html',
   styleUrl: './board.component.sass'
@@ -150,6 +154,19 @@ export class BoardComponent {
 
   isLoading(project: ProjectModel) {
     return this.currentlyLoadingIds().find(i => i === project.id) !== undefined
+  }
+
+  setStateOfAll(state: EProjectState) {
+    this.projectService.setStateOfAll(state)
+      .subscribe({
+          next: () => {
+            // this.notificationService.success("All projects set to finished.");
+          },
+          error: () => {
+            this.notificationService.error("Failed to set all projects to finished.");
+          }
+        }
+      )
   }
 
   protected readonly EProjectState = EProjectState;

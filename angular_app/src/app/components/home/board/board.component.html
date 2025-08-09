@@ -10,6 +10,21 @@
   @if (projectService.loading()) {
     <app-spinner></app-spinner>
   } @else {
+    <div class="d-flex gap-4 mb-4">
+      <button mat-raised-button color="primary" (click)="setStateOfAll(EProjectState.PLANNED)">
+        <mat-icon>schedule</mat-icon>
+        Set all planned
+      </button>
+      <button mat-raised-button color="primary" (click)="setStateOfAll(EProjectState.IN_PROGRESS)">
+        <mat-icon>play_arrow</mat-icon>
+        Set all in-Progress
+      </button>
+      <button mat-raised-button color="primary" (click)="setStateOfAll(EProjectState.FINISHED)">
+        <mat-icon>flag</mat-icon>
+        Set all finished
+      </button>
+    </div>
+
     <!-- Add horizontal scroll container -->
     <div class="horizontal-scroll-container">
       <div #scrollContainer class="d-flex gap-4 flex-grow-1 overflow-auto" cdkDropListGroup>

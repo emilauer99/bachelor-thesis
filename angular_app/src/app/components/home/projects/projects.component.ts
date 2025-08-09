@@ -112,5 +112,19 @@ export class ProjectsComponent {
     });
   }
 
+  setStateOfAll(state: EProjectState) {
+    this.projectService.setStateOfAll(state)
+      .subscribe({
+        next: () => {
+          // this.notificationService.success("All projects set to finished.");
+        },
+        error: () => {
+          this.notificationService.error("Failed to set all projects to finished.");
+        }
+      }
+      )
+  }
+
   protected readonly getStateColor = getStateColor;
+  protected readonly EProjectState = EProjectState;
 }

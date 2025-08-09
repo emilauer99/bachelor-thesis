@@ -12,6 +12,20 @@
                        (stateFilterChange)="stateFilter.set($event)"
                        (customerFilterChange)="customerFilterId.set($event)"></app-project-filters>
 
+  <div class="d-flex gap-4">
+    <button mat-raised-button color="primary" (click)="setStateOfAll(EProjectState.PLANNED)">
+      <mat-icon>schedule</mat-icon>
+      Set all planned
+    </button>
+    <button mat-raised-button color="primary" (click)="setStateOfAll(EProjectState.IN_PROGRESS)">
+      <mat-icon>play_arrow</mat-icon>
+      Set all in-Progress
+    </button>
+    <button mat-raised-button color="primary" (click)="setStateOfAll(EProjectState.FINISHED)">
+      <mat-icon>flag</mat-icon>
+      Set all finished
+    </button>
+  </div>
 
   <!--    <button mat-button-->
   <!--            class="py-3 d-flex align-items-center"-->
