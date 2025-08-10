@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/env_config.dart';
 import 'package:flutter_app/models/customer_model.dart';
 import 'package:flutter_app/providers/customer_list_provider.dart';
 import 'package:flutter_app/providers/mobile_provider.dart';

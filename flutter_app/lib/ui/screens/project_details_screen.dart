@@ -227,10 +227,8 @@ class _ProjectDetailsScreenState extends ConsumerState<ProjectDetailsScreen> {
             Text('Timeline', style: textTheme.titleMedium),
             const Divider(),
             const SizedBox(height: 8),
-            if (currentProject.startDate != null)
-              _buildDetailRow('Start Date', dateFormat.format(DateTime.parse(currentProject.startDate!))),
-            if (currentProject.endDate != null)
-              _buildDetailRow('End Date', dateFormat.format(DateTime.parse(currentProject.endDate!))),
+            _buildDetailRow('Start Date', dateFormat.format(DateTime.parse(currentProject.startDate))),
+            _buildDetailRow('End Date', dateFormat.format(DateTime.parse(currentProject.endDate))),
           ],
         ),
       ),

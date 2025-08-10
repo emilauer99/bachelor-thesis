@@ -42,7 +42,7 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
       });
 
       return newProject;
-    } catch (e, stackTrace) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -89,7 +89,7 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
       });
 
       return updatedProject;
-    } catch (e, stackTrace) {
+    } catch (e) {
       // Revert on error
       state.whenData((projects) {
         if (currentlyUpdatingProject != null) {
@@ -118,7 +118,7 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
       });
 
       await _repo.delete(id);
-    } catch (e, stackTrace) {
+    } catch (e) {
       state.whenData((projects) {
         final projectToRestore = projects.firstWhere((p) => p.id == id);
         state = AsyncValue.data([...projects, projectToRestore]..sort((a, b) => a.id!.compareTo(b.id!)));
@@ -138,7 +138,7 @@ class ProjectListNotifier extends StateNotifier<AsyncValue<List<ProjectModel>>> 
       final response = await _repo.setStateOfAll(newState);
       final projects = response as List<ProjectModel>;
       state = AsyncValue.data(projects);
-    } catch (e, st) {
+    } catch (e) {
       state = prev; // revert on error
       rethrow;
     }

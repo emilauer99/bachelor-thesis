@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/api/api_delegate.dart';
-import 'package:flutter_app/models/customer_model.dart';
 import 'package:flutter_app/repositories/customer_repository.dart';
 
 final class CustomerApi with DioDelegate implements ICustomerRepository {
@@ -8,11 +7,13 @@ final class CustomerApi with DioDelegate implements ICustomerRepository {
     initializeDio(ref);
   }
 
+  @override
   Future<dynamic> getAll() async {
     const apiUrl = '/customers';
     return await getRequest(apiUrl);
   }
 
+  @override
   Future<dynamic> create(String name, String filePath) async {
     const apiUrl = '/customers';
 
@@ -30,6 +31,7 @@ final class CustomerApi with DioDelegate implements ICustomerRepository {
     );
   }
 
+  @override
   Future<dynamic> delete(int id) async {
     final apiUrl = '/customers/$id';
     return await deleteRequest(apiUrl);

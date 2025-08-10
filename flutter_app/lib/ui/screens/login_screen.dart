@@ -58,7 +58,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         } else {
           showErrorNotification(context, "Unknown error.");
         }
-      } on Exception catch (e) {
+      } on Exception {
         showErrorNotification(context, "Credentials incorrect.");
       } finally {
         setState(() => _loading = false);

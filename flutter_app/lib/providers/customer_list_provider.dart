@@ -40,10 +40,10 @@ class CustomerListNotifier extends StateNotifier<AsyncValue<List<CustomerModel>>
       });
 
       await _repo.delete(id);
-    } catch (e, stackTrace) {
+    } catch (e) {
       state.whenData((customers) {
         final customerToRestore = customers.firstWhere((p) => p.id == id);
-        state = AsyncValue.data([...customers, customerToRestore]..sort((a, b) => a.id!.compareTo(b.id!)));
+        state = AsyncValue.data([...customers, customerToRestore]..sort((a, b) => a.id.compareTo(b.id)));
       });
       rethrow;
     }

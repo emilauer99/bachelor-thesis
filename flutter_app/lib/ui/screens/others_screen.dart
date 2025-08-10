@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/api/auth_api.dart';
 import 'package:flutter_app/providers/auth_provider.dart';
 import 'package:flutter_app/providers/repository_providers.dart';
 import 'package:flutter_app/repositories/auth_repository.dart';

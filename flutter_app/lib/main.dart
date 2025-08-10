@@ -21,7 +21,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       ShellRoute(
         builder:
-            (context, state, child) => HomeScreen(child: child, state: state),
+            (context, state, child) => HomeScreen(state: state, child: child),
         routes: [
           // Nested routes for tabs
           GoRoute(
