@@ -1,0 +1,144 @@
+{
+  "reports": [
+    {
+      "file": "1.html",
+      "url": "http://localhost:5200/#/home/projects",
+      "metrics": {
+        "tbt_ms": 1927.5,
+        "tbt": "1,930 ms",
+        "cls_value": 0,
+        "cls": "0",
+        "inp_ms": 785.8,
+        "inp": "790 ms"
+      },
+      "report_details": {
+        "fetchTime": "2025-09-08T19:13:50.701Z",
+        "lighthouseVersion": "12.6.1",
+        "gatherMode": "timespan",
+        "formFactor": "mobile",
+        "throttlingMethod": "devtools",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": true
+        },
+        "channel": "devtools",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "file": "2.html",
+      "url": "http://localhost:5200/#/home/projects",
+      "metrics": {
+        "tbt_ms": 982.5,
+        "tbt": "980 ms",
+        "cls_value": 0,
+        "cls": "0",
+        "inp_ms": 717.6,
+        "inp": "720 ms"
+      },
+      "report_details": {
+        "fetchTime": "2025-09-08T19:14:50.543Z",
+        "lighthouseVersion": "12.6.1",
+        "gatherMode": "timespan",
+        "formFactor": "mobile",
+        "throttlingMethod": "devtools",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": true
+        },
+        "channel": "devtools",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "file": "3.html",
+      "url": "http://localhost:5200/#/home/projects",
+      "metrics": {
+        "tbt_ms": 1044.7,
+        "tbt": "1,040 ms",
+        "cls_value": 0,
+        "cls": "0",
+        "inp_ms": 774.3,
+        "inp": "770 ms"
+      },
+      "report_details": {
+        "fetchTime": "2025-09-08T19:15:42.415Z",
+        "lighthouseVersion": "12.6.1",
+        "gatherMode": "timespan",
+        "formFactor": "mobile",
+        "throttlingMethod": "devtools",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": true
+        },
+        "channel": "devtools",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "file": "4.html",
+      "url": "http://localhost:5200/#/home/projects",
+      "metrics": {
+        "tbt_ms": 1146.3,
+        "tbt": "1,150 ms",
+        "cls_value": 0,
+        "cls": "0",
+        "inp_ms": 376.5,
+        "inp": "380 ms"
+      },
+      "report_details": {
+        "fetchTime": "2025-09-08T19:16:35.212Z",
+        "lighthouseVersion": "12.6.1",
+        "gatherMode": "timespan",
+        "formFactor": "mobile",
+        "throttlingMethod": "devtools",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": true
+        },
+        "channel": "devtools",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "file": "5.html",
+      "url": "http://localhost:5200/#/home/projects",
+      "metrics": {
+        "tbt_ms": 1671.4,
+        "tbt": "1,670 ms",
+        "cls_value": 0,
+        "cls": "0",
+        "inp_ms": 737.3,
+        "inp": "740 ms"
+      },
+      "report_details": {
+        "fetchTime": "2025-09-08T19:17:25.353Z",
+        "lighthouseVersion": "12.6.1",
+        "gatherMode": "timespan",
+        "formFactor": "mobile",
+        "throttlingMethod": "devtools",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": true
+        },
+        "channel": "devtools",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+      }
+    }
+  ]
+}

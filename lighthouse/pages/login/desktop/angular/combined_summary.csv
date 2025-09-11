@@ -1,0 +1,24 @@
+﻿report;step_index;step_name;url;performance;FCP;LCP;TBT;CLS;SpeedIndex;FCP_ms;LCP_ms;TBT_ms;CLS_value;SpeedIndex_ms
+1;1;Cold navigation;http://localhost:4000/login;97;1.0 s;1.1 s;0 ms;0;1.0 s;1014.4;1075.4;0;0;1014.4
+1;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.2 s;0 ms;0;0.2 s;194.7;216.2;0;0;194.7
+2;1;Cold navigation;http://localhost:4000/login;97;0.9 s;1.0 s;0 ms;0;0.9 s;939;969;0;0.0001;939
+2;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.2 s;0 ms;0;0.2 s;224.2;243.7;0;0;224.2
+3;1;Cold navigation;http://localhost:4000/login;98;0.9 s;1.0 s;0 ms;0;0.9 s;927.8;956.3;0;0.0001;927.8
+3;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.2 s;0 ms;0;0.2 s;224.2;245.7;0;0;224.2
+4;1;Cold navigation;http://localhost:4000/login;97;0.9 s;1.0 s;0 ms;0;0.9 s;939;970.5;3;0.0001;939
+4;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.3 s;10 ms;0;0.2 s;224.2;255.7;9.5;0;224.2
+5;1;Cold navigation;http://localhost:4000/login;98;0.8 s;0.9 s;20 ms;0;0.8 s;821;912.7;17.5;0.0001;821
+5;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.2 s;0 ms;0;0.2 s;224.2;248.7;0;0;224.2
+6;1;Cold navigation;http://localhost:4000/login;98;0.8 s;0.9 s;0 ms;0;0.8 s;848.6;880.1;1;0.0001;848.6
+6;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.2 s;0 ms;0;0.2 s;224.2;245.2;0;0;224.2
+7;1;Cold navigation;http://localhost:4000/login;98;0.9 s;1.0 s;30 ms;0;0.9 s;927.5;972.5;28;0.0001;927.5
+7;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.2 s;0 ms;0;0.2 s;224.2;244.7;0;0;224.2
+8;1;Cold navigation;http://localhost:4000/login;97;0.9 s;1.0 s;0 ms;0;0.9 s;938;968.5;1;0.0001;938
+8;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.2 s;0 ms;0;0.2 s;224.2;246.2;0;0;224.2
+9;1;Cold navigation;http://localhost:4000/login;97;1.0 s;1.0 s;0 ms;0;1.0 s;967.3;997.3;0;0.0001;967.3
+9;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.2 s;0 ms;0;0.2 s;224.2;245.2;0;0;224.2
+10;1;Cold navigation;http://localhost:4000/login;99;0.8 s;0.9 s;0 ms;0;0.8 s;812.9;881;0;0.0001;812.9
+10;2;Warm navigation;http://localhost:4000/login;100;0.2 s;0.2 s;0 ms;0;0.2 s;224.2;246.2;0;0;224.2
+;;;;;;;;;;;;;;
+AVG;1;Cold navigation (avg);;98;0.9 s;1.0 s;5 ms;0;0.9 s;913.5;958.3;5;0.0001;913.5
+AVG;2;Warm navigation (avg);;100;0.2 s;0.2 s;1 ms;0;0.2 s;221.3;243.8;0.9;0;221.3

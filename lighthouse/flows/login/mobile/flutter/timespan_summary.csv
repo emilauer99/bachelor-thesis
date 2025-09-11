@@ -1,0 +1,8 @@
+﻿sep=;
+file;url;TBT;CLS;INP;TBT_ms;CLS_value;INP_ms;captured_at;lighthouse;gatherMode;formFactor;throttlingMethod;channel
+1.html;http://localhost:5000/#/home;"1,390 ms";0;210 ms;1385;0;213.6;2025-09-08T14:32:53.196Z;12.6.1;timespan;mobile;devtools;devtools
+2.html;http://localhost:5000/#/home;"1,250 ms";0;200 ms;1250.2;0;204.7;2025-09-08T14:34:17.647Z;12.6.1;timespan;mobile;devtools;devtools
+3.html;http://localhost:5000/#/home;"1,650 ms";0;430 ms;1648.1;0;430.6;2025-09-08T14:35:23.647Z;12.6.1;timespan;mobile;devtools;devtools
+4.html;http://localhost:5000/#/home;"1,510 ms";0;400 ms;1514.5;0;401.4;2025-09-08T14:36:23.690Z;12.6.1;timespan;mobile;devtools;devtools
+5.html;http://localhost:5000/#/home;"1,390 ms";0;310 ms;1385.6;0;305.4;2025-09-08T17:32:29.197Z;12.6.1;timespan;mobile;devtools;devtools
+AVG;;1.4 s;0;311 ms;1436.7;0;311.1;;;;;;

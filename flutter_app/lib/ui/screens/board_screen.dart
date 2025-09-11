@@ -142,7 +142,7 @@ class _BoardScreenState extends ConsumerState<BoardScreen>
                             ),
                         icon: const Icon(Icons.play_arrow),
                         label: const Text('Set all in-Progress'),
-                      )
+                      ),
                       ElevatedButton.icon(
                         onPressed:
                             () => _setAll(

@@ -1,2 +1,6 @@
 /docker/_vol/
-.idea/
+.idea
+lighthouse/node_modules
+lighthouse/package-lock.json
+flutter_wasm_app
+bachelor-thesis.iml

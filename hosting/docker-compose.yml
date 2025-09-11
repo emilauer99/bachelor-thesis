@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  web:
+    image: nginx:alpine
+    container_name: perf-lab-nginx
+    ports:
+      - "4000:4000"   # Angular
+      - "5000:5000"   # Flutter
+      - "5200:5200"   # Flutter WASM
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../angular_app/dist/angular_app/browser:/usr/share/nginx/html/angular:ro
+      - ../flutter_wasm_app/web:/usr/share/nginx/html/flutter_wasm:ro
+      - ../flutter_app/build/web:/usr/share/nginx/html/flutter:ro
+    restart: unless-stopped

@@ -1,0 +1,24 @@
+﻿sep=;
+report;step_index;step_name;url;performance;FCP;LCP;TBT;CLS;SpeedIndex;FCP_ms;LCP_ms;TBT_ms;CLS_value;SpeedIndex_ms
+1;1;Cold navigation;http://localhost:5200/#/home;78;2.2 s;;;0;7.8 s;2155.9;;;0;7773.4
+1;2;Warm navigation;http://localhost:5200/;96;1.9 s;;;0;3.0 s;1867.5;;;0;2964.9
+2;1;Cold navigation;http://localhost:5200/#/home;78;2.2 s;;;0;8.0 s;2155.7;;;0;8004
+2;2;Warm navigation;http://localhost:5200/;95;1.9 s;;;0;3.5 s;1874.7;;;0;3492.1
+3;1;Cold navigation;http://localhost:5200/#/home;78;2.2 s;;;0;8.1 s;2155.4;;;0;8096.8
+3;2;Warm navigation;http://localhost:5200/;95;1.9 s;;;0;3.3 s;1873.7;;;0;3275.3
+4;1;Cold navigation;http://localhost:5200/#/home;78;2.2 s;;;0;8.0 s;2157.2;;;0;7984.8
+4;2;Warm navigation;http://localhost:5200/;96;1.9 s;;;0;2.9 s;1870.9;;;0;2929.9
+5;1;Cold navigation;http://localhost:5200/#/home;78;2.2 s;;;0;8.1 s;2159.9;;;0;8064.8
+5;2;Warm navigation;http://localhost:5200/;96;1.9 s;;;0;3.0 s;1877.3;;;0;2954.2
+6;1;Cold navigation;http://localhost:5200/#/home;78;2.2 s;;;0;7.9 s;2155.9;;;0;7905.9
+6;2;Warm navigation;http://localhost:5200/;96;1.9 s;;;0;3.2 s;1874.9;;;0;3159.3
+7;1;Cold navigation;http://localhost:5200/#/home;78;2.2 s;;;0;7.8 s;2162.3;;;0;7810.4
+7;2;Warm navigation;http://localhost:5200/;96;1.9 s;;;0;3.1 s;1869.9;;;0;3149.2
+8;1;Cold navigation;http://localhost:5200/#/home;78;2.2 s;;;0;8.1 s;2159.7;;;0;8092.9
+8;2;Warm navigation;http://localhost:5200/;95;1.9 s;;;0;3.3 s;1870.5;;;0;3306
+9;1;Cold navigation;http://localhost:5200/#/home;78;2.2 s;;;0;8.0 s;2154.9;;;0;8028.7
+9;2;Warm navigation;http://localhost:5200/;96;1.9 s;;;0;3.0 s;1879.8;;;0;3044.2
+10;1;Cold navigation;http://localhost:5200/#/home;76;2.2 s;;;0;8.9 s;2156.6;;;0;8902.9
+10;2;Warm navigation;http://localhost:5200/;95;1.9 s;;;0;3.3 s;1876.7;;;0;3300.7
+AVG;1;Cold navigation (avg);;78;2.2 s;;;0;8.1 s;2157.3;;;0;8066.5
+AVG;2;Warm navigation (avg);;96;1.9 s;;;0;3.2 s;1873.6;;;0;3157.6
