@@ -1,11 +1,9 @@
 import {Component, effect, Inject, signal} from '@angular/core';
 import {ProjectModel} from '../../../../models/project.model';
-import {ProjectService} from '../../../../services/project.service';
 import {CustomNotificationService} from '../../../../services/custom-notification.service';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../../utils/confirm-dialog/confirm-dialog.component';
-import {MatToolbar} from '@angular/material/toolbar';
 import {MatChip} from '@angular/material/chips';
 import {getStateColor, getStateLabel} from '../../../../enums/e-project-state';
 import {DatePipe} from '@angular/common';
@@ -23,7 +21,6 @@ import {IProjectDataProvider, PROJECT_DATA} from '../../../../services/providers
 @Component({
   selector: 'app-project',
   imports: [
-    MatToolbar,
     MatIconButton,
     MatIcon,
     MatChip,

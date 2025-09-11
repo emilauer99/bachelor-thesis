@@ -1,24 +1,15 @@
 import {Component, effect, model, output, signal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {KeyValuePipe} from '@angular/common';
-import {MatCheckbox} from '@angular/material/checkbox';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
-import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
+import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-customer-form',
   imports: [
-    KeyValuePipe,
-    MatCheckbox,
-    MatDatepicker,
-    MatDatepickerInput,
-    MatDatepickerToggle,
     MatError,
     MatFormField,
     MatInput,
     MatLabel,
-    MatSuffix,
     ReactiveFormsModule,
     MatFormField,
     MatButton

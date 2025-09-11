@@ -1,10 +1,8 @@
-import {Component, computed, Inject, signal, ViewChild} from '@angular/core';
-import {ProjectService} from '../../../services/project.service';
+import {Component, computed, Inject, signal} from '@angular/core';
 import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
 import {UpcomingProjectsChartComponent} from './upcoming-projects-chart/upcoming-projects-chart.component';
 import {StatusProjectsChartComponent} from './status-projects-chart/status-projects-chart.component';
 import {CustomerProjectsChartComponent} from './customer-projects-chart/customer-projects-chart.component';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {SpinnerComponent} from '../../utils/spinner/spinner.component';
 import {EProjectState} from '../../../enums/e-project-state';
 import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/projects.provider';
@@ -12,7 +10,6 @@ import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/pr
 @Component({
   selector: 'app-dashboard',
   imports: [
-    MatProgressSpinner,
     ProjectFiltersComponent,
     UpcomingProjectsChartComponent,
     StatusProjectsChartComponent,

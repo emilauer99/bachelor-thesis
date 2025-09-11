@@ -2,15 +2,12 @@ import {Component, effect, Inject, input, model, OnInit, output, signal, Signal}
 import {ProjectModel} from '../../../../models/project.model';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {EProjectState, getStateLabel} from '../../../../enums/e-project-state';
-import {CustomerService} from '../../../../services/customer.service';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {KeyValuePipe} from '@angular/common';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
-import {MatButton} from '@angular/material/button';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {CUSTOMER_DATA, ICustomerDataProvider} from '../../../../services/providers/customers.provider';
 
 @Component({
@@ -24,9 +21,7 @@ import {CUSTOMER_DATA, ICustomerDataProvider} from '../../../../services/provide
     KeyValuePipe,
     MatDatepickerInput,
     MatDatepickerToggle,
-    MatDatepicker,
-    MatButton,
-    MatProgressSpinner
+    MatDatepicker
   ],
   templateUrl: './project-form.component.html',
   standalone: true,

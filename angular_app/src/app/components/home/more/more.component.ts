@@ -1,22 +1,16 @@
 import {Component, Inject} from '@angular/core';
-import {MatDivider, MatList, MatListItem, MatNavList} from '@angular/material/list';
-import {Router, RouterLink} from '@angular/router';
-import {NgStyle} from '@angular/common';
+import {MatDivider, MatListItem, MatNavList} from '@angular/material/list';
+import {Router} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
 import {MatLine} from '@angular/material/core';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {AuthService} from '../../../services/auth.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {finalize} from 'rxjs';
-import {CUSTOMER_DATA, ICustomerDataProvider} from '../../../services/providers/customers.provider';
 import {AUTH_DATA, IAuthDataProvider} from '../../../services/providers/auth.provider';
 
 @Component({
   selector: 'app-more',
   imports: [
-    MatList,
     MatListItem,
-    RouterLink,
     MatIcon,
     MatLine,
     MatDivider,

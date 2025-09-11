@@ -13,12 +13,12 @@ import {ProjectComponent} from './components/home/projects/project/project.compo
 export const routes: Routes = [
   {
     path: 'login',
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     component: LoginComponent
   },
   {
     path: '',
-    canActivate: [homeGuard],
+    // canActivate: [homeGuard],
     component: HomeComponent,
     children: [
       {

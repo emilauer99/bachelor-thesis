@@ -48,7 +48,6 @@ export class BoardComponent {
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLElement>;
 
-  // Add this to your component
   onDragMoved(event: CdkDragMove<ProjectModel>) {
     console.log(event)
     const scrollContainer = this.scrollContainer.nativeElement;

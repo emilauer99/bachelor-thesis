@@ -1,10 +1,8 @@
 import {Component, computed, Inject, signal} from '@angular/core';
-import {ProjectService} from '../../../services/project.service';
 import {ProjectModel} from '../../../models/project.model';
 import {MatList, MatListItem} from '@angular/material/list';
 import {EProjectState, getStateColor} from '../../../enums/e-project-state';
 import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatIcon} from '@angular/material/icon';
 import {CustomNotificationService} from '../../../services/custom-notification.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -15,12 +13,12 @@ import {ProjectDialogComponent} from './project-dialog/project-dialog.component'
 import {ProjectFiltersComponent} from '../../utils/project-filters/project-filters.component';
 import {MobileService} from '../../../services/mobile.service';
 import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/projects.provider';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-projects',
   imports: [
     MatButton,
-    MatProgressSpinner,
     MatList,
     MatListItem,
     MatFabButton,
@@ -28,7 +26,8 @@ import {IProjectDataProvider, PROJECT_DATA} from '../../../services/providers/pr
     MatIconButton,
     SpinnerComponent,
     RouterLink,
-    ProjectFiltersComponent
+    ProjectFiltersComponent,
+    ScrollingModule
   ],
   templateUrl: './projects.component.html',
   standalone: true,
