@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/colors.dart';
 import 'package:flutter_app/models/project_model.dart';
@@ -42,8 +43,7 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if(!mobileLayout)
-          ...[
+          if (!mobileLayout) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 AppVariables.screenPadding,
@@ -56,7 +56,8 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                 children: [
                   Text("Projects", style: theme.textTheme.titleLarge),
                   ElevatedButton(
-                    onPressed: () => showProjectModal(context: context, ref: ref),
+                    onPressed:
+                        () => showProjectModal(context: context, ref: ref),
                     child: Row(
                       children: [
                         Icon(Icons.add),
@@ -92,23 +93,35 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                 runSpacing: 8,
                 children: [
                   ElevatedButton.icon(
-                    onPressed: () =>
-                        _setAll(context, ref, EProjectState.planned,
-                            'All projects set to planned.'),
+                    onPressed:
+                        () => _setAll(
+                          context,
+                          ref,
+                          EProjectState.planned,
+                          'All projects set to planned.',
+                        ),
                     icon: const Icon(Icons.schedule),
                     label: const Text('Set all planned'),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () =>
-                        _setAll(context, ref, EProjectState.inProgress,
-                            'All projects set to in-progress.'),
+                    onPressed:
+                        () => _setAll(
+                          context,
+                          ref,
+                          EProjectState.inProgress,
+                          'All projects set to in-progress.',
+                        ),
                     icon: const Icon(Icons.play_arrow),
                     label: const Text('Set all in-Progress'),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () =>
-                        _setAll(context, ref, EProjectState.finished,
-                            'All projects set to finished.'),
+                    onPressed:
+                        () => _setAll(
+                          context,
+                          ref,
+                          EProjectState.finished,
+                          'All projects set to finished.',
+                        ),
                     icon: const Icon(Icons.flag),
                     label: const Text('Set all finished'),
                   ),
@@ -162,12 +175,16 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
 
   Widget _buildProjectList(List<ProjectModel> projects, bool mobileLayout) {
     return ListView.builder(
-      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: projects.length,
+      primary: true,
+      itemExtent: 72,
       itemBuilder:
           (context, index) => Dismissible(
-            direction: mobileLayout ? DismissDirection.endToStart : DismissDirection.none,
-            key: Key(projects[index].id.toString()),
+            direction:
+                mobileLayout
+                    ? DismissDirection.endToStart
+                    : DismissDirection.none,
+            key: ValueKey(projects[index].id),
             background: Container(
               color: Colors.red,
               alignment: Alignment.centerRight,
@@ -209,7 +226,10 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                   'Project ${projects[index].name} deleted',
                 );
               } catch (e) {
-                showErrorNotification(context, 'Failed to delete project: $e');
+                showErrorNotification(
+                  context,
+                  'Failed to delete project: $e',
+                );
               }
             },
             child: ListTile(
@@ -237,13 +257,16 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                                   actions: [
                                     TextButton(
                                       onPressed:
-                                          () =>
-                                              Navigator.of(context).pop(false),
+                                          () => Navigator.of(
+                                            context,
+                                          ).pop(false),
                                       child: const Text('Cancel'),
                                     ),
                                     TextButton(
                                       onPressed:
-                                          () => Navigator.of(context).pop(true),
+                                          () => Navigator.of(
+                                            context,
+                                          ).pop(true),
                                       child: const Text(
                                         'Delete',
                                         style: TextStyle(color: Colors.red),
@@ -253,7 +276,7 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                                 ),
                           );
 
-                          if(delete) {
+                          if (delete) {
                             try {
                               await ref
                                   .read(projectListProvider.notifier)
@@ -263,7 +286,10 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                                 'Project ${projects[index].name} deleted',
                               );
                             } catch (e) {
-                              showErrorNotification(context, 'Failed to delete project: $e');
+                              showErrorNotification(
+                                context,
+                                'Failed to delete project: $e',
+                              );
                             }
                           }
                         },
@@ -284,8 +310,8 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                 );
               },
             ),
-          ),
-    );
+          )
+        );
   }
 
   Widget _buildStateIndicator(EProjectState state) {
@@ -356,11 +382,11 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
   }
 
   Future<void> _setAll(
-      BuildContext context,
-      WidgetRef ref,
-      EProjectState state,
-      String successMsg,
-      ) async {
+    BuildContext context,
+    WidgetRef ref,
+    EProjectState state,
+    String successMsg,
+  ) async {
     try {
       await ref.read(projectListProvider.notifier).setStateOfAll(state);
       // showSuccessNotification(context, successMsg);

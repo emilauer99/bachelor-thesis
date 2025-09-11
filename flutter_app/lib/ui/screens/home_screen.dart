@@ -29,19 +29,19 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  bool _isValidatingToken = true;
+  bool _isValidatingToken = false;
 
   @override
   void initState() {
     super.initState();
-    final freshLogin = widget.state.uri.queryParameters['fresh'] == '1';
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!freshLogin) {
-        _validateAuthState();
-      } else {
-        setState(() => _isValidatingToken = false);
-      }
-    });
+    // final freshLogin = widget.state.uri.queryParameters['fresh'] == '1';
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (!freshLogin) {
+    //     _validateAuthState();
+    //   } else {
+    //     setState(() => _isValidatingToken = false);
+    //   }
+    // });
   }
 
   Future<void> _validateAuthState() async {
@@ -108,9 +108,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final mobileLayout = ref.watch(isMobileLayoutProvider);
     final location = GoRouterState.of(context).uri.toString();
-    print(location);
     final selectedIndex = _indexFromLocation(location, mobileLayout);
-    print(selectedIndex);
 
     final List<Widget> tabs = [
       const DashboardScreen(),

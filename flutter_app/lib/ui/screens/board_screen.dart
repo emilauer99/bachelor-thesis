@@ -10,12 +10,13 @@ import 'package:flutter_app/variables.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../env_config.dart';
+import '../../providers/mobile_provider.dart';
 
-class ProjectStateList{
+class ProjectStateList {
   EProjectState state;
   List<ProjectModel> projects;
 
-  ProjectStateList({required this.state,required this.projects});
+  ProjectStateList({required this.state, required this.projects});
 }
 
 class BoardScreen extends ConsumerStatefulWidget {
@@ -25,8 +26,8 @@ class BoardScreen extends ConsumerStatefulWidget {
   ConsumerState<BoardScreen> createState() => _BoardScreenState();
 }
 
-class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAliveClientMixin  {
-
+class _BoardScreenState extends ConsumerState<BoardScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -38,11 +39,9 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
 
     try {
       final updatedProject = project.copyWith(state: projectStateList.state);
-      await ref.read(projectListProvider.notifier).updateProject(
-        project.id!,
-        updatedProject,
-        newIndex: 0
-      );
+      await ref
+          .read(projectListProvider.notifier)
+          .updateProject(project.id!, updatedProject, newIndex: 0);
     } catch (e) {
       showErrorNotification(context, 'Failed to update project: $e');
     }
@@ -57,36 +56,57 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
     final projectsAsync = ref.watch(projectListProvider);
     final selectedCustomer = ref.watch(customerFilterProvider);
     final selectedState = ref.watch(stateFilterProvider);
+    final mobileLayout = ref.watch(isMobileLayoutProvider);
 
     return Scaffold(
       body: projectsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Error: $error')),
         data: (projects) {
-          final filteredProjects = selectedCustomer != null
-              ? projects.where((p) => p.customer.id == selectedCustomer.id).toList()
-              : projects;
+          final filteredProjects =
+              selectedCustomer != null
+                  ? projects
+                      .where((p) => p.customer.id == selectedCustomer.id)
+                      .toList()
+                  : projects;
 
           final projectLists = [
             ProjectStateList(
               state: EProjectState.planned,
-              projects: filteredProjects.where((p) => p.state == EProjectState.planned).toList(),
+              projects:
+                  filteredProjects
+                      .where((p) => p.state == EProjectState.planned)
+                      .toList(),
             ),
             ProjectStateList(
               state: EProjectState.inProgress,
-              projects: filteredProjects.where((p) => p.state == EProjectState.inProgress).toList(),
+              projects:
+                  filteredProjects
+                      .where((p) => p.state == EProjectState.inProgress)
+                      .toList(),
             ),
             ProjectStateList(
               state: EProjectState.finished,
-              projects: filteredProjects.where((p) => p.state == EProjectState.finished).toList(),
+              projects:
+                  filteredProjects
+                      .where((p) => p.state == EProjectState.finished)
+                      .toList(),
             ),
           ];
 
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(AppVariables.screenPadding, AppVariables.screenPadding, AppVariables.screenPadding, 0),
-                child: ProjectFilters(projectsAsync: projectsAsync, showStateFilter: false,),
+                padding: const EdgeInsets.fromLTRB(
+                  AppVariables.screenPadding,
+                  AppVariables.screenPadding,
+                  AppVariables.screenPadding,
+                  0,
+                ),
+                child: ProjectFilters(
+                  projectsAsync: projectsAsync,
+                  showStateFilter: false,
+                ),
               ),
 
               if (EnvironmentConfig.mockData)
@@ -102,23 +122,35 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
                     runSpacing: 8,
                     children: [
                       ElevatedButton.icon(
-                        onPressed: () =>
-                            _setAll(context, ref, EProjectState.planned,
-                                'All projects set to planned.'),
+                        onPressed:
+                            () => _setAll(
+                              context,
+                              ref,
+                              EProjectState.planned,
+                              'All projects set to planned.',
+                            ),
                         icon: const Icon(Icons.schedule),
                         label: const Text('Set all planned'),
                       ),
                       ElevatedButton.icon(
-                        onPressed: () =>
-                            _setAll(context, ref, EProjectState.inProgress,
-                                'All projects set to in-progress.'),
+                        onPressed:
+                            () => _setAll(
+                              context,
+                              ref,
+                              EProjectState.inProgress,
+                              'All projects set to in-progress.',
+                            ),
                         icon: const Icon(Icons.play_arrow),
                         label: const Text('Set all in-Progress'),
-                      ),
+                      )
                       ElevatedButton.icon(
-                        onPressed: () =>
-                            _setAll(context, ref, EProjectState.finished,
-                                'All projects set to finished.'),
+                        onPressed:
+                            () => _setAll(
+                              context,
+                              ref,
+                              EProjectState.finished,
+                              'All projects set to finished.',
+                            ),
                         icon: const Icon(Icons.flag),
                         label: const Text('Set all finished'),
                       ),
@@ -133,9 +165,16 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
                   child: Padding(
                     padding: const EdgeInsets.all(AppVariables.screenPadding),
                     child: Row(
-                      children: projectLists.map((list) =>
-                          _buildStateColumWithDropZone(list, _draggableKey)
-                      ).toList(),
+                      children:
+                          projectLists
+                              .map(
+                                (list) => _buildStateColumWithDropZone(
+                                  list,
+                                  _draggableKey,
+                                  mobileLayout,
+                                ),
+                              )
+                              .toList(),
                     ),
                   ),
                 ),
@@ -147,11 +186,23 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
     );
   }
 
-  Widget _buildStateColumWithDropZone(ProjectStateList projectList, GlobalKey draggableKey) {
+  Widget _buildStateColumWithDropZone(
+    ProjectStateList projectList,
+    GlobalKey draggableKey,
+    bool mobileLayout,
+  ) {
     return Padding(
       padding: EdgeInsets.only(
-        right: (projectList.state == EProjectState.planned ||  projectList.state == EProjectState.inProgress) ? AppVariables.screenPadding : 0,
-        left: (projectList.state == EProjectState.finished ||  projectList.state == EProjectState.inProgress) ? AppVariables.screenPadding : 0
+        right:
+            (projectList.state == EProjectState.planned ||
+                    projectList.state == EProjectState.inProgress)
+                ? AppVariables.screenPadding
+                : 0,
+        left:
+            (projectList.state == EProjectState.finished ||
+                    projectList.state == EProjectState.inProgress)
+                ? AppVariables.screenPadding
+                : 0,
       ),
       child: SizedBox(
         width: 300,
@@ -163,10 +214,14 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
               projectStateList: projectList,
               draggableKey: draggableKey,
               scrollController: _scrollController,
+              mobileLayout: mobileLayout,
             );
           },
           onAcceptWithDetails: (details) {
-            _projectDroppedOnStateColumn(project: details.data, projectStateList: projectList);
+            _projectDroppedOnStateColumn(
+              project: details.data,
+              projectStateList: projectList,
+            );
           },
         ),
       ),
@@ -174,11 +229,11 @@ class _BoardScreenState extends ConsumerState<BoardScreen> with AutomaticKeepAli
   }
 
   Future<void> _setAll(
-      BuildContext context,
-      WidgetRef ref,
-      EProjectState state,
-      String successMsg,
-      ) async {
+    BuildContext context,
+    WidgetRef ref,
+    EProjectState state,
+    String successMsg,
+  ) async {
     try {
       await ref.read(projectListProvider.notifier).setStateOfAll(state);
       // showSuccessNotification(context, successMsg);
@@ -194,6 +249,7 @@ class ProjectStateColumn extends StatelessWidget {
     required this.projectStateList,
     required this.draggableKey,
     required this.scrollController,
+    required this.mobileLayout,
     this.highlighted = false,
     this.hasProjects = false,
   });
@@ -201,25 +257,29 @@ class ProjectStateColumn extends StatelessWidget {
   final ProjectStateList projectStateList;
   final bool highlighted;
   final bool hasProjects;
+  final bool mobileLayout;
   final GlobalKey draggableKey;
   final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: AppColors.getColorByState(projectStateList.state), // Get color based on project state
+            color: AppColors.getColorByState(projectStateList.state),
+            // Get color based on project state
             width: 4, // Border thickness
           ),
         ),
-        borderRadius: BorderRadius.circular(8)
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Material(
         elevation: highlighted ? 8 : 4,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(8),
+          bottomRight: Radius.circular(8),
+        ),
         color: highlighted ? const Color(0xFFF3F3F3) : Colors.white,
         child: Padding(
           padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
@@ -232,7 +292,10 @@ class ProjectStateColumn extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.getColorByState(projectStateList.state),
                       borderRadius: BorderRadius.circular(8),
@@ -254,8 +317,8 @@ class ProjectStateColumn extends StatelessWidget {
                       children: [
                         const SizedBox(height: 4),
                         Text(
-                            '${projectStateList.projects.length} project${projectStateList.projects.length != 1 ? 's' : ''}',
-                            style: theme.textTheme.bodySmall
+                          '${projectStateList.projects.length} project${projectStateList.projects.length != 1 ? 's' : ''}',
+                          style: theme.textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -264,8 +327,8 @@ class ProjectStateColumn extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               projectStateList.projects.isNotEmpty
-                  ? _buildProjectList(projectStateList, context) 
-                  : Expanded(child: Center(child: Text("No projects")))
+                  ? _buildProjectList(projectStateList, context)
+                  : Expanded(child: Center(child: Text("No projects"))),
             ],
           ),
         ),
@@ -273,7 +336,10 @@ class ProjectStateColumn extends StatelessWidget {
     );
   }
 
-  Widget _buildProjectList(ProjectStateList projectStateList, BuildContext context) {
+  Widget _buildProjectList(
+    ProjectStateList projectStateList,
+    BuildContext context,
+  ) {
     return Expanded(
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -281,74 +347,85 @@ class ProjectStateColumn extends StatelessWidget {
         separatorBuilder: (context, index) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final item = projectStateList.projects[index];
-          return _buildProjectItem(project: item, context: context);
+          return _buildProjectItem(
+            project: item,
+            context: context,
+            mobileLayout: mobileLayout,
+          );
         },
-      ),
+      )
     );
   }
 
-  Widget _buildProjectItem({required ProjectModel project, required BuildContext context}) {
+  Widget _buildProjectItem({
+    required ProjectModel project,
+    required BuildContext context,
+    required bool mobileLayout,
+  }) {
     // Capture the screen width from the current build context.
     final screenWidth = MediaQuery.of(context).size.width;
     DateTime? lastScrollTime;
 
-    return LongPressDraggable<ProjectModel>(
-      key: ValueKey(project.id),
-      data: project,
-      // Auto-scroll while dragging using onDragUpdate.
-      onDragUpdate: (details) {
-        // final now = DateTime.now();
-        // if (lastScrollTime != null && now.difference(lastScrollTime!) < Duration(milliseconds: 50)) {
-        //   return;
-        // }
-        // lastScrollTime = now;
-        // Define a threshold in pixels near the left/right edge.
-        const edgeThreshold = 65.0;
-        // Define how much to scroll per update.
-        const scrollSpeed = 5.0;
+    void handleDragUpdate(DragUpdateDetails details) {
+      // Define a threshold in pixels near the left/right edge.
+      const edgeThreshold = 65.0;
+      // Define how much to scroll per update.
+      const scrollSpeed = 5.0;
 
-        // Scroll left if pointer is near the left edge.
-        if (details.globalPosition.dx < edgeThreshold &&
-            scrollController.offset > 0) {
-          scrollController.jumpTo(scrollController.offset - scrollSpeed);
-        }
-        // Scroll right if pointer is near the right edge.
-        else if (details.globalPosition.dx > screenWidth - edgeThreshold &&
-            scrollController.offset < scrollController.position.maxScrollExtent) {
-          scrollController.jumpTo(scrollController.offset + scrollSpeed);
-        }
-      },
-      feedback: SizedBox(
-        width: 200,
-        height: 100,
-        child: Material(
-          elevation: 6,
-          borderRadius: BorderRadius.circular(8),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Center(
-              child: Text(
-                project.name,
-                style: theme.textTheme.titleMedium,
-              ),
-            ),
+      // Scroll left if pointer is near the left edge.
+      if (details.globalPosition.dx < edgeThreshold &&
+          scrollController.offset > 0) {
+        scrollController.jumpTo(scrollController.offset - scrollSpeed);
+      }
+      // Scroll right if pointer is near the right edge.
+      else if (details.globalPosition.dx > screenWidth - edgeThreshold &&
+          scrollController.offset < scrollController.position.maxScrollExtent) {
+        scrollController.jumpTo(scrollController.offset + scrollSpeed);
+      }
+    }
+
+    final feedback = SizedBox(
+      width: 200,
+      height: 100,
+      child: Material(
+        elevation: 6,
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Center(
+            child: Text(project.name, style: theme.textTheme.titleMedium),
           ),
         ),
       ),
+    );
 
-      // (Optional) hide the original item in the list while dragging
+    final child = ProjectListItem(project: project);
+
+    if (mobileLayout) {
+      return LongPressDraggable<ProjectModel>(
+        key: ValueKey(project.id),
+        data: project,
+        onDragUpdate: handleDragUpdate,
+        feedback: feedback,
+        childWhenDragging: const SizedBox.shrink(),
+        child: child,
+      );
+    }
+
+    return Draggable<ProjectModel>(
+      key: ValueKey(project.id),
+      data: project,
+      affinity: Axis.horizontal,
+      onDragUpdate: handleDragUpdate,
+      feedback: feedback,
       childWhenDragging: const SizedBox.shrink(),
-
-      child: ProjectListItem(project: project),
+      child: child,
     );
   }
 }
 
 class ProjectListItem extends StatelessWidget {
-  const ProjectListItem({
-    super.key,
-    required this.project
-  });
+  const ProjectListItem({super.key, required this.project});
 
   final ProjectModel project;
 
@@ -366,21 +443,18 @@ class ProjectListItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    project.name,
-                    style: theme.textTheme.titleMedium,
-                  ),
+                  Text(project.name, style: theme.textTheme.titleMedium),
                   const SizedBox(height: 5),
                   Text(
                     project.customer.name,
-                    style: theme.textTheme.bodySmall
+                    style: theme.textTheme.bodySmall,
                   ),
                 ],
               ),
             ),
           ],
         ),
-      ),
+      )
     );
   }
 }
